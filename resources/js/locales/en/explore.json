@@ -1,0 +1,79 @@
+{
+  "head": {
+    "title": "Explore the Incomati basin",
+    "description": "Live monitoring across dam, flow, rainfall, groundwater and water quality stations in the Incomati basin."
+  },
+  "hero": {
+    "eyebrow": "Public dashboard",
+    "title": "Explore the Incomati basin in real time",
+    "subtitle": "A shared, area-level view of dam levels, river flows, rainfall, groundwater, water quality and active hazards across Mozambique, South Africa and Eswatini.",
+    "lastSync": "Last updated",
+    "noSync": "Awaiting first sync"
+  },
+  "kpi": {
+    "stations": "Stations monitored",
+    "countries": "Countries",
+    "activeHazards": "Active incidents",
+    "watchAreas": "Areas on watch or above"
+  },
+  "confidence": {
+    "label": "Data confidence",
+    "verified": "Verified",
+    "verifiedHelp": "Reviewed and approved by a data manager.",
+    "provisional": "Provisional",
+    "provisionalHelp": "Submitted but not yet reviewed — use with care.",
+    "unknown": "No data",
+    "unknownHelp": "No reading available yet for this station.",
+    "filter": {
+      "all": "All",
+      "verified": "Verified only",
+      "provisional": "Provisional only"
+    }
+  },
+  "tabs": {
+    "overview": "Overview",
+    "dam_level": "Dam levels",
+    "flow": "River flow",
+    "rainfall": "Rainfall",
+    "groundwater_level": "Groundwater",
+    "water_quality": "Water quality",
+    "hazards": "Hazards"
+  },
+  "map": {
+    "title": "Network map",
+    "subtitleOverview": "All active stations across the basin.",
+    "subtitleModule": "Stations reporting the selected indicator.",
+    "empty": "No stations to display for this layer.",
+    "alertsHeader": "Alerts"
+  },
+  "module": {
+    "stations": "Stations",
+    "withData": "With recent data",
+    "alerts": "On alert",
+    "provisional": "Provisional readings",
+    "verified": "Verified readings",
+    "lastReading": "Last reading",
+    "noReadings": "No readings yet",
+    "openDetails": "Open details",
+    "historicalTitle": "Basin trend — last 90 days",
+    "historicalDescription": "Daily basin-wide average across all reporting stations. Provisional values are included to show the live picture.",
+    "samples": "Samples"
+  },
+  "hazards": {
+    "title": "Active hazards by area",
+    "subtitle": "Current hazard status published by INMACOM partners. Specific incident locations are intentionally not shown.",
+    "empty": "No hazards published right now.",
+    "area": "Area",
+    "hazard": "Hazard",
+    "level": "Level",
+    "activeIncidents": "Active incidents",
+    "updated": "Updated"
+  },
+  "footer": {
+    "verified": "Verified",
+    "provisional": "Provisional",
+    "alert": "On alert",
+    "noData": "No data",
+    "providedBy": "Data provided by INMACOM monitoring partners"
+  }
+}

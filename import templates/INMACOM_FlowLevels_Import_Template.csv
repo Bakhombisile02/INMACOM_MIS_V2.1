@@ -1,0 +1,4 @@
+﻿station_code,date,time,value,unit,measurement_method,gauge_height_m,river_basin,notes
+Must match an existing station code in INMACOM database,ISO 8601 — YYYY-MM-DD  e.g. 2025-03-15,"HH:MM (24-hour, optional)  e.g. 08:30",Numeric — discharge or stage value,m³/s | m  (m³/s for discharge; m for stage/gauge height),float_gauging | current_meter | ADCP | weir_formula | flume | remote_sensing | manual | estimated,"Stage / gauge height in metres (if reporting discharge as value, enter gauge height here)",Incomati | Maputo  (informational cross-check),Free text (max 2000 chars)
+GS-45,2025-03-15,08:00,12.34,m³/s,current_meter,0.812,Incomati,
+INC-07,2025-03-15,09:30,1.245,m,manual,1.245,Incomati,Reading taken during low-flow season

@@ -1,0 +1,4 @@
+﻿station_code,date,time,value,unit,level_masl,storage_mm3,storage_pct,spilling,turbine_release_m3s,spillage_m3s,notes
+Must match an existing station code in INMACOM database,ISO 8601 — YYYY-MM-DD  e.g. 2025-03-15,"HH:MM (24-hour, optional)  e.g. 08:30",Primary reporting value — must match the selected unit,% | masl | Mm³  (% = percentage of full supply capacity; masl = metres above sea level; Mm³ = million m³),Current water level in metres above sea level (always fill if known),Storage volume in million cubic metres (optional),0–100 — percentage of full supply capacity (optional),Yes | No — is the dam currently spilling?,Turbine / power-generation release rate in m³/s (optional),Spillage rate in m³/s (optional),Free text (max 2000 chars)
+KOM-DAM,2025-03-15,07:00,78.5,%,671.2,312.4,78.5,No,45,0,
+PHL-DAM,2025-03-15,07:00,103.4,masl,103.4,,,Yes,0,120.3,Spillway gates opened at 06:00

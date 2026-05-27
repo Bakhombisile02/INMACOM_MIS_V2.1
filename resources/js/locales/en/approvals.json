@@ -1,0 +1,51 @@
+{
+  "tabs": {
+    "overview": "Overview",
+    "approvals": "Approvals"
+  },
+  "queue": {
+    "pendingMeasurements": "Pending Measurements",
+    "pendingStationEdits": "Pending Station Edits",
+    "noPending": "No pending items to review.",
+    "submittedBy": "Submitted by",
+    "submittedAt": "Submitted",
+    "field": "Field",
+    "currentValue": "Current",
+    "proposedValue": "Proposed",
+    "reviewNotes": "Review notes",
+    "newStation": "New station",
+    "selfOverride": "Self-approved"
+  },
+  "actions": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "addComment": "Add comment",
+    "resolve": "Resolve",
+    "unresolve": "Reopen",
+    "delete": "Delete",
+    "viewThread": "View comments"
+  },
+  "comments": {
+    "title": "Comments",
+    "empty": "No comments yet. Start the discussion.",
+    "placeholder": "Write a comment… use @ to mention a teammate",
+    "post": "Post",
+    "reply": "Reply",
+    "fieldTag": "Tag a field (optional)",
+    "noFieldTag": "General",
+    "resolvedBadge": "Resolved",
+    "mentionedYou": "mentioned you"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "You're all caught up.",
+    "markAllRead": "Mark all as read"
+  },
+  "revision": {
+    "approved": "Revision approved.",
+    "rejected": "Revision rejected.",
+    "alreadyReviewed": "Revision has already been reviewed.",
+    "submittedForReview": "Station change submitted for review.",
+    "noChanges": "No changes to submit."
+  }
+}

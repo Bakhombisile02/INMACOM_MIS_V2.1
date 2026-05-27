@@ -1,0 +1,95 @@
+﻿"Station Code","Station Name",Latitude,Longitude,"Operational Category (river_gauge|dam|borehole|rainfall_station|lake|wetland|other)","Water Source (surface|groundwater|precipitation)","Water Body Type (river|dam|borehole|lake|wetland)","River Basin (Incomati|Maputo)","Subcatchment Code","Owner Organization (DWA-SW|DWA-RSA|ARA-Sul|KOBWA)","Operational Status (active|inactive)","Is Real-time Telemetry? (Yes/No)","Metadata Verification Status"
+42,Bivane,-27.51875,31.02708,dam,surface,dam,Maputo,MAP-PONGOLA,KOBWA,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+43,Heyshope,-27.00069,30.51598,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+44,Lubovane,-26.74374,31.69375,dam,surface,dam,Incomati,INC-LOWER,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+45,Morgenstond,-26.72061,30.53542,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+46,Luphohlo,-26.39374,31.10208,dam,surface,dam,Incomati,INC-LOWER,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+47,Maguga,-26.06041,31.25208,dam,surface,dam,Incomati,INC-LOWER,KOBWA,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+48,Driekoppies,-25.76614,31.48802,dam,surface,dam,Incomati,INC-KOMATI,KOBWA,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+49,Vygeboom,-25.85624,30.62292,dam,surface,dam,Incomati,INC-LOWER,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+50,Nooitgedacht,-25.96607,30.07164,dam,surface,dam,Incomati,INC-LOWER,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+BIV,"Bivane Dam Rainfall",-27.52,31.03583,rainfall_station,precipitation,meteorological,Maputo,MAP-PONGOLA,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+BIVANE-DAM-01,"Bivane Dam",-27.5167,31.25,dam,surface,dam,Maputo,MAP-PONGOLA,DWA-RSA,active,No,CONFIRMED
+C-72,"Crocodile River at Komatipoort Golf Course",-25.43789,31.97369,river_gauge,surface,river,Incomati,INC-CROCODILE,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+COR,Corumana,-25.05333,32.1325,dam,surface,dam,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+CRL-39,"Komati River at Ekulindeni",-26.02847,31.05479,river_gauge,surface,river,Incomati,INC-KOMATI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+DRIEKOPPIES-DAM-01,"Driekoppies Dam",-25.7,31.55,dam,surface,dam,Incomati,INC-KOMATI,KOBWA,active,Yes,CONFIRMED
+DUMBARTON-01,"Dumbarton (Mpuluzi)",-26.47,30.82,river_gauge,surface,river,Maputo,MAP-MPULUZI,DWA-SW,active,No,CONFIRMED
+E-173,Xinavane,-25.73333,32.68167,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-23,"Ressano Garcia",-25.4375,31.99056,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-28,Manhica,-25.61278,32.67222,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-3,"Bela Vista",-26.3407,32.6675,river_gauge,surface,river,Maputo,MAP-MAPUTO,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-393,"Fronteira Oeste",-26.84333,32.14277,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-4,"Maputo em Salamanga",-26.47,32.66333,river_gauge,surface,river,Maputo,MAP-MAPUTO,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-413,Incoluane,-25.31667,32.29167,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-43,Magude,-25.02111,32.75083,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-45,Incoluane,-25.00138,32.73333,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-564,Maragra,-25.4725,32.81,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-572,Marracuene,-25.00139,32.73333,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-6,"Maputo em Madubula I",-26.79,32.44,river_gauge,surface,river,Maputo,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-630,"Barragem Corrumane",-25.05333,32.1325,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+E-634,"Barragem Corrumane - Jusante",-25.21583,32.13611,river_gauge,surface,river,Incomati,INC-LOWER,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+ESW2323,Mankayane,-26.72061,31.10208,rainfall_station,precipitation,meteorological,Incomati,INC-LOWER,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+ESW4040,Ngwempisi,-26,30,river_gauge,surface,river,Maputo,MAP-NGWEMPISI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+f23,"Piet Retief",-26,30,rainfall_station,precipitation,meteorological,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS-08,"Nsoko (Ngwavuma)",-27.0333,31.95,river_gauge,surface,river,Maputo,MAP-NGWAVUMA,DWA-SW,active,No,CONFIRMED
+GS-16,"Big Bend",-26.817,31.933,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,Yes,CONFIRMED
+GS-21,Ngwempisi,-26.65,31.15,river_gauge,surface,river,Maputo,MAP-NGWEMPISI,DWA-SW,active,No,CONFIRMED
+GS-22,Hlelo,-26.717,31.117,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,CONFIRMED
+GS-23,Usuthu,-26.5,31.417,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,CONFIRMED
+GS-25,Mkhondvo,-26.583,31.25,river_gauge,surface,river,Maputo,MAP-MKHONDVO,DWA-SW,active,No,CONFIRMED
+GS-30,Mananga,-25.933,31.917,river_gauge,surface,river,Incomati,INC-KOMATI,KOBWA,active,Yes,CONFIRMED
+GS-31,"Sandlane (Little Usuthu)",-26.5667,30.7833,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,CONFIRMED
+GS-33,Lusushwana,-26.4,31.183,river_gauge,surface,river,Maputo,MAP-LUSUSHWANA,DWA-SW,active,No,CONFIRMED
+GS-34,Matsamo,-25.733,31.417,river_gauge,surface,river,Incomati,INC-KOMATI,KOBWA,active,Yes,CONFIRMED
+GS-39,Ndlotane,-26.1333,31.09,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,CONFIRMED
+GS16,Usuthu,-26.80622,32.0011,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS21,Ngwempisi,-26.7414,30.80196,river_gauge,surface,river,Maputo,MAP-NGWEMPISI,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS23,Usuthu,-26.40246,30.86128,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS25,Mkhondvo,-27.07167,31.04809,river_gauge,surface,river,Maputo,MAP-MKHONDVO,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS30,Mananga,-25.94741,31.7481,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS31,Usuthu,-26.80622,32.0011,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS33,Lusushwana,-26.30504,30.91603,river_gauge,surface,river,Maputo,MAP-LUSUSHWANA,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS34,Matsamo,-25.75546,31.44687,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+GS8,Ngwavuma,-27.08821,31.79695,river_gauge,surface,river,Maputo,MAP-NGWAVUMA,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+HEYSHOPE-DAM-01,"Heyshope Dam",-27,30.517,dam,surface,dam,Maputo,MAP-PONGOLA,DWA-RSA,active,No,CONFIRMED
+INJ,Injaka,-24.88444,31.66667,dam,surface,dam,Incomati,INC-LOWER,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+JERICHO-DAM-01,"Jericho Dam",-26.4,30.483,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,CONFIRMED
+JOZINI-DAM-01,"Jozini (Pongolapoort) Dam",-27.4208,32.0736,dam,surface,dam,Maputo,MAP-PONGOLA,DWA-RSA,active,Yes,CONFIRMED
+JRC,Jericho,-26.65417,30.48611,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+K-13,"Komati River at Mananga Border gate",-25.93218,31.76018,river_gauge,surface,river,Incomati,INC-KOMATI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+K-2,"Komati River at Komatipoort",-25.44322,31.96417,river_gauge,surface,river,Incomati,INC-KOMATI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+K-25,"Driekoppies Dam at the dam wall",-25.71215,31.53353,dam,surface,dam,Incomati,INC-KOMATI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+KWN,Kwena,-25.3625,30.375,dam,surface,dam,Incomati,INC-LOWER,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+LAVUMISA-DAM-01,"Lavumisa Balancing Dam",-27.31,31.892,dam,surface,dam,Maputo,MAP-NGWAVUMA,DWA-SW,active,No,CONFIRMED
+LUBOVANE-DAM-01,"Lubovane Dam",-26.742,31.7029,dam,surface,dam,Maputo,MAP-USUTHU,DWA-SW,active,No,CONFIRMED
+LUPHOHLO-DAM-01,"Luphohlo Dam",-26.3949,31.1009,dam,surface,dam,Maputo,MAP-LUSUSHWANA,DWA-SW,active,No,CONFIRMED
+MAGUGA-DAM-01,"Maguga Dam",-26.0792,31.2492,dam,surface,dam,Incomati,INC-KOMATI,KOBWA,active,Yes,CONFIRMED
+MNJ,Mnjoli,-26.1604,30.6597,dam,surface,dam,Maputo,MAP-USUTHU,DWA-SW,active,No,"UNCONFIRMED (Please Review & Correct)"
+MNJOLI-DAM-01,"Mnjoli Dam",-26.1667,31.6667,dam,surface,dam,Maputo,MAP-USUTHU,DWA-SW,active,No,CONFIRMED
+NDUMO-01,"Ndumo (Pongola)",-26.86,32.24,river_gauge,surface,river,Maputo,MAP-PONGOLA,ARA-Sul,active,No,CONFIRMED
+PEQ,"Pequenos Libombos",-26.105,32.21194,dam,surface,dam,Maputo,MAP-USUTHU,ARA-Sul,active,Yes,"UNCONFIRMED (Please Review & Correct)"
+PONG-DAM,Pongolapoort,-27.40133,31.95516,dam,surface,dam,Maputo,MAP-PONGOLA,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+PONG-RAIN,"Pongolapoort Dam Rainfall",-26.42111,32.07056,rainfall_station,precipitation,meteorological,Maputo,MAP-PONGOLA,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+SS-51,"Sabie River at Lower Sabie Rest Camp KNP",-25.12072,31.92485,river_gauge,surface,river,Incomati,INC-SABIE,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-26,"Assegai River at Mahamba Border Gate",-27.06519,30.99356,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-43,"Hlelo River at R33 Road Bridge",-26.85395,30.73167,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-44,"Ngwempisi River at R33 Road Bridge",-26.67981,30.70253,river_gauge,surface,river,Maputo,MAP-NGWEMPISI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-47,"Jericho Dam at the dam wall",-26.65794,30.4801,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-49,"Morgenstond Dam at the dam wall",-26.7123,30.54005,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-5,"Heyshope Dam at the dam wall",-26.99561,30.53406,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-53,"Usuthu at Nerston Border Gate",-26.51305,30.78633,river_gauge,surface,river,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-55,"Westoe Dam at the dam wall",-26.50734,30.62566,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-57,"Mpuluzi River at Mpuluzi Area",-26.32367,30.80501,river_gauge,surface,river,Maputo,MAP-MPULUZI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+U-61,"Lusushwana River at Swallow Nest Area",-26.26522,30.90338,river_gauge,surface,river,Maputo,MAP-LUSUSHWANA,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+W4H013,"Pongolapoort Dam Outflow",-27.42266,32.08047,river_gauge,surface,river,Maputo,MAP-PONGOLA,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+WESTOE-DAM-01,"Westoe Dam",-26.5,30.65,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,CONFIRMED
+WST,Westoe,-26.50417,30.61806,dam,surface,dam,Maputo,MAP-USUTHU,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+X1H001,"Komati at Hooggenoeg",-26.03617,30.99761,river_gauge,surface,river,Incomati,INC-KOMATI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+X1H007,Diepgezet,-26.00056,31.06645,river_gauge,surface,river,Incomati,INC-KOMATI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+X1H049,"Driekoppies Dam outflow",-25.71085,31.53368,river_gauge,surface,river,Incomati,INC-KOMATI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+X1H053,Lebombo,-25.44699,31.94824,river_gauge,surface,river,Incomati,INC-LOWER,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+X2H016,Crocodile,-25.36386,31.95572,river_gauge,surface,river,Incomati,INC-CROCODILE,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+X2H036,"Komati at Komatipoort",-25.43661,31.98244,river_gauge,surface,river,Incomati,INC-KOMATI,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+X3H015,"Sabie at Lower Sabie",-25.14953,31.94067,river_gauge,surface,river,Incomati,INC-SABIE,DWA-RSA,active,No,"UNCONFIRMED (Please Review & Correct)"
+X3H021,"Kruger Gate (Lower Sabie)",-24.9685,31.5154,river_gauge,surface,river,Incomati,INC-SABIE,DWA-RSA,active,Yes,CONFIRMED

@@ -1,0 +1,4 @@
+﻿station_code,date,value,unit,aggregation_type,duration_hours,start_time,end_time,measurement_method,notes
+Must match an existing station code in INMACOM database,ISO 8601 — YYYY-MM-DD  e.g. 2025-03-15,Precipitation total over the measurement period (numeric),mm  (millimetres — standard for all rainfall records),daily | hourly | event | monthly | annual,"Length of measurement period in hours (e.g. 24 for daily, 1 for hourly, event duration for storm events)","HH:MM (24-hour, optional)  e.g. 08:30 — start of accumulation period (optional for daily)","HH:MM (24-hour, optional)  e.g. 08:30 — end of accumulation period (optional for daily)",tipping_bucket | manual_gauge | siphon_gauge | radar | satellite | interpolated,Free text (max 2000 chars)
+RF-INC01,2025-03-15,18.4,mm,daily,24,08:00,08:00,tipping_bucket,
+RF-MAP03,2025-03-15,4.2,mm,event,1.5,14:20,15:50,manual_gauge,Intense convective storm event

@@ -1,0 +1,23 @@
+{
+    "type": "FeatureCollection",
+    "name": "FLOWGUAGE_WGS84",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Matsamo", "STATION__I": "34", "Latitude": -25.755455328899998, "Longitude": 31.4468677791 }, "geometry": { "type": "Point", "coordinates": [ 31.446867779090667, -25.755455328912664 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Usuthu", "STATION__I": "31", "Latitude": -26.533978496300001, "Longitude": 30.8115994534 }, "geometry": { "type": "Point", "coordinates": [ 30.811599453353221, -26.533978496267654 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Usuthu", "STATION__I": "23", "Latitude": -26.402468721599998, "Longitude": 30.861286360800001 }, "geometry": { "type": "Point", "coordinates": [ 30.861286360758438, -26.402468721606692 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Ngwempisi", "STATION__I": "21", "Latitude": -26.741404009699998, "Longitude": 30.8019553767 }, "geometry": { "type": "Point", "coordinates": [ 30.801955376714247, -26.741404009708333 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Usuthu", "STATION__I": "16", "Latitude": -26.806219795299999, "Longitude": 32.001097289400001 }, "geometry": { "type": "Point", "coordinates": [ 32.001097289376432, -26.806219795347985 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Mananga", "STATION__I": "30", "Latitude": -25.947410166000001, "Longitude": 31.748103898099998 }, "geometry": { "type": "Point", "coordinates": [ 31.748103898097806, -25.947410165956104 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Lusushwana", "STATION__I": "33", "Latitude": -26.305039205, "Longitude": 30.916028814299999 }, "geometry": { "type": "Point", "coordinates": [ 30.916028814296791, -26.305039205022837 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Komati at Hooggenoeg", "STATION__I": "X1H001", "Latitude": -26.03617, "Longitude": 30.99761 }, "geometry": { "type": "Point", "coordinates": [ 30.997384834808276, -26.036737290293949 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Komati at Komatipoort", "STATION__I": "X2H036", "Latitude": -25.43661, "Longitude": 31.98244 }, "geometry": { "type": "Point", "coordinates": [ 31.982245417805377, -25.43721724083553 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Sabie at Lower Sabie", "STATION__I": "X3H015", "Latitude": -25.14953, "Longitude": 31.94067 }, "geometry": { "type": "Point", "coordinates": [ 31.940474627801382, -25.150155889470145 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Ressano Garcia", "STATION__I": "E-23", "Latitude": -25.4375, "Longitude": 31.990556 }, "geometry": { "type": "Point", "coordinates": [ 31.990556, -25.4375 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Incoluane", "STATION__I": "E-413", "Latitude": -25.316667, "Longitude": 32.291667 }, "geometry": { "type": "Point", "coordinates": [ 32.291667, -25.316667 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Barragem Corrumane - Jusante", "STATION__I": "E-634", "Latitude": -25.215833, "Longitude": 32.136111 }, "geometry": { "type": "Point", "coordinates": [ 32.136111, -25.215833 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Barragem Corrumane", "STATION__I": "E-630", "Latitude": -25.053333, "Longitude": 32.1325 }, "geometry": { "type": "Point", "coordinates": [ 32.1325, -25.053333 ] } },
+    { "type": "Feature", "properties": { "Id": 0, "STATION_NA": "Manhica", "STATION__I": "E-28", "Latitude": -25.612778, "Longitude": 32.672222 }, "geometry": { "type": "Point", "coordinates": [ 32.672222, -25.612778 ] } }
+    ]
+    }
+    

@@ -1,0 +1,5 @@
+﻿station_code,date,time,sample_type,sampling_depth_m,parameter_code,value,unit,detection_flag,lab_reference,analyst_name,notes
+Must match an existing station code in INMACOM database,ISO 8601 — YYYY-MM-DD  e.g. 2025-03-15,"HH:MM (24-hour, optional)  e.g. 08:30",grab | composite | continuous,Depth of sample from surface in metres (0 for surface; leave blank if not applicable),"pH | EC | TDS | DO | turbidity | temperature | COD | BOD | faecal_coliform | nitrate | phosphate | ammonia | fluoride | arsenic | lead | mercury | cadmium
+(One row per parameter per station per date)",Numeric measured value,pH units | µS/cm | mg/L | % | NTU | °C | MPN/100mL  (use default unit for parameter),= | < | >  (= exact value; < below detection limit; > above instrument range),Laboratory analysis reference / accession number (optional),Analyst or laboratory name (optional),Free text (max 2000 chars)
+INC-WQ1,2025-03-15,10:00,grab,0,pH,7.45,pH units,=,LAB-2025-0312,ARA-Sul Environmental Lab,
+INC-WQ1,2025-03-15,10:00,grab,0,EC,312.8,µS/cm,=,LAB-2025-0312,ARA-Sul Environmental Lab,Repeat row for each parameter measured at same station & time

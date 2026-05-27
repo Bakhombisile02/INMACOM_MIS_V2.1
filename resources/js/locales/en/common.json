@@ -1,0 +1,38 @@
+{
+  "header": {
+    "home": "Home",
+    "explore": "Explore Live Data",
+    "basinInsights": "Basin Insights",
+    "hazards": "Hazards",
+    "documents": "Documents",
+    "library": "Library",
+    "login": "Login",
+    "dashboard": "Dashboard",
+    "reports": "Reports",
+    "operations": "Operations",
+    "profile": "Profile",
+    "toggleNavigation": "Toggle navigation",
+    "navigation": "Navigation"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "portuguese": "Português"
+  },
+  "footer": {
+    "copyright": "© {{year}} INMACOM. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Conditions of Use"
+  },
+  "actions": {
+    "getStarted": "Get started",
+    "exploreLiveData": "Explore live data",
+    "signIn": "Sign in",
+    "learnMore": "Learn more",
+    "logout": "Log out",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit"
+  }
+}

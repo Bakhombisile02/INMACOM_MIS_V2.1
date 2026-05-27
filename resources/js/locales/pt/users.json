@@ -1,0 +1,127 @@
+{
+  "title": "Utilizadores",
+  "subtitle": "Gerir utilizadores registados e enviar convites.",
+  "tabs": {
+    "users": "Utilizadores",
+    "invitations": "Convites"
+  },
+  "search": "Pesquisar por nome, email ou organização…",
+  "filterRole": "Filtrar por função",
+  "allRoles": "Todas as funções",
+  "inviteButton": "Convidar Utilizador",
+  "empty": "Nenhum utilizador encontrado",
+  "columns": {
+    "user": "Utilizador",
+    "email": "Email",
+    "role": "Função",
+    "organisation": "Organização",
+    "country": "País",
+    "joined": "Registado em",
+    "actions": "Ações"
+  },
+  "actions": {
+    "editRole": "Editar função",
+    "resetPassword": "Redefinir senha",
+    "delete": "Eliminar utilizador",
+    "copyLink": "Copiar link de convite",
+      "revoke": "Revogar",
+      "resend": "Enviar por email",
+      "newLink": "Obter novo link"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "manager": "Gestor",
+    "clerk": "Operador"
+  },
+  "invitations": {
+    "title": "Convites",
+    "subtitle": "Links de registo únicos e códigos PIN.",
+    "empty": "Nenhum convite ainda",
+    "columns": {
+      "code": "Código",
+      "role": "Função",
+      "created": "Criado",
+      "expires": "Expira",
+      "sentTo": "Enviado para",
+      "status": "Estado"
+    },
+    "status": {
+      "available": "Disponível",
+      "used": "Usado",
+      "revoked": "Revogado",
+      "expired": "Expirado",
+      "linkOpened": "Link Aberto"
+    },
+    "expiredLabel": "Expirado",
+    "linkCopied": "Link de convite copiado",
+    "newLinkCopied": "Novo link gerado e copiado",
+    "archive": {
+      "title": "Convites arquivados",
+      "show": "Mostrar arquivados ({{count}})",
+      "hide": "Ocultar arquivados"
+    }
+  },
+  "inviteModal": {
+    "title": "Convidar Novo Utilizador",
+    "subtitle": "Gere um link de registo único. O novo utilizador completará o seu próprio registo.",
+    "role": "Nível de acesso",
+    "rolePlaceholder": "Selecionar uma função",
+    "note": "Nota (opcional)",
+    "notePlaceholder": "ex: Novo consultor da África do Sul",
+    "expiry": "Link expira",
+    "expiryOptions": {
+      "24h": "Após 24 horas",
+      "7d": "Após 7 dias",
+      "30d": "Após 30 dias",
+      "never": "Nunca"
+    },
+    "sentToEmail": "Enviar por email (opcional)",
+    "sentToEmailDescription": "Se fornecido, o link de convite será enviado para este endereço. NÃO é o email de registo.",
+    "submit": "Gerar Convite",
+    "resultTitle": "Convite criado!",
+    "resultSubtitle": "Partilhe este link com a pessoa que quer convidar. Eles devem abri-lo num dispositivo onde não estejam autenticados.",
+    "pin": "Código de registo",
+    "inviteLink": "Link de convite único",
+    "copyLink": "Copiar link",
+    "copied": "Copiado!",
+    "warning": "Este link expira após o primeiro clique. Não o abra você mesmo.",
+    "done": "Concluído",
+    "generateAnother": "Gerar outro",
+    "errors": {
+      "role": "Por favor selecione uma função",
+      "failed": "Falha ao criar convite. Por favor tente novamente."
+    }
+  },
+  "editRoleModal": {
+    "title": "Editar Função do Utilizador",
+    "userDetails": "Detalhes do utilizador",
+    "role": "Nova função",
+    "submit": "Guardar alterações",
+    "cancel": "Cancelar",
+    "errors": {
+      "failed": "Falha ao atualizar função. Por favor tente novamente."
+    }
+  },
+  "resendModal": {
+    "title": "Enviar Convite por Email",
+    "description": "Insira o email para onde enviar este convite. Este NÃO é o email de registo — o destinatário pode registar-se com qualquer email.",
+    "emailLabel": "Enviar para o endereço de email",
+    "emailPlaceholder": "destinatario@exemplo.com",
+    "regenerateNotice": "O link anterior já foi aberto. Um novo link único será gerado.",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "success": "Convite enviado para {{email}}.",
+    "successNoEmail": "Link de convite regenerado.",
+    "failed": "Falha ao reenviar. Por favor tente novamente."
+  },
+  "deleteConfirm": {
+    "title": "Eliminar utilizador",
+    "message": "Tem a certeza que quer eliminar permanentemente {{name}}? Isto também removerá a conta Firebase. Esta ação não pode ser desfeita.",
+    "confirm": "Eliminar",
+    "cancel": "Cancelar"
+  },
+  "passwordReset": {
+    "success": "Email de redefinição de senha enviado para {{email}}.",
+    "failed": "Falha ao enviar email de redefinição. Por favor tente novamente."
+  }
+}

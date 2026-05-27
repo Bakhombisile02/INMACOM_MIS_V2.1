@@ -1,0 +1,16 @@
+{
+  "dashboard": {
+    "title": "Painel Operacional",
+    "subtitle": "Visão geral das estações, medições, incidentes e atividade documental.",
+    "cards": {
+      "stations": "Estações",
+      "measurements": "Medições",
+      "incidents": "Incidentes",
+      "documents": "Documentos",
+      "openStations": "Abrir estações",
+      "openLibrary": "Abrir biblioteca de documentos",
+      "liveData": "Observações em tempo real e submetidas",
+      "monitorAlerts": "Acompanhar alertas ativos e históricos"
+    }
+  }
+}

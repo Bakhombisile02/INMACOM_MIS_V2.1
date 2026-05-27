@@ -1,0 +1,11 @@
+{
+  "eyebrow": "Bem-vindo ao INMACOM MIS",
+  "title": "Uma plataforma unificada de <1>partilha de dados</1> para os Estados-Membros",
+  "lead": "O Sistema de Informação de Gestão (MIS) é uma aplicação web online desenvolvida pela INMACOM com o objectivo de partilha de dados entre os Estados-Membros.",
+  "disclaimer": {
+    "title": "Aviso Legal",
+    "body": "A INMACOM mantém este sistema como um serviço público. No entanto, a INMACOM não assume qualquer responsabilidade legal pela exactidão ou integridade das informações contidas neste site. As pessoas que utilizam informações deste site para fins oficiais ou outros fins, para os quais sejam exigidas exactidão e integridade, ficam notificadas de que devem primeiro verificar as informações junto dos registos públicos ou de outras fontes primárias das quais as informações foram obtidas.",
+    "agreement": "Ao utilizar este site, concorda em ter lido e aceitado as nossas Condições de Uso e Política de Privacidade."
+  },
+  "memberStates": "Estados-Membros"
+}

@@ -1,0 +1,16 @@
+{
+  "dashboard": {
+    "title": "Operational Dashboard",
+    "subtitle": "Overview of stations, measurements, incidents and document activity.",
+    "cards": {
+      "stations": "Stations",
+      "measurements": "Measurements",
+      "incidents": "Incidents",
+      "documents": "Documents",
+      "openStations": "Open stations",
+      "openLibrary": "Open document library",
+      "liveData": "Live and submitted observations",
+      "monitorAlerts": "Track active and historical alerts"
+    }
+  }
+}
