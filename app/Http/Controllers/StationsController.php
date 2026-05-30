@@ -292,7 +292,7 @@ class StationsController extends Controller
             }
         });
 
-        return redirect()->back();
+        return redirect()->back()->with('status', "{$inserted} station(s) imported successfully.");
     }
 
     public function update(UpdateStationRequest $request, Station $station): RedirectResponse

@@ -19,9 +19,6 @@ class ImportProductionDumpSeeder extends Seeder
             return;
         }
 
-        $this->command->info("Temporarily disabling database foreign key constraints...");
-        DB::statement("SET session_replication_role = 'replica';");
-
         $tablesToTruncate = [
             'audit_logs', 'cache', 'cache_locks', 'comments', 'comment_mentions',
             'compliance_thresholds', 'documents', 'document_storages',
@@ -34,6 +31,27 @@ class ImportProductionDumpSeeder extends Seeder
 
         $totalInserted = [];
 
+        $this->command->info("Temporarily disabling database foreign key constraints...");
+        DB::statement("SET session_replication_role = 'replica';");
+
+        try {
+            $this->runImport($sqlPath, $tablesToTruncate, $totalInserted);
+        } finally {
+            DB::statement("SET session_replication_role = 'origin';");
+            $this->command->info("Foreign key checks restored.");
+        }
+
+        $this->command->info("\n--- Import Summary ---");
+        foreach ($totalInserted as $tbl => $count) {
+            $this->command->info("Table '{$tbl}': imported {$count} records.");
+        }
+    }
+
+    /**
+     * Perform the actual import parsing and database inserts.
+     */
+    private function runImport(string $sqlPath, array $tablesToTruncate, array &$totalInserted): void
+    {
         foreach ($tablesToTruncate as $tbl) {
             if (Schema::hasTable($tbl)) {
                 $this->command->info("Truncating table: {$tbl}");
@@ -49,104 +67,94 @@ class ImportProductionDumpSeeder extends Seeder
             return;
         }
 
-        $currentTable = null;
-        $columns = [];
-        $batch = [];
-        $batchSize = 200;
+        try {
+            $currentTable = null;
+            $columns = [];
+            $batch = [];
+            $batchSize = 200;
 
-        while (($line = fgets($handle)) !== false) {
-            $line = trim($line);
-            if ($line === '' || str_starts_with($line, '--') || str_starts_with($line, '/*')) {
-                continue;
-            }
-
-            // Detect INSERT INTO statement
-            if (preg_match('/^INSERT INTO `([a-zA-Z0-9_]+)` \((.+)\) VALUES/i', $line, $matches)) {
-                // If there was a pending batch from previous table, insert it
-                if ($currentTable && $currentTable !== 'migrations' && !empty($batch)) {
-                    $this->insertBatch($currentTable, $batch);
-                    if (!isset($totalInserted[$currentTable])) {
-                        $totalInserted[$currentTable] = 0;
-                    }
-                    $totalInserted[$currentTable] += count($batch);
-                    $batch = [];
-                }
-
-                $currentTable = $matches[1];
-                $colStr = $matches[2];
-                $columns = array_map(function($c) {
-                    return trim($c, " `\t\n\r\0\x0B");
-                }, explode(',', $colStr));
-                continue;
-            }
-
-            // Check if we are parsing values for a table
-            if ($currentTable && str_starts_with($line, '(')) {
-                $isLast = str_ends_with($line, ';');
-                
-                // If it is the migrations table, skip insertion logic completely
-                if ($currentTable === 'migrations') {
-                    if ($isLast) {
-                        $currentTable = null;
-                    }
+            while (($line = fgets($handle)) !== false) {
+                $line = trim($line);
+                if ($line === '' || str_starts_with($line, '--') || str_starts_with($line, '/*')) {
                     continue;
                 }
 
-                $lineContent = rtrim($line, ',;');
-                
-                if (str_starts_with($lineContent, '(') && str_ends_with($lineContent, ')')) {
-                    $valContent = substr($lineContent, 1, -1);
-                    $rowValues = str_getcsv($valContent, ',', "'", "\\");
-                    $rowValues = array_map('trim', $rowValues);
+                // Detect INSERT INTO statement
+                if (preg_match('/^INSERT INTO `([a-zA-Z0-9_]+)` \((.+)\) VALUES/i', $line, $matches)) {
+                    // If there was a pending batch from previous table, insert it
+                    if ($currentTable && $currentTable !== 'migrations' && !empty($batch)) {
+                        if (!isset($totalInserted[$currentTable])) {
+                            $totalInserted[$currentTable] = 0;
+                        }
+                        $totalInserted[$currentTable] += $this->insertBatch($currentTable, $batch);
+                        $batch = [];
+                    }
+
+                    $currentTable = $matches[1];
+                    $colStr = $matches[2];
+                    $columns = array_map(function($c) {
+                        return trim($c, " `\t\n\r\0\x0B");
+                    }, explode(',', $colStr));
+                    continue;
+                }
+
+                // Check if we are parsing values for a table
+                if ($currentTable && str_starts_with($line, '(')) {
+                    $isLast = str_ends_with($line, ';');
                     
-                    if (count($rowValues) === count($columns)) {
-                        $row = array_combine($columns, $rowValues);
-                        $batch[] = $this->sanitizeRow($currentTable, $row);
-                    } else {
-                        $this->command->warn("Column count mismatch in table {$currentTable}: expected " . count($columns) . ", got " . count($rowValues));
+                    // If it is the migrations table, skip insertion logic completely
+                    if ($currentTable === 'migrations') {
+                        if ($isLast) {
+                            $currentTable = null;
+                        }
+                        continue;
                     }
 
-                    if (count($batch) >= $batchSize) {
-                        $this->insertBatch($currentTable, $batch);
-                        if (!isset($totalInserted[$currentTable])) {
-                            $totalInserted[$currentTable] = 0;
+                    $lineContent = rtrim($line, ',;');
+                    
+                    if (str_starts_with($lineContent, '(') && str_ends_with($lineContent, ')')) {
+                        $valContent = substr($lineContent, 1, -1);
+                        $rowValues = str_getcsv($valContent, ',', "'", "\\");
+                        $rowValues = array_map('trim', $rowValues);
+                        
+                        if (count($rowValues) === count($columns)) {
+                            $row = array_combine($columns, $rowValues);
+                            $batch[] = $this->sanitizeRow($currentTable, $row);
+                        } else {
+                            $this->command->warn("Column count mismatch in table {$currentTable}: expected " . count($columns) . ", got " . count($rowValues));
                         }
-                        $totalInserted[$currentTable] += count($batch);
-                        $batch = [];
+
+                        if (count($batch) >= $batchSize) {
+                            if (!isset($totalInserted[$currentTable])) {
+                                $totalInserted[$currentTable] = 0;
+                            }
+                            $totalInserted[$currentTable] += $this->insertBatch($currentTable, $batch);
+                            $batch = [];
+                        }
+                    }
+
+                    if ($isLast) {
+                        if (!empty($batch)) {
+                            if (!isset($totalInserted[$currentTable])) {
+                                $totalInserted[$currentTable] = 0;
+                            }
+                            $totalInserted[$currentTable] += $this->insertBatch($currentTable, $batch);
+                            $batch = [];
+                        }
+                        $currentTable = null;
                     }
                 }
+            }
 
-                if ($isLast) {
-                    if (!empty($batch)) {
-                        $this->insertBatch($currentTable, $batch);
-                        if (!isset($totalInserted[$currentTable])) {
-                            $totalInserted[$currentTable] = 0;
-                        }
-                        $totalInserted[$currentTable] += count($batch);
-                        $batch = [];
-                    }
-                    $currentTable = null;
+            // Flush any remaining batch
+            if ($currentTable && $currentTable !== 'migrations' && !empty($batch)) {
+                if (!isset($totalInserted[$currentTable])) {
+                    $totalInserted[$currentTable] = 0;
                 }
+                $totalInserted[$currentTable] += $this->insertBatch($currentTable, $batch);
             }
-        }
-
-        // Flush any remaining batch
-        if ($currentTable && $currentTable !== 'migrations' && !empty($batch)) {
-            $this->insertBatch($currentTable, $batch);
-            if (!isset($totalInserted[$currentTable])) {
-                $totalInserted[$currentTable] = 0;
-            }
-            $totalInserted[$currentTable] += count($batch);
-        }
-
-        fclose($handle);
-
-        DB::statement("SET session_replication_role = 'origin';");
-        $this->command->info("Foreign key checks restored.");
-
-        $this->command->info("\n--- Import Summary ---");
-        foreach ($totalInserted as $tbl => $count) {
-            $this->command->info("Table '{$tbl}': imported {$count} records.");
+        } finally {
+            fclose($handle);
         }
     }
 
@@ -169,9 +177,9 @@ class ImportProductionDumpSeeder extends Seeder
 
             // Handle boolean values in MySQL dump (which are 1 and 0) for PostgreSQL boolean columns
             if (str_starts_with($col, 'is_') || str_ends_with($col, '_observed') || str_ends_with($col, '_reported')) {
-                if ($val === '1' || $val === 1 || $val === 'true') {
+                if ($val === '1' || $val === 'true') {
                     $sanitized[$col] = true;
-                } elseif ($val === '0' || $val === 0 || $val === 'false') {
+                } elseif ($val === '0' || $val === 'false') {
                     $sanitized[$col] = false;
                 } else {
                     $sanitized[$col] = null;
@@ -187,26 +195,30 @@ class ImportProductionDumpSeeder extends Seeder
     /**
      * Insert a batch of records.
      */
-    private function insertBatch(string $table, array $batch): void
+    private function insertBatch(string $table, array $batch): int
     {
         if (!Schema::hasTable($table)) {
             $this->command->warn("Skipping unknown table: {$table}");
-            return;
+            return 0;
         }
 
         try {
             DB::table($table)->insert($batch);
+            return count($batch);
         } catch (\Exception $e) {
             $this->command->error("Failed to insert batch into table {$table}: " . $e->getMessage());
+            $inserted = 0;
             // Retry row by row to identify the exact failing row and log it for debug
             foreach ($batch as $index => $row) {
                 try {
                     DB::table($table)->insert([$row]);
+                    $inserted++;
                 } catch (\Exception $ex) {
                     $this->command->error("Failing row details in {$table} at index {$index}: " . json_encode($row));
                     $this->command->error("Error detail: " . $ex->getMessage());
                 }
             }
+            return $inserted;
         }
     }
 }

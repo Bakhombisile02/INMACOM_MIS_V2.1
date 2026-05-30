@@ -880,7 +880,8 @@ class GisController extends Controller
             DB::table('measurements')->insert($inserts);
         }
 
-        return redirect()->back();
+        $count = count($inserts);
+        return redirect()->back()->with('status', "{$count} {$measurementType} measurement(s) imported successfully.");
     }
 
     // ─── Bulk CSV Exports ─────────────────────────────────────────────────────

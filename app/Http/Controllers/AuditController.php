@@ -141,7 +141,7 @@ class AuditController extends Controller
                 fputcsv($handle, [
                     $log->occurred_at?->toDateTimeString(),
                     $sanitize($log->actor?->display_name),
-                    $log->actor?->email,
+                    $sanitize($log->actor?->email),
                     $log->action_type,
                     $log->entity_type,
                     $sanitize($log->entity_label),
