@@ -73,15 +73,15 @@ class FirebaseAuthController extends Controller
 
         try {
             $user = DB::transaction(function () use ($uid, $email, $displayName, $picture, $pinCode) {
-                $existing = User::query()
-                    ->where('firebase_uid', $uid)
-                    ->orWhere('email', strtolower((string) $email))
-                    ->first();
+                $existing = User::where('firebase_uid', $uid)->first()
+                    ?? User::where('email', strtolower((string) $email))
+                        ->whereNull('firebase_uid')
+                        ->first();
 
                 $isNewUser = $existing === null;
                 $user = $existing ?? new User;
 
-                $assignedRole = $user->role ?: 'clerk';
+                $assignedRole = $user->role ?: User::ROLE_CLERK;
                 $pin = null;
 
                 if ($isNewUser) {
@@ -123,7 +123,7 @@ class FirebaseAuthController extends Controller
                     'display_name' => $displayName ?: ($user->display_name ?: 'INMACOM User'),
                     'photo_url' => $picture,
                     'role' => $assignedRole,
-                    'email_verified_at' => now(),
+                    'email_verified_at' => $user->email_verified_at ?? now(),
                 ]);
 
                 $user->save();

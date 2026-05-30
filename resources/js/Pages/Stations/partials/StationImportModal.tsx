@@ -113,12 +113,17 @@ export default function StationImportModal({ opened, onClose }: StationImportMod
             try {
                 const data = e.target?.result;
                 const wb = XLSX.read(data, { type: 'array' });
-                const ws = wb.Sheets[wb.SheetNames[0]];
-                // header: 1 → first row as keys, defval: '' to avoid missing keys
-                const raw = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: '' });
-                const validated = validateImportRows(raw as Record<string, unknown>[]);
-                setValidatedRows(validated);
-                setStep(2);
+                    let raw: Record<string, unknown>[] = [];
+                    wb.SheetNames.forEach((sheetName) => {
+                        const ws = wb.Sheets[sheetName];
+                        const sheetRaw = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: '' });
+                        if (Array.isArray(sheetRaw)) {
+                            raw = raw.concat(sheetRaw);
+                        }
+                    });
+                    const validated = validateImportRows(raw as Record<string, unknown>[]);
+                    setValidatedRows(validated);
+                    setStep(2);
             } catch {
                 notifications.show({
                     title: 'Parse error',

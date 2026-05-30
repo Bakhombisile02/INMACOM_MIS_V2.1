@@ -70,6 +70,12 @@ class RegistrationPinController extends Controller
             ]);
         }
 
+        if ($pin->reserved_at !== null) {
+            throw ValidationException::withMessages([
+                'code' => __('This PIN has already been reserved.'),
+            ]);
+        }
+
         $pin->forceFill([
             'reserved_for_email' => $email,
             'reserved_for_uid' => $uid,

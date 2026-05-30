@@ -225,7 +225,7 @@ class StationsController extends Controller
             ->with('status', 'Station submitted for review.');
     }
 
-    public function import(Request $request): JsonResponse
+    public function import(Request $request)
     {
         abort_unless(
             $request->user()->canApprove(),
@@ -256,16 +256,15 @@ class StationsController extends Controller
         // Check for duplicate codes within the batch
         $codes = array_column($rows, 'code');
         if (count($codes) !== count(array_unique($codes))) {
-            return response()->json(['message' => 'Duplicate station codes found in the batch.'], 422);
+            return back()->withErrors(['message' => 'Duplicate station codes found in the batch.']);
         }
 
         // Check each code is unique in the DB
         $existingCodes = Station::whereIn('code', $codes)->pluck('code')->all();
         if (!empty($existingCodes)) {
-            return response()->json([
-                'message' => 'Some codes already exist in the database.',
-                'existing_codes' => $existingCodes,
-            ], 422);
+            return back()->withErrors([
+                'message' => 'Some codes already exist in the database: ' . implode(', ', $existingCodes),
+            ]);
         }
 
         // Insert all rows in one transaction
@@ -293,7 +292,7 @@ class StationsController extends Controller
             }
         });
 
-        return response()->json(['inserted' => $inserted]);
+        return redirect()->back();
     }
 
     public function update(UpdateStationRequest $request, Station $station): RedirectResponse

@@ -40,7 +40,7 @@ class AuditController extends Controller
             $query->where('occurred_at', '<=', $to.' 23:59:59');
         }
 
-        $logs = $query->paginate(50)->through(fn (AuditLog $log) => [
+        $logs = $query->paginate(50)->withQueryString()->through(fn (AuditLog $log) => [
             'id' => $log->id,
             'action_type' => $log->action_type,
             'entity_type' => $log->entity_type,
@@ -135,21 +135,21 @@ class AuditController extends Controller
             $handle = fopen('php://output', 'w');
             fputcsv($handle, ['Date/Time', 'Actor', 'Actor Email', 'Action', 'Entity Type', 'Entity Label', 'Entity ID', 'Reason', 'IP']);
 
-            $query->chunk(500, function ($logs) use ($handle) {
-                foreach ($logs as $log) {
-                    fputcsv($handle, [
-                        $log->occurred_at?->toDateTimeString(),
-                        $log->actor?->display_name,
-                        $log->actor?->email,
-                        $log->action_type,
-                        $log->entity_type,
-                        $log->entity_label,
-                        $log->entity_id,
-                        $log->reason,
-                        $log->actor_ip,
-                    ]);
-                }
-            });
+            $sanitize = fn ($v) => is_string($v) && preg_match('/^[=+\-@]/', $v) ? "'".$v : $v;
+
+            foreach ($query->cursor() as $log) {
+                fputcsv($handle, [
+                    $log->occurred_at?->toDateTimeString(),
+                    $sanitize($log->actor?->display_name),
+                    $log->actor?->email,
+                    $log->action_type,
+                    $log->entity_type,
+                    $sanitize($log->entity_label),
+                    $log->entity_id,
+                    $sanitize($log->reason),
+                    $log->actor_ip,
+                ]);
+            }
 
             fclose($handle);
         }, $filename, ['Content-Type' => 'text/csv']);

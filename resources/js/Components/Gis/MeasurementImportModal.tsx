@@ -164,8 +164,14 @@ export default function MeasurementImportModal({ opened, onClose, type }: Measur
                 try {
                     const data = e.target?.result;
                     const wb = XLSX.read(data, { type: 'array' });
-                    const ws = wb.Sheets[wb.SheetNames[0]];
-                    const raw = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: '' });
+                    let raw: Record<string, unknown>[] = [];
+                    wb.SheetNames.forEach((sheetName) => {
+                        const ws = wb.Sheets[sheetName];
+                        const sheetRaw = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: '' });
+                        if (Array.isArray(sheetRaw)) {
+                            raw = raw.concat(sheetRaw);
+                        }
+                    });
                     const validated = validateMeasurementRows(raw, type);
                     setValidatedRows(validated);
                     setStep(2);

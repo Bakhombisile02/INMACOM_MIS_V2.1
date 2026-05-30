@@ -18,7 +18,7 @@ use Inertia\Response;
 class RegistrationInviteController extends Controller
 {
     private const ROLE_LABELS = [
-        User::ROLE_ADMIN => 'Admin',
+        User::ROLE_ADMIN => 'Clerk Admin',
         User::ROLE_MANAGER => 'Data Manager',
         User::ROLE_CLERK => 'Data Entry',
     ];

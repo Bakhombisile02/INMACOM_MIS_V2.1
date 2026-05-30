@@ -751,27 +751,27 @@ class GisController extends Controller
 
     // ─── Measurement Bulk Import ──────────────────────────────────────────────
 
-    public function importFlow(Request $request): JsonResponse
+    public function importFlow(Request $request)
     {
         return $this->importMeasurementsBase($request, 'flow', 'm³/s');
     }
 
-    public function importDamLevel(Request $request): JsonResponse
+    public function importDamLevel(Request $request)
     {
         return $this->importMeasurementsBase($request, 'dam_level', 'm');
     }
 
-    public function importWaterQuality(Request $request): JsonResponse
+    public function importWaterQuality(Request $request)
     {
         return $this->importMeasurementsBase($request, 'water_quality', null, true);
     }
 
-    public function importRainfall(Request $request): JsonResponse
+    public function importRainfall(Request $request)
     {
         return $this->importMeasurementsBase($request, 'rainfall', 'mm');
     }
 
-    public function importGroundwater(Request $request): JsonResponse
+    public function importGroundwater(Request $request)
     {
         return $this->importMeasurementsBase($request, 'groundwater_level', 'm');
     }
@@ -781,7 +781,7 @@ class GisController extends Controller
         string $measurementType,
         ?string $defaultUnit,
         bool $hasParameterCode = false
-    ): JsonResponse {
+    ) {
         $user = auth()->user();
         abort_unless(
             $user && $user->canApprove(),
@@ -790,7 +790,7 @@ class GisController extends Controller
 
         $rows = $request->input('rows', []);
         if (! is_array($rows) || empty($rows)) {
-            return response()->json(['error' => 'No rows provided.'], 422);
+            return back()->withErrors(['message' => 'No rows provided.']);
         }
 
         $isSelfOverride = true;
@@ -801,6 +801,18 @@ class GisController extends Controller
         $stationMap = DB::table('stations')
             ->whereIn('code', $stationCodes)
             ->pluck('id', 'code');
+
+        // Fetch station capabilities
+        $requiredCapability = $measurementType;
+        if ($measurementType === 'groundwater_level') {
+            $requiredCapability = 'groundwater';
+        }
+
+        $stationCapabilities = DB::table('station_capabilities')
+            ->whereIn('station_id', $stationMap->values())
+            ->get()
+            ->groupBy('station_id')
+            ->map(fn($items) => $items->pluck('measurement_type')->all());
 
         // For water quality: parameter_code → parameter_id map
         $paramMap = collect();
@@ -814,15 +826,28 @@ class GisController extends Controller
         }
 
         $inserts = [];
-        $skipped = 0;
         $now = now();
 
         foreach ($rows as $row) {
             $stationCode = $row['station_code'] ?? null;
             $stationId = $stationCode ? $stationMap->get($stationCode) : null;
             if (! $stationId) {
-                $skipped++;
-                continue;
+                return back()->withErrors(['message' => "Station code '{$stationCode}' not found in the database."]);
+            }
+
+            // Verify station capability to prevent data type mismatch
+            $caps = $stationCapabilities->get($stationId, []);
+            if (! in_array($requiredCapability, $caps)) {
+                return back()->withErrors([
+                    'message' => "Station '{$stationCode}' does not support '{$measurementType}' measurements."
+                ]);
+            }
+
+            // Verify mandatory value is present and not empty
+            if (! isset($row['value']) || $row['value'] === '' || $row['value'] === null) {
+                return back()->withErrors([
+                    'message' => "Value is required for all records. Gaps or empty cells are not allowed (found empty value for station '{$stationCode}' on date '{$row['date']}')."
+                ]);
             }
 
             $parameterId = null;
@@ -830,8 +855,7 @@ class GisController extends Controller
                 $paramCode = $row['parameter_code'] ?? null;
                 $parameterId = $paramCode ? $paramMap->get($paramCode) : null;
                 if (! $parameterId) {
-                    $skipped++;
-                    continue;
+                    return back()->withErrors(['message' => "Water quality parameter '{$paramCode}' not found in the database."]);
                 }
             }
 
@@ -856,10 +880,7 @@ class GisController extends Controller
             DB::table('measurements')->insert($inserts);
         }
 
-        return response()->json([
-            'inserted' => count($inserts),
-            'skipped' => $skipped,
-        ]);
+        return redirect()->back();
     }
 
     // ─── Bulk CSV Exports ─────────────────────────────────────────────────────
