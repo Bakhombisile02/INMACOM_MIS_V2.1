@@ -175,8 +175,15 @@ function parseMeasurementValue(raw: unknown): number | null {
             s = s.replace(/,/g, '');
         }
     } else if (s.includes(',') && !s.includes('.')) {
-        // e.g. "12,5" -> "12.5"
-        s = s.replace(',', '.');
+        // Detect thousand-separator pattern: multiple commas or 3-digit groups
+        const thousandPattern = /^[+-]?\d{1,3}(,\d{3})+$/;
+        if (thousandPattern.test(s)) {
+            // "1,234,567" -> "1234567"
+            s = s.replace(/,/g, '');
+        } else {
+            // European decimal: "12,5" -> "12.5"
+            s = s.replace(',', '.');
+        }
     }
 
     // Extract the leading decimal number pattern supporting bare-decimal (e.g. .5, -,5)

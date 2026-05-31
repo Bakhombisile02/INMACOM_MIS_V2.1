@@ -185,12 +185,15 @@ class ImportProductionDumpSeeder extends Seeder
 
             // Handle boolean values in MySQL dump (which are 1 and 0) for PostgreSQL boolean columns
             if (str_starts_with($col, 'is_') || str_ends_with($col, '_observed') || str_ends_with($col, '_reported')) {
-                if ($val === '1' || $val === 'true') {
+                if ($val === '1' || $val === 'true' || $val === 1 || $val === true) {
                     $sanitized[$col] = true;
-                } elseif ($val === '0' || $val === 'false') {
+                } elseif ($val === '0' || $val === 'false' || $val === 0 || $val === false) {
                     $sanitized[$col] = false;
-                } else {
+                } elseif ($val === null) {
                     $sanitized[$col] = null;
+                } else {
+                    $this->command->warn("Unexpected boolean value for column {$col}: " . print_r($val, true));
+                    $sanitized[$col] = $val;
                 }
                 continue;
             }
