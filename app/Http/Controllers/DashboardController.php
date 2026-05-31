@@ -27,13 +27,20 @@ class DashboardController extends Controller
 
         $damStationIds = $damStations->pluck('id');
 
-        $latestDamMeasurements = DB::table('measurements')
-            ->whereIn('station_id', $damStationIds)
-            ->where('measurement_type', 'dam_level')
-            ->where('status', 'approved')
-            ->orderBy('date', 'desc')
+        $latestDamMeasurements = DB::table('measurements as m1')
+            ->join(DB::raw('(SELECT station_id, MAX(date) as max_date 
+                             FROM measurements 
+                             WHERE measurement_type = \'dam_level\' 
+                               AND status = \'approved\' 
+                             GROUP BY station_id) as m2'), function($join) {
+                $join->on('m1.station_id', '=', 'm2.station_id')
+                     ->on('m1.date', '=', 'm2.max_date');
+            })
+            ->whereIn('m1.station_id', $damStationIds)
+            ->where('m1.measurement_type', 'dam_level')
+            ->where('m1.status', 'approved')
+            ->select('m1.*')
             ->get()
-            ->unique('station_id')
             ->keyBy('station_id');
 
         $reservoirs = $damStations

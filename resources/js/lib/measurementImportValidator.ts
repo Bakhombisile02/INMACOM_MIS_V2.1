@@ -106,13 +106,10 @@ function normalizeDate(raw: unknown): { value: string; fixed: boolean; ambiguous
         let ambiguous = false;
 
         if (first > 31) {
-            // YYYY-MM-DD
+            // YYYY-MM-DD is unambiguous
             y = first;
             m = second;
             d = third;
-            if (m <= 12 && d <= 12 && m !== d) {
-                ambiguous = true;
-            }
         } else if (third > 31) {
             // DD-MM-YYYY
             d = first;
