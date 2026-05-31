@@ -147,9 +147,63 @@ function closestMatch(value: string, allowed: readonly string[]): string | null 
 }
 
 function isDMSCoord(s: string): boolean {
-    // Looks like degrees-minutes-seconds: contains ° or ' or " or N/S/E/W suffix
-    return /[°'"NSEW]/.test(s);
+    // Looks like degrees-minutes-seconds: contains ° or ' or " or N/S/E/W suffix or multiple dots
+    return /[°'"NSEW]/i.test(s) || (s.match(/\./g) || []).length > 1;
 }
+
+function parseCoordinateString(val: string): number | null {
+    let cleanStr = val.trim().toUpperCase();
+    if (!cleanStr) return null;
+
+    // Check for dot-separated DMS e.g. 26.20.26.5 S or 26.20.26 S
+    const dotCount = (cleanStr.match(/\./g) || []).length;
+    if (dotCount > 1) {
+        const dirMatch = cleanStr.match(/[NSEW]/);
+        const dir = dirMatch ? dirMatch[0] : '';
+        const numericPart = cleanStr.replace(/[NSEW]/g, '').trim();
+        const parts = numericPart.split('.');
+        if (parts.length === 3) {
+            cleanStr = `${parts[0]} ${parts[1]} ${parts[2]} ${dir}`;
+        } else if (parts.length === 4) {
+            cleanStr = `${parts[0]} ${parts[1]} ${parts[2]}.${parts[3]} ${dir}`;
+        }
+    }
+
+    // Find all numbers (integers or decimals)
+    const matches = cleanStr.match(/([+-]?\d+(?:\.\d+)?)/g);
+    if (!matches || matches.length === 0) return null;
+
+    const dirMatch = cleanStr.match(/[NSEW]/);
+
+    let d = 0;
+    let m = 0;
+    let s = 0;
+
+    if (matches.length === 1) {
+        d = Math.abs(parseFloat(matches[0]));
+    } else if (matches.length === 2) {
+        d = Math.abs(parseFloat(matches[0]));
+        m = Math.abs(parseFloat(matches[1]));
+    } else if (matches.length >= 3) {
+        d = Math.abs(parseFloat(matches[0]));
+        m = Math.abs(parseFloat(matches[1]));
+        s = Math.abs(parseFloat(matches[2]));
+    }
+
+    const decimal = d + (m / 60) + (s / 3600);
+
+    let isNegative = matches[0].startsWith('-');
+    if (dirMatch) {
+        if (dirMatch[0] === 'S' || dirMatch[0] === 'W') {
+            isNegative = true;
+        } else if (dirMatch[0] === 'N' || dirMatch[0] === 'E') {
+            isNegative = false;
+        }
+    }
+
+    return isNegative ? -decimal : decimal;
+}
+
 
 // ─── Column name normalisation ────────────────────────────────────────────────
 const COLUMN_ALIASES: Record<string, keyof NormalizedRow> = {
@@ -344,65 +398,146 @@ export function validateImportRows(
             }
         }
 
-        // ── latitude ──────────────────────────────────────────────────────────
+        // ── latitude & longitude parsing and normalisation ───────────────────────
         const rawLat = trim(mapped.latitude);
+        const rawLng = trim(mapped.longitude);
+
         let latitude: number | null = null;
+        let longitude: number | null = null;
+
+        let hasLatError = false;
+        let hasLngError = false;
+
         if (!rawLat) {
             errors.push({ field: 'latitude', severity: 'error', message: 'Latitude is required.' });
-        } else if (isDMSCoord(rawLat)) {
-            errors.push({
-                field: 'latitude',
-                severity: 'error',
-                message: `DMS format detected ("${rawLat}"). Use decimal degrees (e.g. -25.4937).`,
-            });
-        } else {
-            const num = parseFloat(rawLat);
-            if (isNaN(num)) {
-                errors.push({ field: 'latitude', severity: 'error', message: `"${rawLat}" is not a valid number.` });
-            } else if (num < -90 || num > 90) {
-                errors.push({ field: 'latitude', severity: 'error', message: `Latitude ${num} out of range (−90 to 90).` });
-            } else {
-                latitude = num;
-                const dpMatch = rawLat.split('.')[1];
-                if (dpMatch && dpMatch.length > 6) {
+            hasLatError = true;
+        }
+        if (!rawLng) {
+            errors.push({ field: 'longitude', severity: 'error', message: 'Longitude is required.' });
+            hasLngError = true;
+        }
+
+        if (!hasLatError && !hasLngError) {
+            let parsedLat = parseCoordinateString(rawLat);
+            let parsedLng = parseCoordinateString(rawLng);
+
+            if (parsedLat === null) {
+                errors.push({ field: 'latitude', severity: 'error', message: `"${rawLat}" is not a valid coordinate format.` });
+                hasLatError = true;
+            }
+            if (parsedLng === null) {
+                errors.push({ field: 'longitude', severity: 'error', message: `"${rawLng}" is not a valid coordinate format.` });
+                hasLngError = true;
+            }
+
+            if (parsedLat !== null && parsedLng !== null) {
+                // Report DMS conversions
+                if (isDMSCoord(rawLat)) {
                     errors.push({
                         field: 'latitude',
-                        severity: 'warning',
-                        message: `More than 6 decimal places — will be truncated to ${num.toFixed(6)}.`,
+                        severity: 'fixed',
+                        message: `DMS coordinate "${rawLat}" auto-converted to decimal degrees: ${parsedLat.toFixed(6)}`,
                     });
+                }
+                if (isDMSCoord(rawLng)) {
+                    errors.push({
+                        field: 'longitude',
+                        severity: 'fixed',
+                        message: `DMS coordinate "${rawLng}" auto-converted to decimal degrees: ${parsedLng.toFixed(6)}`,
+                    });
+                }
+
+                // Swap coordinates check (if lat is positive and lng is negative, e.g. SA bounds)
+                if (parsedLat > 10 && parsedLng < -10) {
+                    const temp = parsedLat;
+                    parsedLat = parsedLng;
+                    parsedLng = temp;
+                    errors.push({
+                        field: 'latitude',
+                        severity: 'fixed',
+                        message: 'Swapped Latitude and Longitude values auto-corrected based on Southern Africa region.',
+                    });
+                    errors.push({
+                        field: 'longitude',
+                        severity: 'fixed',
+                        message: 'Swapped Latitude and Longitude values auto-corrected based on Southern Africa region.',
+                    });
+                }
+
+                // Southern Africa negative latitude correction
+                if (parsedLat > 0) {
+                    parsedLat = -parsedLat;
+                    errors.push({
+                        field: 'latitude',
+                        severity: 'fixed',
+                        message: 'Latitude positive value auto-corrected to negative for Southern Africa region.',
+                    });
+                }
+
+                // Longitude positive correction (omit accidental negative sign)
+                if (parsedLng < 0) {
+                    parsedLng = Math.abs(parsedLng);
+                    errors.push({
+                        field: 'longitude',
+                        severity: 'fixed',
+                        message: 'Longitude negative value auto-corrected to positive for Southern Africa region.',
+                    });
+                }
+
+                // Earth limit checks
+                if (parsedLat < -90 || parsedLat > 90) {
+                    errors.push({ field: 'latitude', severity: 'error', message: `Latitude ${parsedLat} out of range (−90 to 90).` });
+                    hasLatError = true;
+                }
+                if (parsedLng < -180 || parsedLng > 180) {
+                    errors.push({ field: 'longitude', severity: 'error', message: `Longitude ${parsedLng} out of range (−180 to 180).` });
+                    hasLngError = true;
+                }
+
+                // Incomati / Southern Africa bounding box warning
+                // Lat: -35.5 to -9.5, Lng: 16.0 to 41.5
+                if (!hasLatError && !hasLngError) {
+                    if (parsedLat < -35.5 || parsedLat > -9.5 || parsedLng < 16.0 || parsedLng > 41.5) {
+                        errors.push({
+                            field: 'latitude',
+                            severity: 'warning',
+                            message: 'Coordinates are outside the expected Southern Africa region (Mozambique, South Africa, Eswatini).',
+                        });
+                        errors.push({
+                            field: 'longitude',
+                            severity: 'warning',
+                            message: 'Coordinates are outside the expected Southern Africa region (Mozambique, South Africa, Eswatini).',
+                        });
+                    }
+
+                    latitude = parsedLat;
+                    longitude = parsedLng;
+
+                    // Warn if too many decimal places
+                    if (!isDMSCoord(rawLat) && rawLat.includes('.')) {
+                        const dpMatch = rawLat.split('.')[1];
+                        if (dpMatch && dpMatch.length > 6) {
+                            errors.push({
+                                field: 'latitude',
+                                severity: 'warning',
+                                message: `More than 6 decimal places — will be truncated to ${parsedLat.toFixed(6)}.`,
+                            });
+                        }
+                    }
+                    if (!isDMSCoord(rawLng) && rawLng.includes('.')) {
+                        const dpMatch = rawLng.split('.')[1];
+                        if (dpMatch && dpMatch.length > 6) {
+                            errors.push({
+                                field: 'longitude',
+                                severity: 'warning',
+                                message: `More than 6 decimal places — will be truncated to ${parsedLng.toFixed(6)}.`,
+                            });
+                        }
+                    }
                 }
             }
         }
 
-        // ── longitude ─────────────────────────────────────────────────────────
-        const rawLng = trim(mapped.longitude);
-        let longitude: number | null = null;
-        if (!rawLng) {
-            errors.push({ field: 'longitude', severity: 'error', message: 'Longitude is required.' });
-        } else if (isDMSCoord(rawLng)) {
-            errors.push({
-                field: 'longitude',
-                severity: 'error',
-                message: `DMS format detected ("${rawLng}"). Use decimal degrees (e.g. 31.9123).`,
-            });
-        } else {
-            const num = parseFloat(rawLng);
-            if (isNaN(num)) {
-                errors.push({ field: 'longitude', severity: 'error', message: `"${rawLng}" is not a valid number.` });
-            } else if (num < -180 || num > 180) {
-                errors.push({ field: 'longitude', severity: 'error', message: `Longitude ${num} out of range (−180 to 180).` });
-            } else {
-                longitude = num;
-                const dpMatch = rawLng.split('.')[1];
-                if (dpMatch && dpMatch.length > 6) {
-                    errors.push({
-                        field: 'longitude',
-                        severity: 'warning',
-                        message: `More than 6 decimal places — will be truncated to ${num.toFixed(6)}.`,
-                    });
-                }
-            }
-        }
 
         // ── optional string fields ────────────────────────────────────────────
         const river_basin = trim(mapped.river_basin);

@@ -27,10 +27,32 @@ export interface ValidatedMeasurementRow {
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
+const PT_TO_EN_MONTHS: Record<string, string> = {
+    janeiro: 'january', jan: 'jan',
+    fevereiro: 'february', fev: 'feb',
+    março: 'march', mar: 'mar',
+    abril: 'april', abr: 'apr',
+    maio: 'may', mai: 'may',
+    junho: 'june', jun: 'jun',
+    julho: 'july', jul: 'jul',
+    agosto: 'august', ago: 'aug',
+    setembro: 'september', set: 'sep',
+    outubro: 'october', out: 'oct',
+    novembro: 'november', nov: 'nov',
+    dezembro: 'december', dez: 'dec'
+};
+
+function formatDateLocal(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+}
+
 /** Attempts to parse a date in common formats and normalise to YYYY-MM-DD. */
 function normalizeDate(raw: unknown): { value: string; fixed: boolean } | null {
     if (raw == null || raw === '') return null;
-    const s = String(raw).trim();
+    let s = String(raw).trim();
 
     // Already correct
     if (DATE_RE.test(s)) return { value: s, fixed: false };
@@ -38,28 +60,89 @@ function normalizeDate(raw: unknown): { value: string; fixed: boolean } | null {
     // Try Excel serial number (numeric)
     const num = Number(s);
     if (!isNaN(num) && num > 10000) {
-        // Excel date serial: days since 1899-12-30
-        const d = new Date((num - 25569) * 86400 * 1000);
-        const iso = d.toISOString().split('T')[0];
-        return { value: iso, fixed: true };
+        // Excel date serial: days since 1899-12-30.
+        // Excel serial parses to UTC to avoid local timezone variance.
+        const utcDate = new Date((num - 25569) * 86400 * 1000);
+        const y = utcDate.getUTCFullYear();
+        const m = String(utcDate.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(utcDate.getUTCDate()).padStart(2, '0');
+        return { value: `${y}-${m}-${day}`, fixed: true };
     }
 
-    // Try common separators: DD/MM/YYYY, MM/DD/YYYY, DD-MM-YYYY
-    const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-    if (dmy) {
-        const [, d, m, y] = dmy;
-        const iso = `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
-        return { value: iso, fixed: true };
+    // Standardise separators and translate Portuguese
+    let cleanStr = s.toLowerCase();
+    for (const [pt, en] of Object.entries(PT_TO_EN_MONTHS)) {
+        const re = new RegExp(`\\b${pt}\\b`, 'g');
+        cleanStr = cleanStr.replace(re, en);
+    }
+    // Remove "de" prepositions commonly used in PT dates e.g. "29 de maio de 2026"
+    cleanStr = cleanStr.replace(/\bde\b/g, ' ');
+    // Remove extra spaces
+    cleanStr = cleanStr.replace(/\s+/g, ' ').trim();
+
+    // Try parsing dd/mm/yyyy or dd-mm-yyyy or yyyy/mm/dd or yyyy-mm-dd
+    const numMatches = cleanStr.match(/\d+/g);
+    if (numMatches && numMatches.length === 3) {
+        let first = parseInt(numMatches[0]);
+        let second = parseInt(numMatches[1]);
+        let third = parseInt(numMatches[2]);
+
+        let y = 0;
+        let m = 0;
+        let d = 0;
+
+        if (first > 31) {
+            // YYYY-MM-DD
+            y = first;
+            m = second;
+            d = third;
+        } else if (third > 31) {
+            // DD-MM-YYYY
+            d = first;
+            m = second;
+            y = third;
+        } else {
+            // 2-digit year e.g. DD-MM-YY
+            if (first <= 31 && second <= 12 && third <= 99) {
+                d = first;
+                m = second;
+                y = third + (third > 50 ? 1900 : 2000);
+            }
+        }
+
+        if (y > 0 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+            const iso = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            return { value: iso, fixed: true };
+        }
     }
 
-    // Let JS parse anything else (e.g. "01 May 2026")
-    const parsed = new Date(s);
+    // Let JS parse anything else timezone-safe (e.g. "29 May 2026", "29-May-26", "29-Dez-26")
+    const parsed = new Date(cleanStr);
     if (!isNaN(parsed.getTime())) {
-        return { value: parsed.toISOString().split('T')[0], fixed: true };
+        return { value: formatDateLocal(parsed), fixed: true };
     }
 
     return null;
 }
+
+function parseMeasurementValue(raw: unknown): number | null {
+    if (raw == null || raw === '') return null;
+    if (typeof raw === 'number') return raw;
+    let s = String(raw).trim();
+
+    // Normalize Portuguese/European comma separator if it's the only one and no dots
+    if (s.includes(',') && !s.includes('.')) {
+        s = s.replace(',', '.');
+    }
+
+    // Extract the leading decimal number pattern
+    const match = s.match(/^\s*([+-]?\d+(?:\.\d+)?)/);
+    if (!match) return null;
+
+    const num = Number(match[1]);
+    return isNaN(num) ? null : num;
+}
+
 
 // ─── Main validator ───────────────────────────────────────────────────────────
 
@@ -88,11 +171,16 @@ export function validateMeasurementRows(
 
         // value
         const rawVal = row['value'] ?? row['Value'] ?? '';
-        const numVal = Number(rawVal);
+        const numVal = parseMeasurementValue(rawVal);
         if (rawVal === '' || rawVal == null) {
             errors.push({ field: 'value', message: 'Value is required.', severity: 'error' });
-        } else if (isNaN(numVal)) {
+        } else if (numVal === null) {
             errors.push({ field: 'value', message: `"${rawVal}" is not a valid number.`, severity: 'error' });
+        } else {
+            const rawValStr = String(rawVal).trim();
+            if (rawValStr !== String(numVal) && rawValStr !== String(Number(rawValStr))) {
+                errors.push({ field: 'value', message: `Value auto-corrected from "${rawValStr}" to ${numVal}.`, severity: 'fixed' });
+            }
         }
 
         // unit (optional — just warn if unexpected chars)
@@ -110,7 +198,7 @@ export function validateMeasurementRows(
         const normalized: NormalizedMeasurementRow = {
             station_code: rawCode,
             ...(paramCode !== undefined && { parameter_code: paramCode }),
-            value: isNaN(numVal) ? 0 : numVal,
+            value: numVal ?? 0,
             unit: rawUnit,
             date: dateResult?.value ?? '',
         };
