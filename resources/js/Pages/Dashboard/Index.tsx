@@ -53,7 +53,7 @@ interface Reservoir {
     river_basin: string;
     latest_value: number;
     unit: string;
-    fsc: number;
+    fsc: number | null;
     date: string;
 }
 
@@ -564,7 +564,7 @@ export default function DashboardIndex({
                                                             {t('dashboard.reservoirs.fsc')}
                                                         </Text>
                                                         <Text size="sm" fw={600}>
-                                                            {res.fsc.toFixed(1)} {res.unit}
+                                                            {res.fsc !== null ? `${res.fsc.toFixed(1)} ${res.unit}` : 'N/A'}
                                                         </Text>
                                                     </Group>
 

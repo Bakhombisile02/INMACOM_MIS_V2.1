@@ -1,10 +1,10 @@
 /* INMACOM Premium Operational Dashboard CSS Module */
 
 .tabContent {
-  animation: fadeIn 0.35s ease-out;
+  animation: fade-in 0.35s ease-out;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
     transform: translateY(6px);
@@ -46,11 +46,11 @@
       light-dark(rgba(250, 82, 82, 0.03), rgba(250, 82, 82, 0.01)) 0%, 
       light-dark(var(--mantine-color-white), var(--mantine-color-dark-7)) 100%
     );
-    animation: pulseBorderRed 2s infinite alternate;
+    animation: pulse-border-red 2s infinite alternate;
   }
 }
 
-@keyframes pulseBorderRed {
+@keyframes pulse-border-red {
   from {
     border-color: var(--mantine-color-red-5);
     box-shadow: 0 0 4px rgba(250, 82, 82, 0.1);
@@ -62,10 +62,10 @@
 }
 
 .glowPulse {
-  animation: glowAnimation 2s infinite alternate;
+  animation: glow-animation 2s infinite alternate;
 }
 
-@keyframes glowAnimation {
+@keyframes glow-animation {
   from {
     box-shadow: 0 0 4px rgba(250, 176, 5, 0.2);
     border-color: var(--mantine-color-yellow-5);
@@ -77,10 +77,10 @@
 }
 
 .glowPulseSevere {
-  animation: glowSevereAnimation 1.5s infinite alternate;
+  animation: glow-severe-animation 1.5s infinite alternate;
 }
 
-@keyframes glowSevereAnimation {
+@keyframes glow-severe-animation {
   from {
     box-shadow: 0 0 4px rgba(250, 82, 82, 0.2);
     border-color: var(--mantine-color-red-5);
@@ -105,7 +105,7 @@
   &[data-status="non_compliant"] {
     background-color: var(--mantine-color-red-6);
     box-shadow: 0 0 8px rgba(250, 82, 82, 0.6);
-    animation: pulseDot 1s infinite alternate;
+    animation: pulse-dot 1s infinite alternate;
   }
   
   &[data-status="pending"] {
@@ -118,7 +118,11 @@
   }
 }
 
-@keyframes pulseDot {
+.pulseDot {
+  animation: pulse-dot 1s infinite alternate;
+}
+
+@keyframes pulse-dot {
   from {
     transform: scale(0.95);
     opacity: 0.7;

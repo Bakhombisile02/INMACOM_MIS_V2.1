@@ -20,17 +20,25 @@ class DashboardController extends Controller
         ];
 
         // 2. Reservoir storage details (% fill levels)
-        $reservoirs = DB::table('stations')
+        $damStations = DB::table('stations')
             ->where('category', 'dam')
             ->where('is_active', true)
+            ->get();
+
+        $damStationIds = $damStations->pluck('id');
+
+        $latestDamMeasurements = DB::table('measurements')
+            ->whereIn('station_id', $damStationIds)
+            ->where('measurement_type', 'dam_level')
+            ->where('status', 'approved')
+            ->orderBy('date', 'desc')
             ->get()
-            ->map(function ($station) {
-                $latestMeasurement = DB::table('measurements')
-                    ->where('station_id', $station->id)
-                    ->where('measurement_type', 'dam_level')
-                    ->where('status', 'approved')
-                    ->orderBy('date', 'desc')
-                    ->first();
+            ->unique('station_id')
+            ->keyBy('station_id');
+
+        $reservoirs = $damStations
+            ->map(function ($station) use ($latestDamMeasurements) {
+                $latestMeasurement = $latestDamMeasurements->get($station->id);
                 
                 return [
                     'id' => $station->id,
@@ -79,23 +87,31 @@ class DashboardController extends Controller
         }
 
         // 4. IIMA Cross-border Ecological Flow Key Points Compliance
-        $eflowPoints = DB::table('iima_eflow_key_points')
+        $activeKeyPoints = DB::table('iima_eflow_key_points')
             ->where('is_active', true)
+            ->get();
+
+        $pointIds = $activeKeyPoints->pluck('id');
+        $stationIds = $activeKeyPoints->whereNotNull('station_id')->pluck('station_id');
+
+        $requirements = DB::table('iima_eflow_requirements')
+            ->whereIn('key_point_id', $pointIds)
             ->get()
-            ->map(function ($point) {
-                $requirement = DB::table('iima_eflow_requirements')
-                    ->where('key_point_id', $point->id)
-                    ->first();
-                
-                $latestFlow = null;
-                if ($point->station_id) {
-                    $latestFlow = DB::table('measurements')
-                        ->where('station_id', $point->station_id)
-                        ->where('measurement_type', 'flow')
-                        ->where('status', 'approved')
-                        ->orderBy('date', 'desc')
-                        ->first();
-                }
+            ->keyBy('key_point_id');
+
+        $latestFlows = DB::table('measurements')
+            ->whereIn('station_id', $stationIds)
+            ->where('measurement_type', 'flow')
+            ->where('status', 'approved')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->unique('station_id')
+            ->keyBy('station_id');
+
+        $eflowPoints = $activeKeyPoints
+            ->map(function ($point) use ($requirements, $latestFlows) {
+                $requirement = $requirements->get($point->id);
+                $latestFlow = $point->station_id ? $latestFlows->get($point->station_id) : null;
                 
                 $currentFlow = $latestFlow ? (float) $latestFlow->value : null;
                 $minRequired = $requirement ? (float) $requirement->min_flow_m3_s : null;
