@@ -1,16 +1,91 @@
 {
   "dashboard": {
-    "title": "Painel Operacional",
-    "subtitle": "Visão geral das estações, medições, incidentes e atividade documental.",
+    "title": "Painel Operacional INMACOM",
+    "subtitle": "Sistema transfronteiriço de monitoramento em tempo real de hidrologia, conformidade de vazão ecológica e riscos",
+    "tabs": {
+      "overview": "Visão Geral e Controle",
+      "hydrology": "Hidrologia e Reservatórios",
+      "treaty": "Conformidade do Tratado (IIMA)",
+      "hazards": "Riscos e Incidentes"
+    },
     "cards": {
-      "stations": "Estações",
-      "measurements": "Medições",
-      "incidents": "Incidentes",
-      "documents": "Documentos",
-      "openStations": "Abrir estações",
+      "stations": "Estações de Monitoramento",
+      "measurements": "Leituras Verificadas",
+      "incidents": "Alertas de Emergência",
+      "documents": "Documentos da Biblioteca",
+      "openStations": "Gerenciar estações",
       "openLibrary": "Abrir biblioteca de documentos",
-      "liveData": "Observações em tempo real e submetidas",
-      "monitorAlerts": "Acompanhar alertas ativos e históricos"
+      "liveData": "Canais de telemetria em tempo real",
+      "monitorAlerts": "Rastrear incidentes ativos de emergência"
+    },
+    "ressanoGarcia": {
+      "title": "Eixo Principal Transfronteiriço de Ressano Garcia (E-23 / X2H036)",
+      "compliant": "CONFORME",
+      "nonCompliant": "NÃO CONFORME",
+      "currentFlow": "Vazão Atual do Eixo Principal",
+      "minRequired": "Requisito Mínimo do Tratado",
+      "lastUpdated": "Última Atualização de Telemetria",
+      "noData": "Nenhuma telemetria de vazão ativa recebida para Ressano Garcia"
+    },
+    "verification": {
+      "title": "Fila do Pipeline de Verificação",
+      "desc": "Submissões pendentes que requerem revisão e aprovação imediatas",
+      "pendingMeasurements": "Medições aguardando aprovação",
+      "pendingIncidents": "Incidentes aguardando revisão",
+      "reviewAction": "Abrir Centro de Verificação",
+      "allClear": "Pipeline limpo. Todas as telemetrias e relatórios de desastres estão totalmente verificados!"
+    },
+    "compliance": {
+      "title": "Pontos-Chave de Vazão Ecológica Transfronteiriça do IIMA",
+      "subtitle": "Painel de conformidade rastreando alocações de vazão em relação aos limites mínimos do tratado",
+      "basinFilter": "Filtrar por Bacia Hidrográfica",
+      "allBasins": "Todas as Bacias Hidrográficas",
+      "incomati": "Bacia do Incomati",
+      "maputo": "Bacia do Maputo",
+      "keyPoint": "Ponto-chave",
+      "river": "Rio",
+      "country": "País",
+      "minRequiredEflow": "Vazão Ecológica Exigida",
+      "currentEflow": "Vazão atual",
+      "status": "Status de conformidade",
+      "compliant": "Conforme",
+      "nonCompliant": "Não conforme",
+      "noRequirement": "Nenhum requisito dinâmico encontrado",
+      "noFlowData": "Sem telemetria recente",
+      "lastChecked": "Última verificação"
+    },
+    "hazards": {
+      "subcatchmentHazardScores": "Níveis de Status de Riscos das Sub-bacias (IAAP-5)",
+      "subtitle": "Pontuação de risco de seca e cheia ponderada pela confiança calculada em tempo real",
+      "floodWeight": "Peso do Status de Cheia (FSW)",
+      "droughtScore": "Índice de Seca (Ds)",
+      "score": "Índice",
+      "severity": "Gravidade",
+      "area": "Área de Gestão",
+      "calculated": "Calculado em",
+      "activeIncidents": "Registros Ativos de Emergência e Poluição",
+      "noIncidents": "Nenhum registro ativo de desastre, seca ou vazamento em andamento",
+      "reported": "Relatado em",
+      "incidentStatus": "Fase",
+      "chemicalDetails": "Detalhes de Lançamento Químico (US EPA)",
+      "mass": "Massa de Lançamento Est.",
+      "fishKill": "Mortalidade de peixes observada",
+      "waterborne": "Aviso de patógenos veiculados pela água",
+      "yes": "Sim",
+      "no": "Não",
+      "reference": "Ref",
+      "severe": "Alerta Grave",
+      "moderate": "Alerta Moderado",
+      "watch": "Alerta de Observação",
+      "allClear": "Tudo Limpo"
+    },
+    "reservoirs": {
+      "title": "Capacidades de Armazenamento das Principais Barragens (% do FSC)",
+      "subtitle": "Volume de armazenamento atual mapeado em relação à Capacidade de Abastecimento Pleno (FSC)",
+      "fsc": "Capacidade de Abastecimento Pleno",
+      "currentStorage": "Armazenamento Atual",
+      "percentFill": "Nível percentual de preenchimento",
+      "noReservoirs": "Nenhuma telemetria ativa de reservatório recebida"
     }
   }
 }
