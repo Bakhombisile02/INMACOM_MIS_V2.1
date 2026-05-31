@@ -13,6 +13,14 @@ class ImportProductionDumpSeeder extends Seeder
      */
     public function run(): void
     {
+        if (!$this->command) {
+            $this->command = new class {
+                public function info($msg) { echo $msg . "\n"; }
+                public function warn($msg) { echo "WARN: " . $msg . "\n"; }
+                public function error($msg) { echo "ERROR: " . $msg . "\n"; }
+            };
+        }
+
         $sqlPath = base_path('Data for Database /How database looks currently/u550237388_INMACOMV2 (2).sql');
         if (!file_exists($sqlPath)) {
             $this->command->error("Production SQL dump not found at: {$sqlPath}");
@@ -114,7 +122,7 @@ class ImportProductionDumpSeeder extends Seeder
                     
                     if (str_starts_with($lineContent, '(') && str_ends_with($lineContent, ')')) {
                         $valContent = substr($lineContent, 1, -1);
-                        $rowValues = str_getcsv($valContent, ',', "'", "\\");
+                        $rowValues = str_getcsv($valContent, ',', "'", "");
                         $rowValues = array_map('trim', $rowValues);
                         
                         if (count($rowValues) === count($columns)) {
@@ -214,7 +222,10 @@ class ImportProductionDumpSeeder extends Seeder
                     DB::table($table)->insert([$row]);
                     $inserted++;
                 } catch (\Exception $ex) {
-                    $this->command->error("Failing row details in {$table} at index {$index}: " . json_encode($row));
+                    $safeRow = $table === 'users' 
+                        ? array_diff_key($row, array_flip(['password', 'remember_token', 'email']))
+                        : $row;
+                    $this->command->error("Failing row details in {$table} at index {$index}: " . json_encode($safeRow));
                     $this->command->error("Error detail: " . $ex->getMessage());
                 }
             }

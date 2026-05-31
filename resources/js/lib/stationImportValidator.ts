@@ -431,22 +431,6 @@ export function validateImportRows(
             }
 
             if (parsedLat !== null && parsedLng !== null) {
-                // Report DMS conversions
-                if (isDMSCoord(rawLat)) {
-                    errors.push({
-                        field: 'latitude',
-                        severity: 'fixed',
-                        message: `DMS coordinate "${rawLat}" auto-converted to decimal degrees: ${parsedLat.toFixed(6)}`,
-                    });
-                }
-                if (isDMSCoord(rawLng)) {
-                    errors.push({
-                        field: 'longitude',
-                        severity: 'fixed',
-                        message: `DMS coordinate "${rawLng}" auto-converted to decimal degrees: ${parsedLng.toFixed(6)}`,
-                    });
-                }
-
                 // Swap coordinates check (if lat is positive and lng is negative, e.g. SA bounds)
                 if (parsedLat > 10 && parsedLng < -10) {
                     const temp = parsedLat;
@@ -513,6 +497,22 @@ export function validateImportRows(
                     latitude = parsedLat;
                     longitude = parsedLng;
 
+                    // Report DMS conversions using corrected final values
+                    if (isDMSCoord(rawLat)) {
+                        errors.push({
+                            field: 'latitude',
+                            severity: 'fixed',
+                            message: `DMS coordinate "${rawLat}" auto-converted to decimal degrees: ${parsedLat.toFixed(6)}`,
+                        });
+                    }
+                    if (isDMSCoord(rawLng)) {
+                        errors.push({
+                            field: 'longitude',
+                            severity: 'fixed',
+                            message: `DMS coordinate "${rawLng}" auto-converted to decimal degrees: ${parsedLng.toFixed(6)}`,
+                        });
+                    }
+
                     // Warn if too many decimal places
                     if (!isDMSCoord(rawLat) && rawLat.includes('.')) {
                         const dpMatch = rawLat.split('.')[1];
@@ -520,7 +520,7 @@ export function validateImportRows(
                             errors.push({
                                 field: 'latitude',
                                 severity: 'warning',
-                                message: `More than 6 decimal places — will be truncated to ${parsedLat.toFixed(6)}.`,
+                                message: `More than 6 decimal places — stored at full precision but displayed as ${parsedLat.toFixed(6)}.`,
                             });
                         }
                     }
@@ -530,7 +530,7 @@ export function validateImportRows(
                             errors.push({
                                 field: 'longitude',
                                 severity: 'warning',
-                                message: `More than 6 decimal places — will be truncated to ${parsedLng.toFixed(6)}.`,
+                                message: `More than 6 decimal places — stored at full precision but displayed as ${parsedLng.toFixed(6)}.`,
                             });
                         }
                     }

@@ -169,7 +169,11 @@ export default function MeasurementImportModal({ opened, onClose, type }: Measur
                         const ws = wb.Sheets[sheetName];
                         const sheetRaw = XLSX.utils.sheet_to_json<Record<string, unknown>>(ws, { defval: '' });
                         if (Array.isArray(sheetRaw)) {
-                            raw = raw.concat(sheetRaw);
+                            raw = raw.concat(
+                                sheetRaw.filter((r) =>
+                                    Object.values(r).some((v) => String(v ?? '').trim() !== ''),
+                                ),
+                            );
                         }
                     });
                     const validated = validateMeasurementRows(raw, type);
