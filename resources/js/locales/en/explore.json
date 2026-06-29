@@ -57,7 +57,25 @@
     "openDetails": "Open details",
     "historicalTitle": "Basin trend — last 90 days",
     "historicalDescription": "Daily basin-wide average across all reporting stations. Provisional values are included to show the live picture.",
-    "samples": "Samples"
+    "samples": "Samples",
+    "stationHistoricalTitle": "Station detail trend",
+    "stationHistoricalDescription": "Choose a station or tap a marker on the map to load the station-level history.",
+    "selectStationLabel": "Station",
+    "selectStationPlaceholder": "Select a station",
+    "selectStationEmpty": "No stations available",
+    "selectStationPrompt": "Choose a station to view the detailed chart.",
+    "stationDetailTitle": "Selected station overview",
+    "stationDetailLatest": "Latest",
+    "stationDetailAsOf": "As of",
+    "stationDetailBasin": "Basin",
+    "stationDetailCountry": "Country",
+    "stationDetailConfidence": "Confidence"
+  },
+  "guide": {
+    "step1": "1. Choose a module tab",
+    "step2": "2. Filter confidence if needed",
+    "step3": "3. Tap a station marker",
+    "step4": "4. View that station trend"
   },
   "hazards": {
     "title": "Active hazards by area",

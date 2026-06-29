@@ -1,0 +1,51 @@
+# System Audit Logs
+
+The Audit Log provides a secure ledger documenting all data creations, updates, and approval state transitions performed by users in the INMACOM MIS.
+
+---
+
+## Audit Schema Reference
+
+Audit entries are stored in the `audit_logs` table:
+
+*   `actor_id` (UUID): Reference to the user who executed the action.
+*   `action`: Action tag (e.g. `measurement_approved`, `station_created`, `incident_resolved`).
+*   `table_name`: The database table impacted (e.g., `measurements`, `stations`).
+*   `record_id` (UUID): Primary key of the impacted record.
+*   `before_status` / `after_status`: State transitions for verified entities (e.g., `pending` -> `approved`).
+*   `reason`: Optional description or reviewer comment.
+*   `occurred_at`: Exact timestamp of the event.
+
+---
+
+## State Changes Tracked
+
+The backend logs audit entries during critical operations:
+
+1.  **Measurement CRUD:** Logged when a clerk uploads measurements (`measurement_created`), or when a manager approves (`measurement_approved`) or rejects (`measurement_rejected`) a pending item.
+2.  **Station Metadata Revisions:** Logged when station metadata edits are submitted (`station_revision_submitted`), approved (`station_revision_approved`), or rejected (`station_revision_rejected`).
+3.  **Disaster Incidents:** Logged on report creation, status updates, actions logged, and final resolution markings.
+4.  **User Management:** Logs administrator tasks such as role updates and account deletions.
+
+---
+
+## Access Restrictions & CSV Exports
+
+Audit data is highly sensitive and restricted by role authorization:
+
+*   **View Audit Table:** `GET /audit` -> Displays the log table with filtering options. Restricted to **Admins** and **Managers** (`middleware('role:admin,manager')`).
+*   **Export Audits:** `GET /audit/export` -> Generates and downloads the logs as a CSV file. Restricted strictly to **Admins** (`middleware('role:admin')`).
+
+### Example Controller Logic
+```php
+// app/Http/Controllers/AuditController.php
+public function index()
+{
+    // Retrieve paginated audit logs with actor details
+    $logs = AuditLog::with('actor')->orderBy('occurred_at', 'desc')->paginate(30);
+
+    return Inertia::render('Audit/Index', [
+        'logs' => $logs,
+    ]);
+}
+```

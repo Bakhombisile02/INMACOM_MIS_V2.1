@@ -177,11 +177,12 @@ export default function LibraryView({
                         {t('fileCount', { count: filtered.length })}
                     </Text>
                     <TextInput
+                        className={classes.searchInput}
                         value={query}
                         onChange={(e) => setQuery(e.currentTarget.value)}
                         placeholder={t('search')}
                         leftSection={<IconSearch size={16} />}
-                        w={280}
+                        size="md"
                     />
                 </div>
 
@@ -212,7 +213,7 @@ export default function LibraryView({
                                                     <ActionIcon
                                                         variant="subtle"
                                                         color="gray"
-                                                        size="sm"
+                                                        size={40}
                                                         className={classes.menuBtn}
                                                         aria-label={t('actions.menu')}
                                                     >

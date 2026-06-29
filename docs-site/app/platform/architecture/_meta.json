@@ -1,0 +1,6 @@
+{
+  "database": "Database & Domain Schema",
+  "auth": "Auth & Registration Flow",
+  "backend": "Backend & Routes",
+  "frontend": "Frontend & UI Shell"
+}

@@ -14,10 +14,41 @@ class DDRIteration2ReferenceDataSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->seedIimaUserCategories();
         $this->seedIimaEflowKeyPoints();
         $this->seedIimaAllocations();
         $this->seedComplianceThresholds();
         $this->flagPriorityPollutants();
+    }
+
+    private function seedIimaUserCategories(): void
+    {
+        if (! Schema::hasTable('iima_user_categories')) {
+            return;
+        }
+
+        $categories = [
+            ['code' => 'domestic', 'name' => 'Domestic & Municipal', 'priority_order' => 1],
+            ['code' => 'irrigation', 'name' => 'Irrigation Agriculture', 'priority_order' => 2],
+            ['code' => 'industrial', 'name' => 'Industry & Mining', 'priority_order' => 3],
+            ['code' => 'forestry', 'name' => 'Commercial Forestry', 'priority_order' => 4],
+            ['code' => 'other', 'name' => 'Other Water Uses', 'priority_order' => 5],
+        ];
+
+        foreach ($categories as $cat) {
+            $existingId = DB::table('iima_user_categories')
+                ->where('code', $cat['code'])
+                ->value('id');
+
+            DB::table('iima_user_categories')->updateOrInsert(
+                ['code' => $cat['code']],
+                [
+                    'id' => $existingId ?? (string) Str::uuid(),
+                    'name' => $cat['name'],
+                    'priority_order' => $cat['priority_order'],
+                ]
+            );
+        }
     }
 
     private function seedIimaEflowKeyPoints(): void
@@ -87,15 +118,38 @@ class DDRIteration2ReferenceDataSeeder extends Seeder
         }
 
         $allocations = [
-            // TODO: Populate from IAAP-10 once final values are approved.
-            // [
-            //     'subcatchment_code' => 'SC-01',
-            //     'country' => 'South Africa',
-            //     'user_category' => 'domestic',
-            //     'allocation_mm3_a' => 0.0,
-            //     'effective_from' => 2026,
-            //     'note' => 'IAAP-10 reference value',
-            // ],
+            [
+                'subcatchment_code' => 'INC-KOMATI',
+                'country' => 'South Africa',
+                'user_category' => 'irrigation',
+                'allocation_mm3_a' => 220.0,
+                'effective_from' => 2026,
+                'note' => 'IIMA Table 4-1 default allocation',
+            ],
+            [
+                'subcatchment_code' => 'INC-KOMATI',
+                'country' => 'Eswatini',
+                'user_category' => 'irrigation',
+                'allocation_mm3_a' => 120.0,
+                'effective_from' => 2026,
+                'note' => 'IIMA Table 4-1 default allocation',
+            ],
+            [
+                'subcatchment_code' => 'MAP-USUTHU',
+                'country' => 'Eswatini',
+                'user_category' => 'domestic',
+                'allocation_mm3_a' => 15.5,
+                'effective_from' => 2026,
+                'note' => 'IAAP-10 reference allocation',
+            ],
+            [
+                'subcatchment_code' => 'MAP-USUTHU',
+                'country' => 'Mozambique',
+                'user_category' => 'irrigation',
+                'allocation_mm3_a' => 45.0,
+                'effective_from' => 2026,
+                'note' => 'IAAP-10 reference allocation',
+            ],
         ];
 
         foreach ($allocations as $allocation) {

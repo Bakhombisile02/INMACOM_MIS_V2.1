@@ -43,13 +43,20 @@ import {
     IconUpload,
     IconX,
 } from '@tabler/icons-react';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GisMap, { type GisStationData } from '@/Components/Dashboard/GisMap';
 import GisPageInfoDrawer from '@/Components/Gis/GisPageInfoDrawer';
 import MeasurementImportModal from '@/Components/Gis/MeasurementImportModal';
 import { FlowDurationChart, FlowDailyDischargeChart } from '@/Components/Gis/HistoricalCharts';
+import {
+    filterAndSortHistoryRows,
+    getHistoryDateBounds,
+    isDateWithinBounds,
+    type HistoryRangeOption,
+    type HistorySortOption,
+} from '@/Components/Gis/historyFilters';
 
 interface StationFlowRow {
     id: string;
@@ -129,6 +136,11 @@ export default function FlowLevels({
     const [infoStationId, setInfoStationId] = useState<string | null>(null);
     const [historicalData, setHistoricalData] = useState<any>(null);
     const [historicalLoading, setHistoricalLoading] = useState(false);
+    const [historySearch, setHistorySearch] = useState('');
+    const [historySort, setHistorySort] = useState<HistorySortOption>('date_desc');
+    const [historyRange, setHistoryRange] = useState<HistoryRangeOption>('all');
+    const [historyFrom, setHistoryFrom] = useState('');
+    const [historyTo, setHistoryTo] = useState('');
 
     // Dialog state
     const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
@@ -221,7 +233,7 @@ export default function FlowLevels({
         setSelectedStationId(stationId);
         setHistoricalLoading(true);
         try {
-            const res = await fetch(`/stations/${stationId}/historical-data`);
+            const res = await fetch(`/stations/${stationId}/historical-data?type=flow`);
             const data = await res.json();
             setHistoricalData(data);
         } catch (error) {
@@ -346,7 +358,90 @@ export default function FlowLevels({
     };
 
     const targetStation = selectedStationId ? stations.find(s => s.id === selectedStationId) : null;
-    const targetHistorical = historicalData ? historicalData.readings.filter((r: any) => r.measurement_type === 'flow') : [];
+    const targetHistorical = useMemo(
+        () => (historicalData?.readings ?? []).filter((r: any) => r.measurement_type === 'flow'),
+        [historicalData],
+    );
+
+    const historyDateBounds = useMemo(
+        () => getHistoryDateBounds(historyRange, historyFrom, historyTo),
+        [historyRange, historyFrom, historyTo],
+    );
+
+    const filteredChartHistory = useMemo(
+        () => targetHistorical.filter((row: any) => isDateWithinBounds(row.date, historyDateBounds)),
+        [targetHistorical, historyDateBounds],
+    );
+
+    const filteredFdcData = useMemo(() => {
+        const flowValues = filteredChartHistory
+            .map((row: any) => Number(row.value))
+            .filter((value: number) => Number.isFinite(value))
+            .sort((a: number, b: number) => a - b);
+
+        if (flowValues.length === 0) {
+            return [];
+        }
+
+        const n = flowValues.length;
+        const fdc = [];
+
+        for (let percentile = 0; percentile <= 100; percentile += 5) {
+            const index = Math.round((n - 1) * (percentile / 100));
+            const exceedanceIndex = n - 1 - index;
+
+            fdc.push({
+                percentile,
+                value: flowValues[Math.max(0, exceedanceIndex)],
+            });
+        }
+
+        return fdc;
+    }, [filteredChartHistory]);
+
+    const historyRows = useMemo(() => {
+        if (!selectedStationId) {
+            return historicalLogs;
+        }
+
+        const stationRows = (historicalData?.history_logs as HistoricalFlowRow[] | undefined)
+            ?? historicalLogs.filter((row) => row.station_id === selectedStationId);
+
+        return stationRows;
+    }, [selectedStationId, historicalData, historicalLogs]);
+
+    const filteredHistoryRows = useMemo(
+        () => filterAndSortHistoryRows(historyRows, {
+            search: historySearch,
+            sort: historySort,
+            bounds: historyDateBounds,
+            searchText: (row) => [
+                row.station_code,
+                row.station_name,
+                row.status,
+                row.submitted_by ?? '',
+                row.reviewed_by ?? '',
+                row.review_notes ?? '',
+            ].join(' '),
+        }),
+        [historyRows, historySearch, historySort, historyDateBounds],
+    );
+
+    const historySortOptions = [
+        { value: 'date_desc', label: t('common.history.sort.dateDesc') },
+        { value: 'date_asc', label: t('common.history.sort.dateAsc') },
+        { value: 'value_desc', label: t('common.history.sort.valueDesc') },
+        { value: 'value_asc', label: t('common.history.sort.valueAsc') },
+    ];
+
+    const historyRangeOptions = [
+        { value: 'all', label: t('common.history.range.all') },
+        { value: '30d', label: t('common.history.range.last30') },
+        { value: '90d', label: t('common.history.range.last90') },
+        { value: '180d', label: t('common.history.range.last180') },
+        { value: '365d', label: t('common.history.range.last365') },
+        { value: 'custom', label: t('common.history.range.custom') },
+    ];
 
     return (
         <>
@@ -587,7 +682,7 @@ export default function FlowLevels({
                                             <Flex justify="center" align="center" h={240}><IconRefresh className="animate-spin" /></Flex>
                                         ) : (
                                             <FlowDurationChart
-                                                data={historicalData?.fdc || []}
+                                                data={filteredFdcData}
                                                 limit={targetStation?.limit}
                                             />
                                         )}
@@ -602,7 +697,7 @@ export default function FlowLevels({
                                             <Flex justify="center" align="center" h={240}><IconRefresh className="animate-spin" /></Flex>
                                         ) : (
                                             <FlowDailyDischargeChart
-                                                data={targetHistorical}
+                                                data={filteredChartHistory}
                                                 limit={targetStation?.limit}
                                             />
                                         )}
@@ -632,6 +727,54 @@ export default function FlowLevels({
                 {/* RECENT HISTORICAL DISCHARGE CRUD TABLE */}
                 <Card withBorder radius="md" p="md" mt="xl">
                     <Title order={4} mb="md">{t('flow.history.title')}</Title>
+                    <Grid gutter="sm" mb="sm">
+                        <Grid.Col span={{ base: 12, md: 4 }}>
+                            <TextInput
+                                label={t('common.history.searchLabel')}
+                                placeholder={t('common.history.searchPlaceholder')}
+                                leftSection={<IconSearch size={16} />}
+                                value={historySearch}
+                                onChange={(event) => setHistorySearch(event.currentTarget.value)}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={{ base: 12, md: 3 }}>
+                            <Select
+                                label={t('common.history.sortLabel')}
+                                data={historySortOptions}
+                                value={historySort}
+                                onChange={(value) => setHistorySort((value as HistorySortOption) || 'date_desc')}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={{ base: 12, md: 3 }}>
+                            <Select
+                                label={t('common.history.rangeLabel')}
+                                data={historyRangeOptions}
+                                value={historyRange}
+                                onChange={(value) => setHistoryRange((value as HistoryRangeOption) || 'all')}
+                            />
+                        </Grid.Col>
+                        {historyRange === 'custom' && (
+                            <>
+                                <Grid.Col span={{ base: 12, md: 1 }}>
+                                    <TextInput
+                                        label={t('common.history.fromLabel')}
+                                        type="date"
+                                        value={historyFrom}
+                                        onChange={(event) => setHistoryFrom(event.currentTarget.value)}
+                                    />
+                                </Grid.Col>
+                                <Grid.Col span={{ base: 12, md: 1 }}>
+                                    <TextInput
+                                        label={t('common.history.toLabel')}
+                                        type="date"
+                                        value={historyTo}
+                                        onChange={(event) => setHistoryTo(event.currentTarget.value)}
+                                    />
+                                </Grid.Col>
+                            </>
+                        )}
+                    </Grid>
+                    <Text size="xs" c="dimmed" mb="sm">{t('common.history.records', { count: filteredHistoryRows.length })}</Text>
                     <ScrollArea h={400}>
                         <Table highlightOnHover verticalSpacing="xs" withRowBorders={false} withTableBorder={false}>
                             <Table.Thead style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
@@ -647,9 +790,8 @@ export default function FlowLevels({
                                 </Table.Tr>
                             </Table.Thead>
                             <Table.Tbody>
-                                {historicalLogs.length > 0 ? (
-                                    historicalLogs.map((row) => {
-                                        const { auth } = usePage<any>().props;
+                                {filteredHistoryRows.length > 0 ? (
+                                    filteredHistoryRows.map((row) => {
                                         const isOwner = row.submitted_by === auth.user?.display_name;
                                         const canEdit = isOwner || canManage;
 

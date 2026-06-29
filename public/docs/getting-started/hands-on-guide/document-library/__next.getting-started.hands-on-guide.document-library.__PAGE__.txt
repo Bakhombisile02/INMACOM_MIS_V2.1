@@ -1,0 +1,60 @@
+1:"$Sreact.fragment"
+2:I[55169,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"TOCProvider"]
+3:I[769,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"Sidebar"]
+4:I[47486,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ClientWrapper"]
+6:I[63894,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"HeadingAnchor"]
+7:I[26579,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ImageZoom"]
+14:I[97367,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"OutletBoundary"]
+15:"$Sreact.suspense"
+5:T576,# Document Library
+
+This section covers the shared file server system designed for exchanging reports, agreements, and policies across Tripartite countries.
+
+---
+
+## 1. Navigating Folders
+
+To access the file server, click on the **Document Library** tab.
+
+![Document Library](/screenshots/library.png)
+
+The library uses a structured folder system:
+- **Agreements:** Copies of official Tripartite basin treaties and agreements.
+- **Reports:** Monthly, seasonal, and annual hydrological reports.
+- **Policies:** National water policy guidelines and standard operating procedures.
+- Click on any folder to open it and view the nested files and subfolders.
+
+---
+
+## 2. Uploading Documents
+
+Users can upload new files to the active folder:
+
+1. Open the folder where you want the file to reside.
+2. Click **Upload Document** (or drag and drop your file in the Mantine dropzone area).
+3. Fill in the document details:
+   - **Document Name:** Short, descriptive title.
+   - **Country:** The originating nation (Mozambique, South Africa, Eswatini).
+   - **Description:** Summary of the file content.
+4. Click **Submit**.
+
+---
+
+## 3. Downloading Shared Files
+
+- All uploaded files are instantly visible to all users from Eswatini, South Africa, and Mozambique.
+- Click **Download** next to any file row to download it.
+- File integrity is audited, tracking who uploaded the file, who downloaded it, and when.0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"x:mx-auto x:flex x:max-w-(--nextra-content-width)","children":["$","$L2",null,{"value":[{"value":"1. Navigating Folders","id":"1-navigating-folders","depth":2},{"value":"2. Uploading Documents","id":"2-uploading-documents","depth":2},{"value":"3. Downloading Shared Files","id":"3-downloading-shared-files","depth":2}],"children":[["$","$L3",null,{}],["$","$L4",null,{"metadata":{"title":"Document Library","filePath":"app/getting-started/hands-on-guide/document-library/page.mdx"},"sourceCode":"$5","children":[["$","div",null,{"id":"nextra-skip-nav"}],["$","main",null,{"data-pagefind-body":true,"children":[["$","h1",null,{"className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-bold x:mt-2 x:text-4xl","children":["Document Library","$undefined"]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"This section covers the shared file server system designed for exchanging reports, agreements, and policies across Tripartite countries."}],"\n",["$","hr",null,{"className":"x:my-[2em] nextra-border"}],"\n",["$","h2",null,{"id":"1-navigating-folders","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["1. Navigating Folders",["$","$L6",null,{"id":"1-navigating-folders"}]]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["To access the file server, click on the ",["$","strong",null,{"children":"Document Library"}]," tab."]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["$","$L7",null,{"alt":"Document Library","placeholder":"blur","src":{"src":"/docs/_next/static/media/library.1jsp5r3b-7-b6.png","width":1280,"height":800,"blurWidth":8,"blurHeight":5,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAcUlEQVR42hWLSw7CMAxEfd+SSNnRi1ElUk5BNwRuAEjQND+ntuq8xWj0RgOptMfzdZ1nY8w0XQSllNYaGvb35+u9d87dhGWx1kqHfgyIGRHv6xpCEEPEIIqIYsq/Lf63ODLuKVfgMXDJuZSKvVehNTmdfXllO8jaL9EAAAAASUVORK5CYII="}}]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"The library uses a structured folder system:"}],"\n",["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n"]}],"\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12"]}]]}]]}]}],null,"$L13"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fH1W0CGycxmIj2F7exmpr"}
+8:["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Agreements:"}]," Copies of official Tripartite basin treaties and agreements."]}]
+9:["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Reports:"}]," Monthly, seasonal, and annual hydrological reports."]}]
+a:["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Policies:"}]," National water policy guidelines and standard operating procedures."]}]
+b:["$","li",null,{"className":"x:my-[.5em]","children":"Click on any folder to open it and view the nested files and subfolders."}]
+c:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+d:["$","h2",null,{"id":"2-uploading-documents","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["2. Uploading Documents",["$","$L6",null,{"id":"2-uploading-documents"}]]}]
+e:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Users can upload new files to the active folder:"}]
+f:["$","ol",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-decimal x:ms-6","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":"Open the folder where you want the file to reside."}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Upload Document"}]," (or drag and drop your file in the Mantine dropzone area)."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Fill in the document details:","\n",["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Document Name:"}]," Short, descriptive title."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Country:"}]," The originating nation (Mozambique, South Africa, Eswatini)."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Description:"}]," Summary of the file content."]}],"\n"]}],"\n"]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Submit"}],"."]}],"\n"]}]
+10:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+11:["$","h2",null,{"id":"3-downloading-shared-files","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["3. Downloading Shared Files",["$","$L6",null,{"id":"3-downloading-shared-files"}]]}]
+12:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":"All uploaded files are instantly visible to all users from Eswatini, South Africa, and Mozambique."}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Download"}]," next to any file row to download it."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":"File integrity is audited, tracking who uploaded the file, who downloaded it, and when."}],"\n"]}]
+13:["$","$L14",null,{"children":["$","$15",null,{"name":"Next.MetadataOutlet","children":"$@16"}]}]
+16:null

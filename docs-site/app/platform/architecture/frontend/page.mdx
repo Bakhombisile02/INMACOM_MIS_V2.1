@@ -1,0 +1,100 @@
+# Frontend & UI Architecture
+
+The frontend of INMACOM MIS is built as a single-page application (SPA) using **React 18**, **TypeScript**, and **Inertia.js React adapter**.
+
+---
+
+## Directory structure
+
+```text
+resources/js/
+├── Components/           # Reusable page components
+│   ├── Approvals/        # Review modals and workflows
+│   ├── Auth/             # Login and registration forms
+│   ├── Dashboard/        # Core layout widgets (e.g. Map cards)
+│   ├── Gis/              # GIS list tables and charts
+│   ├── Stations/         # Station drawer and metadata tables
+│   └── UI/               # Header, Logo, Language Switcher
+├── Layouts/              # Main layout wraps (Public vs. Authenticated)
+├── Pages/                # Routing pages loaded by Inertia
+├── locales/              # i18next translation json dictionaries
+│   ├── en/               # English translation files
+│   └── pt/               # Portuguese translation files
+├── types/                # TypeScript type declarations
+├── app.tsx               # Application bootstrap & Mantine settings
+└── bootstrap.ts          # Axios and libraries initialization
+```
+
+---
+
+## The Inertia Page Loader
+
+Laravel redirects requests to Inertia views. Vite resolves page paths dynamically inside `resources/js/app.tsx`:
+```tsx
+import { createInertiaApp } from '@inertiajs/react';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+
+createInertiaApp({
+  resolve: (name) =>
+    resolvePageComponent(
+      `./Pages/${name}.tsx`,
+      import.meta.glob('./Pages/**/*.tsx')
+    ),
+  setup({ el, App, props }) {
+    // Mount App...
+  },
+});
+```
+
+---
+
+## Mantine & Styling Standards
+
+The UI relies on **Mantine v8** for layout controls, forms, inputs, tabs, and buttons. 
+
+### 1. Global Mantine Defaults
+Mantine theme parameters are configured globally in `resources/js/app.tsx`.
+*   **Fonts:** The default body and heading font is mapped to a modern custom sans-serif system.
+*   **Colors:** Accent colors match HSL custom values.
+*   **Radius / Padding:** Preset globally to maintain consistency. Do not append inline props like `radius="md"` or `size="sm"` to components unless exceptions are approved.
+
+### 2. Custom CSS Modules
+For styling individual layouts and custom headers, use **CSS Modules** (`*.module.css`) rather than inline styles or ad-hoc Tailwind classes.
+*   **Standard CSS:** Avoid SCSS variables. Use standard CSS media queries for responsiveness.
+*   **Tailwind:** Used strictly for low-level positioning (flexbox, grid spacing, margins) and simple layouts.
+
+---
+
+## i18next Localization (EN & PT)
+
+The transboundary nature of INMACOM means the portal must support both **English** (default) and **Portuguese** (Mozambique).
+*   **No Hardcoded Text:** Never write raw strings in page renders.
+*   **Locales Trees:** Add all UI translation keys to matching JSON files under `locales/en/` and `locales/pt/`.
+
+### Usage in Components
+```tsx
+import { useTranslation } from 'react-i18next';
+
+export function Header() {
+  const { t } = useTranslation('common');
+
+  return (
+    <h1>{t('welcome_message')}</h1>
+  );
+}
+```
+If adding a key, always update BOTH `locales/en` and `locales/pt` files to prevent translation fallbacks and missing strings.
+
+---
+
+## Core Visual Components
+
+### 1. GisMap (`resources/js/Components/Dashboard/GisMap.tsx`)
+A shared interactive map displaying stations, basins, and active incident coordinates.
+*   **Technology:** React Leaflet + Leaflet.js.
+*   **Features:** Layer toggles, custom marker rendering matching hazard status levels, zoom controls, and popups with action shortcuts.
+
+### 2. HistoricalCharts (`resources/js/Components/Gis/HistoricalCharts.tsx`)
+Displays water measurements over time.
+*   **Technology:** Recharts.
+*   **Features:** Responsive line graphs, threshold boundaries (e.g. coloring background orange if flow is below eflow requirements), and interactive tooltips.

@@ -16,7 +16,11 @@ const FULL: Record<SupportedLocale, 'english' | 'portuguese'> = {
     pt: 'portuguese',
 };
 
-export default function LanguageSwitcher() {
+type LanguageSwitcherProps = {
+    compact?: boolean;
+};
+
+export default function LanguageSwitcher({ compact = false }: LanguageSwitcherProps) {
     const { t, i18n } = useTranslation('common');
     const [opened, setOpened] = useState(false);
     const current = (SUPPORTED_LOCALES as readonly string[]).includes(i18n.language)
@@ -34,22 +38,22 @@ export default function LanguageSwitcher() {
             shadow="md"
             position="bottom-end"
             radius="md"
-            width="target"
+            width={compact ? 180 : 'target'}
             withinPortal
             onOpen={() => setOpened(true)}
             onClose={() => setOpened(false)}
         >
             <Menu.Target>
                 <UnstyledButton
-                    className={classes.control}
+                    className={`${classes.control} ${compact ? classes.compact : ''}`}
                     data-expanded={opened || undefined}
                     aria-label={t('language.label')}
                 >
                     <Group gap="xs" wrap="nowrap">
                         <span className={classes.flag}>{FLAGS[current]}</span>
-                        <span className={classes.label}>{t(`language.${FULL[current]}`)}</span>
+                        {!compact && <span className={classes.label}>{t(`language.${FULL[current]}`)}</span>}
                     </Group>
-                    <IconChevronDown size={16} className={classes.icon} stroke={1.5} />
+                    {!compact && <IconChevronDown size={16} className={classes.icon} stroke={1.5} />}
                 </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>

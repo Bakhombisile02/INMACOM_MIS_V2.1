@@ -1,0 +1,47 @@
+{
+  "dashboard": "Dashboard",
+  "stations": "Stations",
+  "thresholds": "Thresholds",
+  "users": "Users",
+  "flowLevels": "Flow Levels",
+  "damLevels": "Dam Levels",
+  "waterQuality": "Water Quality",
+  "rainfall": "Rainfall",
+  "groundwater": "Groundwater",
+  "disasterManagement": "Disaster Management",
+  "documentStorage": "Document Storage",
+  "auditLog": "Audit Log",
+  "profile": "Profile",
+  "settings": "Settings",
+  "logout": "Log out",
+  "unknownUser": "INMACOM User",
+  "profileFields": {
+    "email": "Email",
+    "country": "Country",
+    "organization": "Organization",
+    "telephone": "Telephone"
+  },
+  "roles": {
+    "admin": "Admin",
+    "manager": "Manager",
+    "clerk": "Clerk"
+  },
+  "shell": {
+    "menu": "Menu",
+    "sidebarLabel": "Dashboard navigation",
+    "toggleNavigation": "Toggle navigation",
+    "collapse": "Collapse",
+    "expand": "Expand"
+  },
+  "placeholder": {
+    "default": "This module is being prepared and will be available soon.",
+    "thresholds": "Threshold configuration screens are being prepared.",
+    "users": "User administration screens are being prepared.",
+    "flowLevels": "Flow levels screens are being prepared.",
+    "damLevels": "Dam levels screens are being prepared.",
+    "waterQuality": "Water quality screens are being prepared.",
+    "rainfall": "Rainfall screens are being prepared.",
+    "groundwater": "Groundwater screens are being prepared.",
+    "settings": "Settings screens are being prepared."
+  }
+}

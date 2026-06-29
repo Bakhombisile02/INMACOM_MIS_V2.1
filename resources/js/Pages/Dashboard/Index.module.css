@@ -1,0 +1,203 @@
+/* INMACOM Premium Operational Dashboard CSS Module */
+
+.tabContent {
+  animation: fade-in 0.35s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.metricCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--mantine-shadow-md);
+    border-color: light-dark(var(--mantine-color-blue-3), var(--mantine-color-blue-8));
+  }
+}
+
+.ressanoGarciaCard {
+  position: relative;
+  overflow: hidden;
+  border-left: 5px solid;
+  
+  &[data-compliant="true"] {
+    border-left-color: var(--mantine-color-teal-6);
+    background: linear-gradient(135deg, 
+      light-dark(rgba(20, 190, 140, 0.03), rgba(20, 190, 140, 0.01)) 0%, 
+      light-dark(var(--mantine-color-white), var(--mantine-color-dark-7)) 100%
+    );
+  }
+  
+  &[data-compliant="false"] {
+    border-left-color: var(--mantine-color-red-6);
+    background: linear-gradient(135deg, 
+      light-dark(rgba(250, 82, 82, 0.03), rgba(250, 82, 82, 0.01)) 0%, 
+      light-dark(var(--mantine-color-white), var(--mantine-color-dark-7)) 100%
+    );
+    animation: pulse-border-red 2s infinite alternate;
+  }
+}
+
+@keyframes pulse-border-red {
+  from {
+    border-color: var(--mantine-color-red-5);
+    box-shadow: 0 0 4px rgba(250, 82, 82, 0.1);
+  }
+  to {
+    border-color: var(--mantine-color-red-7);
+    box-shadow: 0 0 12px rgba(250, 82, 82, 0.25);
+  }
+}
+
+.glowPulse {
+  animation: glow-animation 2s infinite alternate;
+}
+
+@keyframes glow-animation {
+  from {
+    box-shadow: 0 0 4px rgba(250, 176, 5, 0.2);
+    border-color: var(--mantine-color-yellow-5);
+  }
+  to {
+    box-shadow: 0 0 12px rgba(250, 176, 5, 0.4);
+    border-color: var(--mantine-color-yellow-7);
+  }
+}
+
+.glowPulseSevere {
+  animation: glow-severe-animation 1.5s infinite alternate;
+}
+
+@keyframes glow-severe-animation {
+  from {
+    box-shadow: 0 0 4px rgba(250, 82, 82, 0.2);
+    border-color: var(--mantine-color-red-5);
+  }
+  to {
+    box-shadow: 0 0 16px rgba(250, 82, 82, 0.5);
+    border-color: var(--mantine-color-red-7);
+  }
+}
+
+.statusIndicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  
+  &[data-status="compliant"] {
+    background-color: var(--mantine-color-teal-6);
+    box-shadow: 0 0 8px rgba(18, 184, 134, 0.6);
+  }
+  
+  &[data-status="non_compliant"] {
+    background-color: var(--mantine-color-red-6);
+    box-shadow: 0 0 8px rgba(250, 82, 82, 0.6);
+    animation: pulse-dot 1s infinite alternate;
+  }
+  
+  &[data-status="pending"] {
+    background-color: var(--mantine-color-yellow-5);
+    box-shadow: 0 0 8px rgba(250, 176, 5, 0.6);
+  }
+
+  &[data-status="unknown"] {
+    background-color: var(--mantine-color-gray-5);
+  }
+}
+
+.pulseDot {
+  animation: pulse-dot 1s infinite alternate;
+}
+
+@keyframes pulse-dot {
+  from {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* Glassmorphism details for overall structure */
+.glassHeader {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: light-dark(rgba(255, 255, 255, 0.8), rgba(26, 27, 30, 0.8));
+}
+
+.complianceTable {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  
+  th {
+    padding: 12px 16px;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 2px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+    color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-3));
+  }
+  
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+    color: light-dark(var(--mantine-color-gray-9), var(--mantine-color-gray-2));
+  }
+
+  tr:hover td {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  }
+}
+
+.interactiveRow {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: light-dark(var(--mantine-color-blue-0), rgba(24, 100, 171, 0.08)) !important;
+  }
+  
+  &[data-selected="true"] {
+    background-color: light-dark(var(--mantine-color-blue-1), rgba(24, 100, 171, 0.15)) !important;
+    border-left: 3px solid var(--mantine-color-blue-6);
+  }
+}
+
+.damArcContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.damFillText {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.mapContainer {
+  height: 400px;
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+  border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+}

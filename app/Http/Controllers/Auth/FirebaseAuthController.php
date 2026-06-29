@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\RegistrationPin;
-use App\Models\User;
+use App\Services\RegistrationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
 use Kreait\Firebase\Exception\Auth\RevokedIdToken;
 
@@ -38,7 +36,7 @@ class FirebaseAuthController extends Controller
      * Verify a Firebase ID token and establish a Laravel session.
      * Called after the client completes Firebase auth (email/password or Google).
      */
-    public function authenticate(Request $request): RedirectResponse
+    public function authenticate(Request $request, RegistrationService $service): RedirectResponse
     {
         $request->validate([
             'id_token' => ['required', 'string'],
@@ -72,68 +70,7 @@ class FirebaseAuthController extends Controller
             : null;
 
         try {
-            $user = DB::transaction(function () use ($uid, $email, $displayName, $picture, $pinCode) {
-                $existing = User::query()
-                    ->where('firebase_uid', $uid)
-                    ->orWhere('email', strtolower((string) $email))
-                    ->first();
-
-                $isNewUser = $existing === null;
-                $user = $existing ?? new User;
-
-                $assignedRole = $user->role ?: 'clerk';
-                $pin = null;
-
-                if ($isNewUser) {
-                    if ($pinCode) {
-                        $pin = RegistrationPin::query()
-                            ->available()
-                            ->where('code', $pinCode)
-                            ->lockForUpdate()
-                            ->first();
-
-                        if (! $pin) {
-                            throw new \RuntimeException('invalid_pin');
-                        }
-                    } else {
-                        // Look for a PIN reserved against this Firebase identity
-                        // (set when the user submitted the register form earlier).
-                        $pin = RegistrationPin::query()
-                            ->available()
-                            ->where(function ($q) use ($uid, $email) {
-                                $q->where('reserved_for_uid', $uid)
-                                    ->orWhere('reserved_for_email', strtolower((string) $email));
-                            })
-                            ->lockForUpdate()
-                            ->first();
-                    }
-
-                    if ($pin) {
-                        $assignedRole = $pin->role;
-                    } else {
-                        // New account but neither an explicit PIN nor a reservation.
-                        // Block registration — admin must whitelist this user first.
-                        throw new \RuntimeException('no_pin');
-                    }
-                }
-
-                $user->fill([
-                    'firebase_uid' => $uid,
-                    'email' => strtolower((string) $email),
-                    'display_name' => $displayName ?: ($user->display_name ?: 'INMACOM User'),
-                    'photo_url' => $picture,
-                    'role' => $assignedRole,
-                    'email_verified_at' => now(),
-                ]);
-
-                $user->save();
-
-                if ($pin) {
-                    $pin->markUsedBy($user);
-                }
-
-                return $user;
-            });
+            $user = $service->createUserWithPin($uid, $email, $displayName, $picture, $pinCode);
         } catch (\RuntimeException $e) {
             if ($e->getMessage() === 'invalid_pin') {
                 return back()->withErrors(['auth' => 'Invalid or expired registration PIN.']);

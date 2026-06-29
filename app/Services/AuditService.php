@@ -3,21 +3,31 @@
 namespace App\Services;
 
 use App\Models\AuditLog;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class AuditService
 {
     // Action type constants (DDR Module 8 aligned)
     public const ACTION_SELF_APPROVAL = 'self_approval';
+
     public const ACTION_MEASUREMENT_APPROVED = 'measurement_approved';
+
     public const ACTION_MEASUREMENT_REJECTED = 'measurement_rejected';
+
+    public const ACTION_MEASUREMENT_IMPORTED = 'measurement_imported';
+
     public const ACTION_STATION_REVISION_APPROVED = 'station_revision_approved';
+
     public const ACTION_STATION_REVISION_REJECTED = 'station_revision_rejected';
+
     public const ACTION_ROLE_CHANGE = 'role_change';
+
     public const ACTION_USER_DELETED = 'user_deleted';
+
     public const ACTION_RECORD_DEACTIVATION = 'record_deactivation';
+
     public const ACTION_DOCUMENT_UPLOADED = 'document_uploaded';
+
     public const ACTION_DOCUMENT_DELETED = 'document_deleted';
 
     /**

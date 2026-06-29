@@ -1,0 +1,68 @@
+{
+  "public": {
+    "title": "Biblioteca Pública de Documentos",
+    "subtitle": "Consulte e descarregue relatórios, conjuntos de dados e recursos públicos."
+  },
+  "private": {
+    "title": "Biblioteca de Documentos",
+    "subtitle": "Espaço interno de documentos. Carregue, gira e aceda a ficheiros privados."
+  },
+  "search": "Pesquisar documentos",
+  "sections": {
+    "library": "Biblioteca",
+    "mediaTypes": "Tipos de média",
+    "storages": "Armazenamentos",
+    "storagesEmpty": "Ainda não foram definidos armazenamentos."
+  },
+  "categories": {
+    "all": "Todos os ficheiros"
+  },
+  "library": {
+    "documents": "Documentos",
+    "images": "Imagens",
+    "videos": "Vídeos",
+    "audio": "Áudio",
+    "archives": "Arquivos"
+  },
+  "fileCount": "{{count}} ficheiro",
+  "fileCount_other": "{{count}} ficheiros",
+  "actions": {
+    "menu": "Acções do ficheiro",
+    "download": "Descarregar",
+    "preview": "Pré-visualizar",
+    "copyLink": "Copiar ligação",
+    "linkCopied": "Ligação copiada"
+  },
+  "empty": {
+    "noUploadsTitle": "Ainda não foram carregados ficheiros",
+    "noUploadsMessage": "Ainda não existem ficheiros nesta biblioteca. Assim que um administrador de secretaria ou gestor de dados carregar ficheiros, serão apresentados aqui.",
+    "noMatchTitle": "Sem resultados",
+    "noMatchMessage": "Nenhum documento corresponde ao filtro ou pesquisa actual."
+  },
+  "nav": {
+    "collapse": "Recolher",
+    "expand": "Expandir",
+    "openNav": "Abrir navegação",
+    "closeNav": "Fechar navegação"
+  },
+  "upload": {
+    "title": "Carregar documento",
+    "titleAccept": "Largar ficheiros aqui",
+    "titleReject": "Ficheiro demasiado grande",
+    "subtitle": "Arraste e largue ficheiros aqui para carregar. Anexe um único ficheiro, até 50 MB.",
+    "selectFiles": "Seleccionar ficheiros",
+    "modalTitle": "Carregar documento",
+    "titleLabel": "Título",
+    "descriptionLabel": "Descrição",
+    "mediaTypeLabel": "Tipo de média",
+    "storageLabel": "Armazenamento",
+    "storagePlaceholder": "Não atribuído",
+    "visibilityLabel": "Visibilidade",
+    "visibilityPrivate": "Privado",
+    "visibilityPublic": "Público",
+    "cancel": "Cancelar",
+    "submit": "Carregar",
+    "success": "Documento carregado",
+    "error": "Não foi possível carregar o documento"
+  }
+}

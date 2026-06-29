@@ -1,0 +1,105 @@
+1:"$Sreact.fragment"
+2:I[55169,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"TOCProvider"]
+3:I[769,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"Sidebar"]
+4:I[47486,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ClientWrapper"]
+9:I[26579,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ImageZoom"]
+a:I[63894,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"HeadingAnchor"]
+b:I[83987,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ToggleWordWrapButton"]
+21:I[97367,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"OutletBoundary"]
+22:"$Sreact.suspense"
+5:T104a,# IIMA Compliance & Allocations
+
+The **Incomati and Maputo Agreement (IIMA)** dictates specific restrictions on water abstractions and minimum environmental flow rates (Eflows) at international borders. This module tracks and logs compliance with these requirements.
+
+![INMACOM MIS IIMA Thresholds & Allocations](/screenshots/thresholds.png)
+
+---
+
+## Data Models Reference
+
+```
+ ┌──────────────────────┐        ┌──────────────────────┐
+ │ iima_user_categories │◄───────│  iima_allocations    │ (Allocated shares
+ └──────────▲───────────┘        └──────────────────────┘  per country & cat)
+            │
+            │                    ┌──────────────────────┐
+            └────────────────────│  water_abstractions  │ (Actual volumes
+                                 └──────────────────────┘  abstracted)
+                                            │
+                                            ▼
+                                 ┌──────────────────────┐
+                                 │iima_compliance_record│ (Calculates
+                                 └──────────────────────┘  compliance %)
+```
+
+### 1. `iima_user_categories`
+Defines priority categories for water users. It includes:
+*   `assurance_pct_primary` / `allocation_share_primary`: Priorities for domestic, municipal, and ecological uses.
+*   `assurance_pct_secondary` / `allocation_share_secondary`: Secondary priorities (industrial and agriculture).
+
+### 2. `iima_eflow_requirements`
+Maintains the minimum environmental flow rate (m³/s) for critical cross-border locations:
+*   *Key Monitoring Point:* Sabie River, Crocodile River, Incomati Main Stem.
+*   *Tied Station:* Links to a specific physical telemetry station (`station_id`).
+
+### 3. `iima_allocations`
+Defines the volume of water (million m³/annum) allocated to Eswatini, Mozambique, and South Africa for each user category in a given subcatchment.
+
+### 4. `water_abstractions`
+Records the actual volume of water abstracted by each country in a given period.
+
+---
+
+## Compliance Calculation Workflow
+
+The system calculates compliance metrics on a recurring basis or when triggered by data uploads.
+
+### 1. Eflow Compliance
+*   The system compares the average flow rate (m³/s) at a border monitoring station over the evaluation period against the `min_flow_m3_s` defined in `iima_eflow_requirements`.
+*   If the actual flow is equal to or greater than the threshold, compliance is marked `true` (100%).
+*   If the actual flow drops below the threshold, compliance is marked `false`, and an alert is flagged on the manager's dashboard.
+
+### 2. Abstraction Compliance
+*   The system sums all abstractions logged in the `water_abstractions` table for a specific country, subcatchment, and user category.
+*   It compares this total against the corresponding `iima_allocations` limit.
+*   *Compliance Percentage:*
+    ```text
+    Compliance % = (Actual Abstraction / Allocated Volume) * 100
+    ```
+*   If the abstraction exceeds 100%, it violates the IIMA agreement and triggers restriction actions.
+
+---
+
+## Restriction Level Triggers
+
+When water availability in the basin drops to critical levels (e.g. during severe droughts), the IIMA mandates progressive curtailments on secondary uses:
+
+*   **Restriction Level 1:** Voluntary reduction guidelines for agricultural abstractions.
+*   **Restriction Level 2:** Mandatory $10\%$ curtailment on agricultural and industrial licenses.
+*   **Restriction Level 3:** $20\%$ curtailment on agriculture; suspension of non-essential industrial abstractions.
+*   **Restriction Level 4 (Critical):** All water resources are redirected to primary domestic consumption and ecological flows. Abstraction for other categories is suspended.0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"x:mx-auto x:flex x:max-w-(--nextra-content-width)","children":["$","$L2",null,{"value":[{"value":"Data Models Reference","id":"data-models-reference","depth":2},{"value":[["$","$1",".0",{"children":["1. ",["$","code",".1",{"className":"nextra-code","dir":"ltr","children":"iima_user_categories"}]]}]],"id":"1-iima_user_categories","depth":3},{"value":[["$","$1",".0",{"children":["2. ",["$","code",".1",{"className":"nextra-code","dir":"ltr","children":"iima_eflow_requirements"}]]}]],"id":"2-iima_eflow_requirements","depth":3},{"value":[["$","$1",".0",{"children":["3. ",["$","code",".1",{"className":"nextra-code","dir":"ltr","children":"iima_allocations"}]]}]],"id":"3-iima_allocations","depth":3},{"value":[["$","$1",".0",{"children":["4. ",["$","code",".1",{"className":"nextra-code","dir":"ltr","children":"water_abstractions"}]]}]],"id":"4-water_abstractions","depth":3},{"value":"Compliance Calculation Workflow","id":"compliance-calculation-workflow","depth":2},{"value":"1. Eflow Compliance","id":"1-eflow-compliance","depth":3},{"value":"2. Abstraction Compliance","id":"2-abstraction-compliance","depth":3},{"value":"Restriction Level Triggers","id":"restriction-level-triggers","depth":2}],"children":[["$","$L3",null,{}],["$","$L4",null,{"metadata":{"title":"IIMA Compliance & Allocations","filePath":"app/platform/modules/iima/page.mdx"},"sourceCode":"$5","children":["$L6","$L7"]}]]}]}],null,"$L8"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fH1W0CGycxmIj2F7exmpr"}
+6:["$","div",null,{"id":"nextra-skip-nav"}]
+7:["$","main",null,{"data-pagefind-body":true,"children":[["$","h1",null,{"className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-bold x:mt-2 x:text-4xl","children":["IIMA Compliance & Allocations","$undefined"]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["The ",["$","strong",null,{"children":"Incomati and Maputo Agreement (IIMA)"}]," dictates specific restrictions on water abstractions and minimum environmental flow rates (Eflows) at international borders. This module tracks and logs compliance with these requirements."]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["$","$L9",null,{"alt":"INMACOM MIS IIMA Thresholds & Allocations","placeholder":"blur","src":{"src":"/docs/_next/static/media/thresholds.3kddw74ln01gv.png","width":1280,"height":800,"blurWidth":8,"blurHeight":5,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAUklEQVR42m2KOQ4EMQgE+f8bHTtyYAlWC22OYRxPJX2oSP56PM7FLl3Cg34KwxGRvlTVAHfPTNKrsAgzjzHmnAAikuyNaKX3Wmvv3b2qqPX64gFvIHTERfGbEwAAAABJRU5ErkJggg=="}}]}],"\n",["$","hr",null,{"className":"x:my-[2em] nextra-border"}],"\n",["$","h2",null,{"id":"data-models-reference","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["Data Models Reference",["$","$La",null,{"id":"data-models-reference"}]]}],"\n",["$","div",null,{"data-pagefind-ignore":"all","className":"nextra-code x:relative x:not-first:mt-[1.25em]","children":["$undefined",["$","pre",null,{"className":"x:group x:focus-visible:nextra-focus x:overflow-x-auto x:subpixel-antialiased x:text-[.9em] x:bg-white x:dark:bg-black x:py-4 x:ring-1 x:ring-inset x:ring-gray-300 x:dark:ring-neutral-700 x:contrast-more:ring-gray-900 x:contrast-more:dark:ring-gray-50 x:contrast-more:contrast-150 x:rounded-md not-prose","tabIndex":"0","children":[["$","div",null,{"className":"x:group-hover:opacity-100 x:group-focus:opacity-100 x:opacity-0 x:transition x:focus-within:opacity-100 x:flex x:gap-1 x:absolute x:right-4 x:top-2","children":[["$","$Lb",null,{"children":["$","svg",null,{"viewBox":"0 0 24 24","fill":"currentColor","height":"1em","children":["$","path",null,{"d":"M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4z"}]}]}],false]}],["$","code",null,{"className":"nextra-code","dir":"ltr","children":[["$","span",null,{"children":["$","span",null,{"children":" ┌──────────────────────┐        ┌──────────────────────┐"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":" │ iima_user_categories │◄───────│  iima_allocations    │ (Allocated shares"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":" └──────────▲───────────┘        └──────────────────────┘  per country & cat)"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"            │"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"            │                    ┌──────────────────────┐"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"            └────────────────────│  water_abstractions  │ (Actual volumes"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"                                 └──────────────────────┘  abstracted)"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"                                            │"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"                                            ▼"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"                                 ┌──────────────────────┐"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"                                 │iima_compliance_record│ (Calculates"}]}],"\n",["$","span",null,{"children":["$","span",null,{"children":"                                 └──────────────────────┘  compliance %)"}]}]]}]]}]]}],"\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a","\n","$L1b","\n","$L1c","\n","$L1d","\n","$L1e","\n","$L1f","\n","$L20"]}]
+8:["$","$L21",null,{"children":["$","$22",null,{"name":"Next.MetadataOutlet","children":"$@23"}]}]
+c:["$","h3",null,{"id":"1-iima_user_categories","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":[["1. ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"iima_user_categories"}]],["$","$La",null,{"id":"1-iima_user_categories"}]]}]
+d:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Defines priority categories for water users. It includes:"}]
+e:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","code",null,{"className":"nextra-code","dir":"ltr","children":"assurance_pct_primary"}]," / ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"allocation_share_primary"}],": Priorities for domestic, municipal, and ecological uses."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","code",null,{"className":"nextra-code","dir":"ltr","children":"assurance_pct_secondary"}]," / ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"allocation_share_secondary"}],": Secondary priorities (industrial and agriculture)."]}],"\n"]}]
+f:["$","h3",null,{"id":"2-iima_eflow_requirements","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":[["2. ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"iima_eflow_requirements"}]],["$","$La",null,{"id":"2-iima_eflow_requirements"}]]}]
+10:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Maintains the minimum environmental flow rate (m³/s) for critical cross-border locations:"}]
+11:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","em",null,{"children":"Key Monitoring Point:"}]," Sabie River, Crocodile River, Incomati Main Stem."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","em",null,{"children":"Tied Station:"}]," Links to a specific physical telemetry station (",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"station_id"}],")."]}],"\n"]}]
+12:["$","h3",null,{"id":"3-iima_allocations","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":[["3. ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"iima_allocations"}]],["$","$La",null,{"id":"3-iima_allocations"}]]}]
+13:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Defines the volume of water (million m³/annum) allocated to Eswatini, Mozambique, and South Africa for each user category in a given subcatchment."}]
+14:["$","h3",null,{"id":"4-water_abstractions","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":[["4. ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"water_abstractions"}]],["$","$La",null,{"id":"4-water_abstractions"}]]}]
+15:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Records the actual volume of water abstracted by each country in a given period."}]
+16:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+17:["$","h2",null,{"id":"compliance-calculation-workflow","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["Compliance Calculation Workflow",["$","$La",null,{"id":"compliance-calculation-workflow"}]]}]
+18:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"The system calculates compliance metrics on a recurring basis or when triggered by data uploads."}]
+19:["$","h3",null,{"id":"1-eflow-compliance","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":["1. Eflow Compliance",["$","$La",null,{"id":"1-eflow-compliance"}]]}]
+1a:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":["The system compares the average flow rate (m³/s) at a border monitoring station over the evaluation period against the ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"min_flow_m3_s"}]," defined in ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"iima_eflow_requirements"}],"."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["If the actual flow is equal to or greater than the threshold, compliance is marked ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"true"}]," (100%)."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["If the actual flow drops below the threshold, compliance is marked ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"false"}],", and an alert is flagged on the manager’s dashboard."]}],"\n"]}]
+1b:["$","h3",null,{"id":"2-abstraction-compliance","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":["2. Abstraction Compliance",["$","$La",null,{"id":"2-abstraction-compliance"}]]}]
+1c:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":["The system sums all abstractions logged in the ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"water_abstractions"}]," table for a specific country, subcatchment, and user category."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["It compares this total against the corresponding ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"iima_allocations"}]," limit."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","em",null,{"children":"Compliance Percentage:"}],"\n",["$","div",null,{"data-pagefind-ignore":"all","className":"nextra-code x:relative x:not-first:mt-[1.25em]","children":["$undefined",["$","pre",null,{"className":"x:group x:focus-visible:nextra-focus x:overflow-x-auto x:subpixel-antialiased x:text-[.9em] x:bg-white x:dark:bg-black x:py-4 x:ring-1 x:ring-inset x:ring-gray-300 x:dark:ring-neutral-700 x:contrast-more:ring-gray-900 x:contrast-more:dark:ring-gray-50 x:contrast-more:contrast-150 x:rounded-md not-prose","tabIndex":"0","children":[["$","div",null,{"className":"x:group-hover:opacity-100 x:group-focus:opacity-100 x:opacity-0 x:transition x:focus-within:opacity-100 x:flex x:gap-1 x:absolute x:right-4 x:top-2","children":[["$","$Lb",null,{"children":["$","svg",null,{"viewBox":"0 0 24 24","fill":"currentColor","height":"1em","children":["$","path",null,{"d":"M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4z"}]}]}],false]}],["$","code",null,{"className":"nextra-code","dir":"ltr","children":["$","span",null,{"children":["$","span",null,{"children":"Compliance % = (Actual Abstraction / Allocated Volume) * 100"}]}]}]]}]]}],"\n"]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":"If the abstraction exceeds 100%, it violates the IIMA agreement and triggers restriction actions."}],"\n"]}]
+1d:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+1e:["$","h2",null,{"id":"restriction-level-triggers","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["Restriction Level Triggers",["$","$La",null,{"id":"restriction-level-triggers"}]]}]
+1f:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"When water availability in the basin drops to critical levels (e.g. during severe droughts), the IIMA mandates progressive curtailments on secondary uses:"}]
+20:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Restriction Level 1:"}]," Voluntary reduction guidelines for agricultural abstractions."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Restriction Level 2:"}]," Mandatory $10%$ curtailment on agricultural and industrial licenses."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Restriction Level 3:"}]," $20%$ curtailment on agriculture; suspension of non-essential industrial abstractions."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Restriction Level 4 (Critical):"}]," All water resources are redirected to primary domestic consumption and ecological flows. Abstraction for other categories is suspended."]}],"\n"]}]
+23:null

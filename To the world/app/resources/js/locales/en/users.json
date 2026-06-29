@@ -1,0 +1,127 @@
+{
+  "title": "Users",
+  "subtitle": "Manage registered users and send invitations.",
+  "tabs": {
+    "users": "Users",
+    "invitations": "Invitations"
+  },
+  "search": "Search by name, email or organisation…",
+  "filterRole": "Filter by role",
+  "allRoles": "All roles",
+  "inviteButton": "Invite User",
+  "empty": "No users found",
+  "columns": {
+    "user": "User",
+    "email": "Email",
+    "role": "Role",
+    "organisation": "Organisation",
+    "country": "Country",
+    "joined": "Joined",
+    "actions": "Actions"
+  },
+  "actions": {
+    "editRole": "Edit role",
+    "resetPassword": "Reset password",
+    "delete": "Delete user",
+    "copyLink": "Copy invite link",
+      "revoke": "Revoke",
+      "resend": "Send to email",
+      "newLink": "Get new link"
+  },
+  "roles": {
+    "admin": "Admin",
+    "manager": "Manager",
+    "clerk": "Clerk"
+  },
+  "invitations": {
+    "title": "Invitations",
+    "subtitle": "One-time registration invite links and PIN codes.",
+    "empty": "No invitations yet",
+    "columns": {
+      "code": "Code",
+      "role": "Role",
+      "created": "Created",
+      "expires": "Expires",
+      "sentTo": "Sent to",
+      "status": "Status"
+    },
+    "status": {
+      "available": "Available",
+      "used": "Used",
+      "revoked": "Revoked",
+      "expired": "Expired",
+      "linkOpened": "Link Opened"
+    },
+    "expiredLabel": "Expired",
+    "linkCopied": "Invite link copied to clipboard",
+    "newLinkCopied": "New link generated and copied to clipboard",
+    "archive": {
+      "title": "Archived invitations",
+      "show": "Show archived ({{count}})",
+      "hide": "Hide archived"
+    }
+  },
+  "inviteModal": {
+    "title": "Invite a New User",
+    "subtitle": "Generate a one-time registration link. The new user will complete their own sign-up.",
+    "role": "Access level",
+    "rolePlaceholder": "Select a role",
+    "note": "Note (optional)",
+    "notePlaceholder": "e.g. New consultant from South Africa",
+    "expiry": "Link expires",
+    "expiryOptions": {
+      "24h": "After 24 hours",
+      "7d": "After 7 days",
+      "30d": "After 30 days",
+      "never": "Never"
+    },
+    "sentToEmail": "Send to email (optional)",
+    "sentToEmailDescription": "If provided, the invite link will be emailed to this address. This is NOT the registration email.",
+    "submit": "Generate Invite",
+    "resultTitle": "Invite created!",
+    "resultSubtitle": "Share this link with the person you want to invite. They must open it from a device where they are not logged in.",
+    "pin": "Registration code",
+    "inviteLink": "One-time invite link",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "warning": "This link expires after the first click. Do not open it yourself.",
+    "done": "Done",
+    "generateAnother": "Generate another",
+    "errors": {
+      "role": "Please select a role",
+      "failed": "Failed to create invite. Please try again."
+    }
+  },
+  "editRoleModal": {
+    "title": "Edit User Role",
+    "userDetails": "User details",
+    "role": "New role",
+    "submit": "Save changes",
+    "cancel": "Cancel",
+    "errors": {
+      "failed": "Failed to update role. Please try again."
+    }
+  },
+  "resendModal": {
+    "title": "Send Invite by Email",
+    "description": "Enter the email address to send this invite link to. This is NOT the registration email — the recipient can register with any email.",
+    "emailLabel": "Send to email address",
+    "emailPlaceholder": "recipient@example.com",
+    "regenerateNotice": "The previous link was already opened. A new one-time link will be generated.",
+    "submit": "Send",
+    "cancel": "Cancel",
+    "success": "Invite sent to {{email}}.",
+    "successNoEmail": "Invite link regenerated.",
+    "failed": "Failed to resend. Please try again."
+  },
+  "deleteConfirm": {
+    "title": "Delete user",
+    "message": "Are you sure you want to permanently delete {{name}}? This will also remove their Firebase account. This action cannot be undone.",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "passwordReset": {
+    "success": "Password reset email sent to {{email}}.",
+    "failed": "Failed to send reset email. Please try again."
+  }
+}

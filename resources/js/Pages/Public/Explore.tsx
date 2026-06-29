@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Head } from '@inertiajs/react';
 import {
     Badge,
@@ -9,6 +9,7 @@ import {
     Container,
     Group,
     Loader,
+    Select,
     SegmentedControl,
     SimpleGrid,
     Stack,
@@ -18,6 +19,7 @@ import {
     Title,
     Tooltip,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import {
     IconAlertTriangle,
     IconArrowRight,
@@ -126,6 +128,10 @@ function applyConfidenceFilter(stations: ExploreStation[], filter: ConfidenceFil
     return stations.filter((s) => s.confidence === filter);
 }
 
+function isModuleTab(value: ModuleKey | 'overview' | 'hazards'): value is ModuleKey {
+    return MODULE_ORDER.includes(value as ModuleKey);
+}
+
 function ConfidenceLegend() {
     const { t } = useTranslation('explore');
     return (
@@ -190,8 +196,12 @@ function ModuleHistoricalChart({ moduleKey, data }: { moduleKey: ModuleKey | 'ov
 
 export default function ExplorePage({ modules, hazardAreas, stats }: ExplorePageProps) {
     const { t, i18n } = useTranslation('explore');
+    const isMobile = useMediaQuery('(max-width: 48em)') ?? false;
     const [activeTab, setActiveTab] = useState<ModuleKey | 'overview' | 'hazards'>('overview');
     const [confidenceFilter, setConfidenceFilter] = useState<ConfidenceFilter>('all');
+    const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
+    const [stationHistorical, setStationHistorical] = useState<{ date: string; value: number }[]>([]);
+    const [stationHistoricalLoading, setStationHistoricalLoading] = useState(false);
 
     const overviewStations = useMemo<ExploreStation[]>(() => {
         const map = new Map<string, ExploreStation>();
@@ -229,6 +239,100 @@ export default function ExplorePage({ modules, hazardAreas, stats }: ExplorePage
     ];
 
     const locale = i18n.language;
+    const mapHeight = isMobile ? 420 : 560;
+
+    const stationOptions = useMemo(() => {
+        if (!isModuleTab(activeTab)) return [];
+        return stationsForMap
+            .map((station) => ({
+                value: station.id,
+                label: `${station.code} — ${station.name}`,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+    }, [activeTab, stationsForMap]);
+
+    const selectedStation = useMemo(
+        () => stationsForMap.find((station) => station.id === selectedStationId) ?? null,
+        [stationsForMap, selectedStationId],
+    );
+
+    useEffect(() => {
+        if (!isModuleTab(activeTab)) {
+            setSelectedStationId(null);
+            setStationHistorical([]);
+            return;
+        }
+
+        if (selectedStationId && !stationsForMap.some((station) => station.id === selectedStationId)) {
+            setSelectedStationId(null);
+            setStationHistorical([]);
+        }
+    }, [activeTab, selectedStationId, stationsForMap]);
+
+    useEffect(() => {
+        if (!selectedStationId || !isModuleTab(activeTab)) {
+            setStationHistorical([]);
+            return;
+        }
+
+        const controller = new AbortController();
+
+        const loadStationHistorical = async () => {
+            setStationHistoricalLoading(true);
+
+            try {
+                const response = await fetch(`/public/stations/${selectedStationId}/historical-data?type=${activeTab}`, {
+                    signal: controller.signal,
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load station history (${response.status})`);
+                }
+
+                const payload = await response.json();
+                const readings = Array.isArray(payload?.readings) ? payload.readings : [];
+
+                const points = readings
+                    .filter((row: any) => {
+                        if (!row?.date) return false;
+                        const numeric = Number(row?.value);
+                        if (!Number.isFinite(numeric)) return false;
+
+                        // Backends can return mixed measurement arrays; keep requested module only.
+                        if (row.measurement_type && row.measurement_type !== activeTab) {
+                            return false;
+                        }
+
+                        return true;
+                    })
+                    .map((row: any) => ({
+                        date: String(row.date),
+                        value: Number(row.value),
+                    }))
+                    .sort(
+                        (a: { date: string; value: number }, b: { date: string; value: number }) =>
+                            new Date(a.date).getTime() - new Date(b.date).getTime(),
+                    );
+
+                setStationHistorical(points);
+            } catch (error) {
+                if ((error as Error).name !== 'AbortError') {
+                    console.error('Failed to fetch station historical data', error);
+                    setStationHistorical([]);
+                }
+            } finally {
+                if (!controller.signal.aborted) {
+                    setStationHistoricalLoading(false);
+                }
+            }
+        };
+
+        loadStationHistorical();
+
+        return () => {
+            controller.abort();
+        };
+    }, [activeTab, selectedStationId]);
 
     return (
         <>
@@ -279,7 +383,7 @@ export default function ExplorePage({ modules, hazardAreas, stats }: ExplorePage
                             variant="pills"
                             color="blue"
                         >
-                            <Tabs.List style={{ paddingTop: 12, paddingBottom: 12, flexWrap: 'wrap', gap: 8 }}>
+                            <Tabs.List className={classes.tabsList}>
                                 <Tabs.Tab value="overview" leftSection={<IconMap2 size={16} />}>
                                     {t('tabs.overview')}
                                 </Tabs.Tab>
@@ -315,28 +419,61 @@ export default function ExplorePage({ modules, hazardAreas, stats }: ExplorePage
                                 </Stack>
 
                                 {activeTab !== 'hazards' && (
-                                    <SegmentedControl
-                                        value={confidenceFilter}
-                                        onChange={(v) => setConfidenceFilter(v as ConfidenceFilter)}
-                                        data={[
-                                            { label: t('confidence.filter.all'), value: 'all' },
-                                            { label: t('confidence.filter.verified'), value: 'verified' },
-                                            { label: t('confidence.filter.provisional'), value: 'provisional' },
-                                        ]}
-                                    />
+                                    isMobile ? (
+                                        <Select
+                                            className={classes.filterControl}
+                                            value={confidenceFilter}
+                                            onChange={(value) => {
+                                                if (value === 'all' || value === 'verified' || value === 'provisional') {
+                                                    setConfidenceFilter(value);
+                                                }
+                                            }}
+                                            data={[
+                                                { label: t('confidence.filter.all'), value: 'all' },
+                                                { label: t('confidence.filter.verified'), value: 'verified' },
+                                                { label: t('confidence.filter.provisional'), value: 'provisional' },
+                                            ]}
+                                            allowDeselect={false}
+                                            size="md"
+                                        />
+                                    ) : (
+                                        <SegmentedControl
+                                            className={classes.filterControl}
+                                            value={confidenceFilter}
+                                            onChange={(v) => setConfidenceFilter(v as ConfidenceFilter)}
+                                            data={[
+                                                { label: t('confidence.filter.all'), value: 'all' },
+                                                { label: t('confidence.filter.verified'), value: 'verified' },
+                                                { label: t('confidence.filter.provisional'), value: 'provisional' },
+                                            ]}
+                                        />
+                                    )
                                 )}
                             </Group>
 
-                            <Card withBorder padding={0} radius="md" className={classes.fadeIn} key={`${activeTab}-${confidenceFilter}`}>
+                            {isModuleTab(activeTab) && (
+                                <Card withBorder radius="md" padding="sm">
+                                    <Group gap="xs" wrap="wrap">
+                                        <Badge variant="light" color="blue">{t('guide.step1')}</Badge>
+                                        <Badge variant="light" color="teal">{t('guide.step2')}</Badge>
+                                        <Badge variant="light" color="grape">{t('guide.step3')}</Badge>
+                                        <Badge variant="light" color="gray">{t('guide.step4')}</Badge>
+                                    </Group>
+                                </Card>
+                            )}
+
+                            <Card withBorder padding={0} radius="md" className={`${classes.fadeIn} ${classes.mapCard}`} key={`${activeTab}-${confidenceFilter}`}>
                                 {activeTab === 'hazards' ? (
                                     <HazardAreaTable hazardAreas={hazardAreas} />
                                 ) : (
-                                    <Suspense fallback={<MapSkeleton height={560} />}>
+                                    <Suspense fallback={<MapSkeleton height={mapHeight} />}>
                                         <GisMap
                                             stations={stationsForMap}
                                             legendTitle={t('map.title')}
                                             legends={legends}
-                                            height={560}
+                                            height={mapHeight}
+                                            selectedId={selectedStationId}
+                                            onMarkerClick={isModuleTab(activeTab) ? (id) => setSelectedStationId(id) : undefined}
                                             defaultLegendCollapsed
                                         />
                                     </Suspense>
@@ -350,14 +487,85 @@ export default function ExplorePage({ modules, hazardAreas, stats }: ExplorePage
                 {activeTab !== 'overview' && activeTab !== 'hazards' && (
                     <section className={classes.section} style={{ paddingTop: 0 }}>
                         <Container size="xl">
-                            <Card withBorder radius="md" padding="lg" className={classes.fadeIn} key={`chart-${activeTab}`}>
-                                <Stack gap="md">
-                                    <Stack gap={2}>
-                                        <Text className={classes.sectionTitle}>{t('module.historicalTitle')}</Text>
-                                        <Text className={classes.sectionSubtitle}>{t('module.historicalDescription')}</Text>
+                            <Card withBorder radius="md" padding="lg" className={`${classes.fadeIn} ${classes.chartCard}`} key={`chart-${activeTab}`}>
+                                <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
+                                    <Stack gap="md">
+                                        <Stack gap={2}>
+                                            <Text className={classes.sectionTitle}>{t('module.historicalTitle')}</Text>
+                                            <Text className={classes.sectionSubtitle}>{t('module.historicalDescription')}</Text>
+                                        </Stack>
+                                        <ModuleHistoricalChart moduleKey={activeTab} data={modules[activeTab]?.historical ?? []} />
                                     </Stack>
-                                    <ModuleHistoricalChart moduleKey={activeTab} data={modules[activeTab]?.historical ?? []} />
-                                </Stack>
+
+                                    <Stack gap="md">
+                                        <Stack gap={2}>
+                                            <Text className={classes.sectionTitle}>{t('module.stationHistoricalTitle')}</Text>
+                                            <Text className={classes.sectionSubtitle}>{t('module.stationHistoricalDescription')}</Text>
+                                        </Stack>
+
+                                        <Select
+                                            label={t('module.selectStationLabel')}
+                                            placeholder={t('module.selectStationPlaceholder')}
+                                            data={stationOptions}
+                                            value={selectedStationId}
+                                            onChange={(value) => setSelectedStationId(value)}
+                                            size={isMobile ? 'md' : 'sm'}
+                                            searchable
+                                            clearable
+                                            nothingFoundMessage={t('module.selectStationEmpty')}
+                                        />
+
+                                        {selectedStation && (
+                                            <Badge variant="light" color="blue" style={{ alignSelf: 'flex-start' }}>
+                                                {selectedStation.code} · {selectedStation.name}
+                                            </Badge>
+                                        )}
+
+                                        {selectedStation && (
+                                            <Card withBorder radius="md" padding="sm">
+                                                <Stack gap={4}>
+                                                    <Text size="xs" fw={700} c="dimmed" tt="uppercase">
+                                                        {t('module.stationDetailTitle')}
+                                                    </Text>
+                                                    <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xs">
+                                                        <Text size="sm">
+                                                            <strong>{t('module.stationDetailLatest')}</strong>{' '}
+                                                            {selectedStation.value !== null ? `${selectedStation.value} ${selectedStation.unit}` : t('footer.noData')}
+                                                        </Text>
+                                                        <Text size="sm">
+                                                            <strong>{t('module.stationDetailAsOf')}</strong>{' '}
+                                                            {formatDateTime(selectedStation.date, locale)}
+                                                        </Text>
+                                                        <Text size="sm">
+                                                            <strong>{t('module.stationDetailBasin')}</strong>{' '}
+                                                            {selectedStation.river_basin ?? '—'}
+                                                        </Text>
+                                                        <Text size="sm">
+                                                            <strong>{t('module.stationDetailCountry')}</strong>{' '}
+                                                            {selectedStation.country ?? '—'}
+                                                        </Text>
+                                                        <Text size="sm">
+                                                            <strong>{t('module.stationDetailConfidence')}</strong>{' '}
+                                                            {t(`confidence.${selectedStation.confidence}`)}
+                                                        </Text>
+                                                    </SimpleGrid>
+                                                </Stack>
+                                            </Card>
+                                        )}
+
+                                        {!selectedStationId ? (
+                                            <Center style={{ height: 260 }}>
+                                                <Text size="sm" c="dimmed">{t('module.selectStationPrompt')}</Text>
+                                            </Center>
+                                        ) : stationHistoricalLoading ? (
+                                            <Center style={{ height: 260 }}>
+                                                <Loader size="sm" />
+                                            </Center>
+                                        ) : (
+                                            <ModuleHistoricalChart moduleKey={activeTab} data={stationHistorical} />
+                                        )}
+                                    </Stack>
+                                </SimpleGrid>
                             </Card>
                         </Container>
                     </section>
@@ -446,6 +654,7 @@ function ModuleInsightCard({
             type="button"
             onClick={onSelect}
             className={`${classes.moduleCard} ${active ? classes.moduleCardActive : ''}`}
+            aria-pressed={active}
             style={{ textAlign: 'left', font: 'inherit', cursor: 'pointer', border: undefined }}
         >
             <Group justify="space-between" wrap="nowrap">
@@ -509,6 +718,7 @@ function HazardSummaryCard({
             type="button"
             onClick={onSelect}
             className={`${classes.moduleCard} ${active ? classes.moduleCardActive : ''}`}
+            aria-pressed={active}
             style={{ textAlign: 'left', font: 'inherit', cursor: 'pointer', border: undefined }}
         >
             <Group justify="space-between" wrap="nowrap">

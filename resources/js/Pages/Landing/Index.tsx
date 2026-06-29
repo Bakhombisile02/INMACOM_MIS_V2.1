@@ -30,7 +30,7 @@ export default function LandingIndex() {
                                 />
                             </Title>
 
-                            <Text size="md" c="dimmed">
+                            <Text size="md" c="dimmed" className={classes.lead}>
                                 {t('lead')}
                             </Text>
 
@@ -49,11 +49,11 @@ export default function LandingIndex() {
                                 </Stack>
                             </Alert>
 
-                            <Group>
-                                <Button component={Link} href="/explore" size="md">
+                            <Group className={classes.actions} align="stretch">
+                                <Button component={Link} href="/explore" size="md" className={classes.actionButton}>
                                     {tCommon('actions.exploreLiveData')}
                                 </Button>
-                                <Button component={Link} href="/login" variant="default" size="md">
+                                <Button component={Link} href="/login" variant="default" size="md" className={classes.actionButton}>
                                     {tCommon('actions.signIn')}
                                 </Button>
                                 <Button
@@ -61,6 +61,7 @@ export default function LandingIndex() {
                                     href="#about"
                                     variant="subtle"
                                     size="md"
+                                    className={classes.actionButton}
                                 >
                                     {tCommon('actions.learnMore')}
                                 </Button>

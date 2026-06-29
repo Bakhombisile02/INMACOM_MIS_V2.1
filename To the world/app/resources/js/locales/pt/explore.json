@@ -1,0 +1,79 @@
+{
+  "head": {
+    "title": "Explorar a bacia do Incomati",
+    "description": "Monitorização em direto das estações de barragens, caudal, precipitação, águas subterrâneas e qualidade da água na bacia do Incomati."
+  },
+  "hero": {
+    "eyebrow": "Painel público",
+    "title": "Explore a bacia do Incomati em tempo real",
+    "subtitle": "Uma visão partilhada, ao nível de área, dos níveis das barragens, caudais, precipitação, águas subterrâneas, qualidade da água e riscos activos em Moçambique, África do Sul e Essuatíni.",
+    "lastSync": "Última actualização",
+    "noSync": "À espera da primeira sincronização"
+  },
+  "kpi": {
+    "stations": "Estações monitorizadas",
+    "countries": "Países",
+    "activeHazards": "Incidentes activos",
+    "watchAreas": "Áreas em vigilância ou superior"
+  },
+  "confidence": {
+    "label": "Confiança dos dados",
+    "verified": "Verificado",
+    "verifiedHelp": "Revisto e aprovado por um gestor de dados.",
+    "provisional": "Provisório",
+    "provisionalHelp": "Submetido mas ainda não revisto — usar com cuidado.",
+    "unknown": "Sem dados",
+    "unknownHelp": "Ainda não há leitura disponível para esta estação.",
+    "filter": {
+      "all": "Tudo",
+      "verified": "Só verificados",
+      "provisional": "Só provisórios"
+    }
+  },
+  "tabs": {
+    "overview": "Visão geral",
+    "dam_level": "Nível de barragem",
+    "flow": "Caudal",
+    "rainfall": "Precipitação",
+    "groundwater_level": "Águas subterrâneas",
+    "water_quality": "Qualidade da água",
+    "hazards": "Riscos"
+  },
+  "map": {
+    "title": "Mapa da rede",
+    "subtitleOverview": "Todas as estações activas da bacia.",
+    "subtitleModule": "Estações que reportam o indicador seleccionado.",
+    "empty": "Sem estações para mostrar nesta camada.",
+    "alertsHeader": "Alertas"
+  },
+  "module": {
+    "stations": "Estações",
+    "withData": "Com dados recentes",
+    "alerts": "Em alerta",
+    "provisional": "Leituras provisórias",
+    "verified": "Leituras verificadas",
+    "lastReading": "Última leitura",
+    "noReadings": "Sem leituras ainda",
+    "openDetails": "Ver detalhes",
+    "historicalTitle": "Tendência da bacia — últimos 90 dias",
+    "historicalDescription": "Média diária em toda a bacia das estações que reportam. Valores provisórios são incluídos para mostrar o estado actual.",
+    "samples": "Amostras"
+  },
+  "hazards": {
+    "title": "Riscos activos por área",
+    "subtitle": "Estado actual de riscos publicado pelos parceiros da INMACOM. As localizações exactas dos incidentes não são mostradas intencionalmente.",
+    "empty": "Não há riscos publicados de momento.",
+    "area": "Área",
+    "hazard": "Risco",
+    "level": "Nível",
+    "activeIncidents": "Incidentes activos",
+    "updated": "Actualizado"
+  },
+  "footer": {
+    "verified": "Verificado",
+    "provisional": "Provisório",
+    "alert": "Em alerta",
+    "noData": "Sem dados",
+    "providedBy": "Dados fornecidos pelos parceiros de monitorização da INMACOM"
+  }
+}

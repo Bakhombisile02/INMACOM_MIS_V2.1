@@ -1,15 +1,16 @@
 .shell {
-    min-height: calc(100vh - 56px);
+    --public-header-height: 64px;
+    min-height: calc(100vh - var(--public-header-height));
     display: flex;
     align-items: stretch;
 }
 
 .sidebar {
     position: sticky;
-    top: 56px;
+    top: var(--public-header-height);
     align-self: flex-start;
     flex-shrink: 0;
-    height: calc(100vh - 56px);
+    height: calc(100vh - var(--public-header-height));
     background: var(--mantine-color-body);
     border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
     overflow: hidden;
@@ -41,11 +42,15 @@
     border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
     background: var(--mantine-color-body);
     position: sticky;
-    top: 56px;
+    top: var(--public-header-height);
     z-index: 5;
 }
 
 @media (max-width: 48em) {
+    .shell {
+        --public-header-height: 60px;
+    }
+
     .mobileTrigger {
         display: flex;
         align-items: center;

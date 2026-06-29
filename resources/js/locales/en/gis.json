@@ -43,6 +43,29 @@
       "reviewNotesPlaceholder": "e.g. Value seems mathematically impossible, please verify gauge calibration data.",
       "selectGaugeStation": "Select Gauge Station",
       "readingDateLabel": "Reading Date"
+    },
+    "history": {
+      "searchLabel": "Search history",
+      "searchPlaceholder": "Search by station, status, reviewer, notes...",
+      "sortLabel": "Sort by",
+      "rangeLabel": "Date range",
+      "fromLabel": "From",
+      "toLabel": "To",
+      "records": "Showing {{count}} records",
+      "sort": {
+        "dateDesc": "Newest date first",
+        "dateAsc": "Oldest date first",
+        "valueDesc": "Highest value first",
+        "valueAsc": "Lowest value first"
+      },
+      "range": {
+        "all": "All history",
+        "last30": "Last 30 days",
+        "last90": "Last 90 days",
+        "last180": "Last 180 days",
+        "last365": "Last 365 days",
+        "custom": "Custom range"
+      }
     }
   },
   "flow": {

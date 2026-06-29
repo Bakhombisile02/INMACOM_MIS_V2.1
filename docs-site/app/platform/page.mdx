@@ -1,0 +1,67 @@
+# INMACOM MIS Platform Overview
+
+Welcome to the **INMACOM MIS (Management Information System) V2.0** developer documentation and user portal. This site serves as the authoritative source of truth detailing the technical implementation, architecture, databases, routing, APIs, and business workflows of the INMACOM platform.
+
+---
+
+## System Overview
+
+The **Incomati Water Resources Management System (INMACOM MIS)** is a transboundary water-management portal. It is designed to track water stations, real-time measurements, compliance with the **Incomati and Maputo Agreement (IIMA)**, hazard status, disaster incidents, and document flows across three tri-basin nations:
+*   🇲🇿 **Mozambique**
+*   🇿🇦 **South Africa**
+*   🇸🇿 **Eswatini (Swaziland)**
+
+The platform provides a consolidated dashboard for environmental managers, administrators, and data entry clerks to monitor basin health, log local alerts, and report compliance metrics back to the tri-nation Tripartite Permanent Technical Committee (TPTC).
+
+![INMACOM MIS Dashboard](/screenshots/dashboard.png)
+
+```
+   ┌─────────────────────────────────────────────────────────────┐
+   │                       INMACOM MIS                           │
+   │           Transboundary Basin Management Portal             │
+   └──────────────────────────────┬──────────────────────────────┘
+                                  │
+         ┌────────────────────────┼────────────────────────┐
+         ▼                        ▼                        ▼
+  🇿🇦 South Africa            🇸🇿 Eswatini             🇲🇿 Mozambique
+ (Upper Incomati)         (Middle Incomati)         (Lower Incomati)
+```
+
+---
+
+## Technical Stack
+
+The application is structured as a modern full-stack monolithic web application using the following technologies:
+
+| Layer | Technology | Version / Description |
+| :--- | :--- | :--- |
+| **Backend** | Laravel 13 (PHP 8.3) | Core routing, MVC architecture, domain models, validations. |
+| **Frontend** | React 18 + TypeScript | Component-driven, dynamic UI. |
+| **Monolith Bridge** | Inertia.js 2 | Server-driven routing with a single-page app (SPA) user experience. |
+| **Database** | PostgreSQL | Relational transactional storage for stations, history, and audits. |
+| **Authentication** | Firebase Authentication | Email/password + Google Auth with Laravel session synchronization. |
+| **Styling** | Mantine v8 + Tailwind v3 | Premium, clean layout system utilizing global styling tokens. |
+| **Mapping** | Leaflet + React Leaflet | GIS-driven mapping showing basin boundaries, station locations, and status. |
+
+---
+
+## Treaty & Compliance Context
+
+The core business logic of INMACOM MIS revolves around the **Incomati and Maputo Agreement (IIMA)**, specifically monitoring:
+1.  **Instream Flow Requirements (Eflow):** Ensuring that river flow rates at critical cross-border monitoring stations do not drop below the treaty-mandated minimum thresholds (expressed in m³/s or million m³/annum).
+2.  **Water Allocations:** Monitoring that total abstracted volumes by each country do not exceed the historical allocations designated for each user category.
+3.  **Water Quality Standards:** Tracking parameters like dissolved oxygen (DO), pH, electrical conductivity (EC), temperature, and chemical concentrations to prevent ecological degradation.
+4.  **Disaster and Incident Response:** Instantly notifying downstream countries (e.g. South Africa/Eswatini notifying Mozambique) in the event of severe floods, dam spillages, or chemical spills.
+
+> [!NOTE]
+> The Incomati river basin is highly vulnerable. Any water abstraction upstream directly impacts downstream users, making this real-time monitoring and reporting system critical for environmental compliance and international treaty enforcement.
+
+---
+
+## Quick Navigation
+
+Ready to start developing? Navigate through the sections using the sidebar:
+*   [**Getting Started & Onboarding**](/getting-started/quickstart): Configure and seed the development environment.
+*   [**Hands-on User Guide**](/getting-started/hands-on-guide): Step-by-step user manual with screenshots of the active system.
+*   [**System Architecture**](/platform/architecture/database): Discover how our database schemas, authentication flow, and backend/frontend layers integrate.
+*   [**Feature Modules**](/platform/modules/stations): Detailed deep-dive into stations, GIS modules, compliance triggers, and incident reporting.

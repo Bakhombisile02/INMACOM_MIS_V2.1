@@ -1,0 +1,59 @@
+{
+  "title": "Settings",
+  "subtitle": "Manage your account, preferences, and notifications.",
+  "tabs": {
+    "profile": "Profile",
+    "appearance": "Appearance",
+    "notifications": "Notifications",
+    "dataPreferences": "Data Preferences"
+  },
+  "profile": {
+    "title": "Profile Information",
+    "subtitle": "Update your display name and contact details.",
+    "displayName": "Display Name",
+    "displayNameRequired": "Display name is required.",
+    "email": "Email Address",
+    "emailReadOnly": "Email is managed by your sign-in provider and cannot be changed here.",
+    "country": "Country",
+    "countryPlaceholder": "Select country",
+    "organization": "Organization",
+    "telephone": "Telephone",
+    "saveProfile": "Save Profile",
+    "saved": "Profile updated successfully.",
+    "error": "Failed to update profile. Please try again."
+  },
+  "appearance": {
+    "themeTitle": "Theme",
+    "themeSubtitle": "Choose how the interface looks. System default follows your OS setting.",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeAuto": "System",
+    "languageTitle": "Language",
+    "languageSubtitle": "Switch the interface language. Changes apply immediately.",
+    "saved": "Appearance preference saved."
+  },
+  "notifications": {
+    "title": "Email Notifications",
+    "subtitle": "Choose which events send an email to your account address. These settings take effect once email delivery is enabled.",
+    "measurementReviewed": "My submitted measurement was reviewed or rejected",
+    "thresholdExceeded": "A compliance threshold is exceeded at a station",
+    "incidentReported": "A new disaster incident is reported",
+    "incidentStatusChanged": "An incident status or severity changes",
+    "pinUsed": "A registration PIN I created was used",
+    "save": "Save Notifications",
+    "saved": "Notification preferences saved.",
+    "error": "Failed to save notification preferences."
+  },
+  "dataPreferences": {
+    "title": "Data Preferences",
+    "subtitle": "Default filters and display settings applied across data modules.",
+    "timezone": "Display Timezone",
+    "timezonePlaceholder": "Select timezone",
+    "rowsPerPage": "Rows Per Page",
+    "defaultCountry": "Default Country Filter",
+    "defaultCountryPlaceholder": "All countries",
+    "save": "Save Preferences",
+    "saved": "Data preferences saved.",
+    "error": "Failed to save data preferences."
+  }
+}

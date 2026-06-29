@@ -1,5 +1,6 @@
 .control {
   width: 160px;
+  min-height: 44px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,6 +17,12 @@
 
 .control:hover {
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
+}
+
+.compact {
+  width: 52px;
+  justify-content: center;
+  padding: 0;
 }
 
 .label {

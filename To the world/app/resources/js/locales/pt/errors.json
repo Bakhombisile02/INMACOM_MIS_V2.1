@@ -1,0 +1,24 @@
+{
+  "403": {
+    "title": "Acesso negado",
+    "description": "Não tem permissão para visualizar esta página. Se acredita que isto é um erro, contacte o seu administrador."
+  },
+  "404": {
+    "title": "Nada para ver aqui",
+    "description": "A página que está a tentar abrir não existe. Pode ter escrito o endereço incorrectamente, ou a página foi movida para outro URL. Se acha que isto é um erro, contacte o suporte."
+  },
+  "500": {
+    "title": "Algo correu mal",
+    "description": "Os nossos servidores encontraram um erro inesperado. Tente novamente em breve. Se o problema persistir, contacte o suporte."
+  },
+  "503": {
+    "title": "Sistema em manutenção",
+    "description": "O INMACOM MIS está temporariamente indisponível para manutenção programada. Por favor, tente novamente em breve."
+  },
+  "default": {
+    "title": "Ocorreu um erro inesperado",
+    "description": "Algo correu mal do nosso lado. Tente actualizar a página ou contacte o suporte se o problema persistir."
+  },
+  "backHome": "Voltar ao painel de controlo",
+  "refresh": "Tentar novamente"
+}

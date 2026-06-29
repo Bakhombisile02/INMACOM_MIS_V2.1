@@ -43,6 +43,29 @@
       "reviewNotesPlaceholder": "ex. Valor parece matematicamente impossível, verifique os dados de calibração.",
       "selectGaugeStation": "Seleccionar Estação de Medição",
       "readingDateLabel": "Data de Leitura"
+    },
+    "history": {
+      "searchLabel": "Pesquisar histórico",
+      "searchPlaceholder": "Pesquisar por estação, estado, revisor, notas...",
+      "sortLabel": "Ordenar por",
+      "rangeLabel": "Intervalo de datas",
+      "fromLabel": "De",
+      "toLabel": "Até",
+      "records": "A mostrar {{count}} registos",
+      "sort": {
+        "dateDesc": "Data mais recente primeiro",
+        "dateAsc": "Data mais antiga primeiro",
+        "valueDesc": "Maior valor primeiro",
+        "valueAsc": "Menor valor primeiro"
+      },
+      "range": {
+        "all": "Histórico completo",
+        "last30": "Últimos 30 dias",
+        "last90": "Últimos 90 dias",
+        "last180": "Últimos 180 dias",
+        "last365": "Últimos 365 dias",
+        "custom": "Intervalo personalizado"
+      }
     }
   },
   "flow": {

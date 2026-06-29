@@ -1,0 +1,75 @@
+# Disaster & Incident Management
+
+INMACOM MIS provides a coordinated transboundary dashboard for logging and managing water-related disaster incidents (e.g. chemical spills, floods, dam failures) and routing alerts to downstream countries.
+
+---
+
+## The Incident Workflow
+
+```
+   ┌────────────────────────────────────────────────────────┐
+   │        Clerk/Manager reports Incident locally          │
+   └───────────────────────────┬────────────────────────────┘
+                               ▼
+   ┌────────────────────────────────────────────────────────┐
+   │ System generates a unique incident Reference number    │
+   └───────────────────────────┬────────────────────────────┘
+                               ▼
+   ┌────────────────────────────────────────────────────────┐
+   │ Renders coordinates on Map; Flags downstream warning   │
+   └───────────────────────────┬────────────────────────────┘
+                               ▼
+   ┌────────────────────────────────────────────────────────┐
+   │ Transboundary Notifications dispatched (SMS/Email)     │
+   └───────────────────────────┬────────────────────────────┘
+                               ▼
+   ┌────────────────────────────────────────────────────────┐
+   │ Responders document Actions (Mitigation & Recovery)   │
+   └────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Database Schema & Details
+
+Incidents are stored in `disaster_incidents` and linked to auxiliary tables.
+
+### 1. `disaster_incidents`
+Stores core incident metadata:
+*   `reference`: Auto-generated unique string (e.g. `INC-2026-0034`).
+*   `hazard_code`: Type of hazard (e.g., `flood`, `chemical_spill`, `dam_discharge`).
+*   `incident_status`: `reported`, `active`, `mitigated`, or `resolved`.
+*   `severity_level`: `minor`, `moderate`, `major`, or `critical`.
+*   `latitude` & `longitude`: Geolocation of the incident source.
+
+### 2. `pollution_incident_details`
+When the hazard code is a chemical spill or pollution event, this table stores EPA-specific metrics:
+*   `usepa_category`: USEPA classification index (1-4).
+*   `pollutant_name` & `cas_number`: Chemical identifiers.
+*   `spill_volume_m3` & `estimated_mass_kg`: Physical scale of the spill.
+*   `fish_kill_observed` & `fish_kill_extent`: Ecological impact flags.
+*   `waterborne_disease_reported` & `disease_name`: Public health threats.
+
+---
+
+## Transboundary Notification Routing
+
+One of the most critical aspects of the treaty is the requirement to alert neighboring countries of upstream pollution or flood events.
+*   **Table:** `incident_notifications`
+*   **Routing Fields:**
+    *   `recipient_country`: The target country (e.g. `MZ` for Mozambique when a spill occurs in `ZA` South Africa).
+    *   `recipient_org`: The target department (e.g., *ARA-Sul* in Mozambique).
+    *   `channel`: `email`, `sms`, or `internal_alert`.
+    *   `acknowledged_at` & `acknowledged_by`: Tracks when the downstream authority received and verified the notification.
+
+> [!IMPORTANT]
+> The system requires that any incident flagged as `major` or `critical` severity at a border catchment automatically dispatches a notification record to the adjacent country. This ensures compliance with the IIMA Article 12 (Emergency Situations).
+
+---
+
+## Response Actions Logging
+
+All mitigation and recovery operations are tracked in the `incident_actions` table:
+*   `phase`: `preparation`, `containment`, `mitigation`, or `recovery`.
+*   `action_type`: Type of action taken (e.g. closing downstream water intake valves).
+*   `performed_at` & `outcome`: Timestamp and description of the action results.

@@ -36,11 +36,11 @@ export default function PublicHeader() {
         <header className={classes.header}>
             <Container size="xl">
                 <div className={classes.inner}>
-                    <Link href="/" style={{ textDecoration: 'none' }} aria-label="INMACOM home">
+                    <Link href="/" className={classes.logoLink} aria-label="INMACOM home">
                         <Logo />
                     </Link>
 
-                    <Group gap={2} visibleFrom="sm">
+                    <Group gap={2} visibleFrom="sm" className={classes.desktopLinks}>
                         {visibleNav.map((link) => (
                             <Link
                                 key={link.href}
@@ -53,7 +53,7 @@ export default function PublicHeader() {
                         ))}
                     </Group>
 
-                    <Group gap="xs" visibleFrom="sm">
+                    <Group gap="xs" visibleFrom="sm" className={classes.desktopActions}>
                         <LanguageSwitcher />
                         {auth?.user ? (
                             <Button component={Link} href="/dashboard">
@@ -66,12 +66,13 @@ export default function PublicHeader() {
                         )}
                     </Group>
 
-                    <Group gap="xs" hiddenFrom="sm">
-                        <LanguageSwitcher />
+                    <Group gap="xs" hiddenFrom="sm" className={classes.mobileControls}>
+                        <LanguageSwitcher compact />
                         <Burger
                             opened={opened}
                             onClick={toggle}
-                            size="sm"
+                            size="md"
+                            className={classes.burger}
                             aria-label={t('header.toggleNavigation')}
                         />
                     </Group>
@@ -88,27 +89,30 @@ export default function PublicHeader() {
                 zIndex={1000000}
             >
                 <ScrollArea h="calc(100vh - 80px)" mx="-md">
-                    <Divider my="sm" />
-                    {visibleNav.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={`${classes.link} ${isActive(pathname, link) ? classes.linkActive : ''}`}
-                            onClick={close}
-                        >
-                            {t(link.labelKey)}
-                        </Link>
-                    ))}
-                    <Divider my="sm" />
-                    {auth?.user ? (
-                        <Link href="/dashboard" className={classes.link} onClick={close}>
-                            {t('header.dashboard')}
-                        </Link>
-                    ) : (
-                        <Link href="/login" className={classes.link} onClick={close}>
-                            {t('header.login')}
-                        </Link>
-                    )}
+                    <div className={classes.mobileNav}>
+                        <Divider my="sm" />
+                        {visibleNav.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`${classes.link} ${isActive(pathname, link) ? classes.linkActive : ''}`}
+                                aria-current={isActive(pathname, link) ? 'page' : undefined}
+                                onClick={close}
+                            >
+                                {t(link.labelKey)}
+                            </Link>
+                        ))}
+                        <Divider my="sm" />
+                        {auth?.user ? (
+                            <Link href="/dashboard" className={`${classes.link} ${classes.mobileAction}`} onClick={close}>
+                                {t('header.dashboard')}
+                            </Link>
+                        ) : (
+                            <Link href="/login" className={`${classes.link} ${classes.mobileAction}`} onClick={close}>
+                                {t('header.login')}
+                            </Link>
+                        )}
+                    </div>
                 </ScrollArea>
             </Drawer>
         </header>

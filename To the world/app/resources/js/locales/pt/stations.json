@@ -1,0 +1,166 @@
+{
+  "title": "Estações",
+  "subtitle": "Monitorize e gira os metadados das estações e o estado operacional.",
+  "managerAccess": "Acesso de gestor",
+  "search": "Pesquisar por qualquer campo",
+  "empty": "Nada encontrado",
+  "showingAll": "Mostrando todas as {{count}} estações",
+  "showingFiltered": "Mostrando {{filtered}} de {{total}} estações",
+  "columns": {
+    "code": "Código",
+    "name": "Nome",
+    "country": "País",
+    "category": "Categoria",
+    "waterSource": "Fonte de água",
+    "status": "Estado",
+    "realtime": "Tempo real"
+  },
+  "status": {
+    "active": "Ativa",
+    "inactive": "Inativa"
+  },
+  "filters": {
+    "country": "País",
+    "category": "Categoria",
+    "waterSource": "Fonte de água",
+    "status": "Estado",
+    "realtime": "Apenas em tempo real",
+    "allCountries": "Todos os países",
+    "allCategories": "Todas as categorias",
+    "allStatuses": "Todos os estados",
+    "allWaterSources": "Todas as fontes"
+  },
+  "actions": {
+    "backToList": "Voltar para estações",
+    "create": "Adicionar estação",
+    "edit": "Editar estação",
+    "delete": "Eliminar estação",
+    "deleteConfirm": "Tem a certeza que deseja eliminar esta estação? Esta ação não pode ser desfeita.",
+    "viewDetails": "Ver detalhes completos"
+  },
+  "form": {
+    "titleCreate": "Adicionar estação",
+    "titleEdit": "Editar estação",
+    "code": "Código da estação",
+    "name": "Nome da estação",
+    "country": "País",
+    "category": "Categoria",
+    "waterSource": "Fonte de água",
+    "waterBodyType": "Tipo de corpo hídrico",
+    "riverBasin": "Bacia hidrográfica",
+    "ownerOrg": "Organização proprietária",
+    "telemetrySystem": "Sistema de telemetria",
+    "gaugeCode": "Código da régua",
+    "summary": "Resumo",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "locationSection": "Coordenadas",
+    "isActive": "Ativa",
+    "isRealTime": "Tempo real",
+    "save": "Guardar alterações",
+    "create": "Criar estação",
+    "cancel": "Cancelar",
+    "saved": "Estação atualizada com sucesso.",
+    "created": "Estação criada com sucesso.",
+    "error": "Falha ao guardar a estação. Verifique os erros no formulário."
+  },
+  "capabilities": {
+    "title": "Capacidades de medição",
+    "type": "Tipo",
+    "isPrimary": "Primária",
+    "installedAt": "Instalada",
+    "notes": "Notas",
+    "empty": "Nenhuma capacidade registada para esta estação."
+  },
+  "operationalStatus": {
+    "title": "Estado operacional",
+    "current": "Atual",
+    "history": "Histórico",
+    "statuses": {
+      "operational": "Operacional",
+      "degraded": "Degradado",
+      "offline": "Offline",
+      "unknown": "Desconhecido"
+    },
+    "reason": "Motivo",
+    "startedAt": "Desde",
+    "resolvedAt": "Resolvido",
+    "reportedBy": "Reportado por",
+    "empty": "Nenhum histórico de estado operacional registado."
+  },
+  "managementAreas": {
+    "title": "Áreas de gestão",
+    "basin": "Bacia",
+    "empty": "Esta estação não está atribuída a nenhuma área de gestão."
+  },
+  "iima": {
+    "title": "Conformidade IIMA",
+    "keyPoint": "Ponto-chave",
+    "river": "Rio",
+    "note": "Nota",
+    "notCompliance": "Esta estação não é um ponto de monitorização de conformidade IIMA."
+  },
+  "detail": {
+    "subtitle": "Detalhes da estação e contexto espacial",
+    "country": "País",
+    "category": "Categoria",
+    "waterSource": "Fonte de água",
+    "waterBodyType": "Tipo de corpo hídrico",
+    "riverBasin": "Bacia hidrográfica",
+    "ownerOrg": "Organização proprietária",
+    "telemetrySystem": "Sistema de telemetria",
+    "gaugeCode": "Código da régua",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "realtime": "Em tempo real",
+    "notRealtime": "Sem tempo real",
+    "summary": "Resumo",
+    "inferredMetadata": "Metadados Inferidos — Não Confirmados & Não Verificados"
+  },
+  "map": {
+    "title": "Vista GIS",
+    "noCoordinates": "Ainda não existem coordenadas para esta estação."
+  },
+  "measurements": {
+    "title": "Medições recentes",
+    "empty": "Não existem medições disponíveis para esta estação.",
+    "columns": {
+      "type": "Tipo",
+      "value": "Valor",
+      "unit": "Unidade",
+      "status": "Estado",
+      "date": "Data"
+    }
+  },
+  "charts": {
+    "title": "Dados históricos",
+    "timeSeries": "Série Temporal",
+    "dailyAvg": "Média Diária",
+    "monthlyAvg": "Média Mensal",
+    "dailyFlow": "Caudal Diário (m³/s)",
+    "monthlyVolume": "Volume Mensal",
+    "noData": "Não há medições aprovadas disponíveis para o intervalo de datas selecionado.",
+    "loading": "A carregar dados históricos…",
+    "from": "De",
+    "to": "Até",
+    "apply": "Aplicar",
+    "reset": "Repor",
+    "value": "Valor",
+    "date": "Data",
+    "month": "Mês",
+    "average": "Média",
+    "total": "Total",
+    "flow": "Caudal"
+  },
+  "report": {
+    "button": "Imprimir Relatório",
+    "generating": "A gerar…",
+    "title": "Relatório de Estação",
+    "generatedBy": "Gerado por",
+    "generatedOn": "Gerado em",
+    "confidential": "INMACOM MIS — Confidencial"
+  },
+  "export": {
+    "button": "Exportar CSV"
+  }
+}

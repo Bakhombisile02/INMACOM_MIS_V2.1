@@ -1,0 +1,480 @@
+{
+  "common": {
+    "backToOverview": "Back to Overview",
+    "active": "Active",
+    "stable": "Stable",
+    "noData": "No Data",
+    "noHistoryRecords": "No historical records available for charting.",
+    "table": {
+      "code": "Code",
+      "stationName": "Station Name",
+      "basin": "Basin",
+      "gauge": "Gauge",
+      "station": "Station",
+      "value": "Value",
+      "readingDate": "Reading Date",
+      "submittedBy": "Submitted By",
+      "loggedAt": "Logged At",
+      "loggedBy": "Logged By",
+      "reviewedBy": "Reviewed By",
+      "reviewNotes": "Review Notes",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "pending": "Pending"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "saveRecord": "Save Record",
+      "updateRecord": "Update Record",
+      "confirmReject": "Confirm Reject"
+    },
+    "modal": {
+      "gaugingStation": "GAUGING STATION",
+      "rejectHelp": "Provide revision notes explaining the reason for rejecting this entry.",
+      "reviewNotesLabel": "Review Notes / Revision Instructions",
+      "reviewNotesPlaceholder": "e.g. Value seems mathematically impossible, please verify gauge calibration data.",
+      "selectGaugeStation": "Select Gauge Station",
+      "readingDateLabel": "Reading Date"
+    }
+  },
+  "flow": {
+    "description": "Ecological flow monitoring and cross-border compliance status as mandated by the IIMA treaty.",
+    "logButton": "Log Discharge",
+    "stats": {
+      "basinAvgFlow": "Basin Average Flow",
+      "acrossSubbasins": "across sub-basins",
+      "alertGauges": "Alert Gauges",
+      "exceedanceDetected": "Exceedance detected",
+      "normal": "Normal",
+      "complianceMargins": "compliance margins"
+    },
+    "registry": {
+      "title": "Flow Gauges Registry",
+      "flowRate": "Flow Rate"
+    },
+    "iima": {
+      "limit": "Treaty Minimum limit"
+    },
+    "legend": {
+      "compliance": "Flow Compliance",
+      "stationCenter": "Station Center",
+      "compliant": "Compliant (Blue)",
+      "nonCompliant": "Non-Compliant (Red)"
+    },
+    "popup": {
+      "flowRate": "Flow Rate",
+      "iimaLimit": "IIMA Limit",
+      "status": "Status",
+      "dateTime": "Date Time",
+      "compliant": "Compliant (>= IIMA Limit)",
+      "nonCompliant": "Non-Compliant (< IIMA Limit)",
+      "noLimit": "No IIMA Limit Set",
+      "noValue": "No Value"
+    },
+    "chart": {
+      "fdc": "Flow Duration Curve (FDC)",
+      "fdcDesc": "Exceedance percentage probability plotting. Median flow (Q₅₀) and low flow (Q₉₅).",
+      "historical": "Historical Daily Discharge",
+      "historicalDesc": "Timeseries plotting of daily flow rate (m³/s) for the last 365 days."
+    },
+    "queue": {
+      "title": "Verification Queue — Pending Flow Logs",
+      "dischargeHeader": "Discharge (m³/s)"
+    },
+    "history": {
+      "title": "Discharge Measurements History",
+      "dischargeHeader": "Discharge"
+    },
+    "modal": {
+      "log": "Log Discharge Reading",
+      "selectStation": "Select Gauge Station",
+      "stationPlaceholder": "Gauging Station",
+      "valueLabel": "Discharge Value (m³/s)",
+      "valuePlaceholder": "e.g. 15.4",
+      "edit": "Edit Discharge Reading",
+      "reject": "Reject Discharge Log",
+      "rejectPlaceholder": "e.g. Value seems mathematically impossible, please verify gauge calibration data."
+    },
+    "notify": {
+      "logged": "Discharge Logged",
+      "loggedMsg": "Flow measurement recorded successfully.",
+      "logFailed": "Logging Failed",
+      "updated": "Record Updated",
+      "updatedMsg": "Flow measurement updated successfully.",
+      "deleteConfirm": "Are you sure you want to delete this flow record?",
+      "deleted": "Record Deleted",
+      "deletedMsg": "Flow measurement removed successfully.",
+      "approved": "Discharge Approved",
+      "approvedMsg": "Flow reading verified and published.",
+      "rejected": "Submission Rejected",
+      "rejectedMsg": "Flow reading rejected and returned with comments."
+    },
+    "empty": {
+      "measurements": "No flow measurements recorded yet."
+    }
+  },
+  "dam": {
+    "description": "Reservoir levels and full supply capacity storage status across Eswatini, Mozambique, and South Africa.",
+    "logButton": "Log Storage",
+    "stats": {
+      "basinStorage": "Active Basin Storage",
+      "activeStorageCapacity": "active storage capacity",
+      "criticalReservoirs": "Critical Reservoirs",
+      "storageBelow40": "Storage below 40%",
+      "reservoirLevels": "reservoir levels"
+    },
+    "registry": {
+      "title": "Reservoir Stations Registry",
+      "damName": "Dam Name",
+      "storage": "Storage",
+      "emptyPct": "% empty",
+      "reservoirHeader": "Reservoir"
+    },
+    "legend": {
+      "title": "Reservoir Location",
+      "criticalLimit": "Critical Limit (20%)"
+    },
+    "chart": {
+      "drawdownTitle": "Reservoir Drawdown Curve & Variability Signals",
+      "drawdownDesc": "Observed storage (%), a 30-day rolling mean (orange), and a 1 SD lower variability band (dashed red) for early depletion risk detection."
+    },
+    "queue": {
+      "title": "Verification Queue — Pending Storage Logs",
+      "storagePctHeader": "Storage (%)"
+    },
+    "history": {
+      "title": "Storage Measurements History",
+      "storageHeader": "Storage"
+    },
+    "modal": {
+      "log": "Log Reservoir Storage",
+      "selectStation": "Select Dam Station",
+      "stationPlaceholder": "Dam Reservoir",
+      "valueLabel": "Storage Level (%)",
+      "valuePlaceholder": "e.g. 75.4",
+      "edit": "Edit Reservoir Storage",
+      "reject": "Reject Storage Log"
+    },
+    "notify": {
+      "logged": "Storage Logged",
+      "loggedMsg": "Reservoir storage capacity recorded successfully.",
+      "logFailed": "Logging Failed",
+      "updated": "Record Updated",
+      "updatedMsg": "Reservoir measurement updated successfully.",
+      "deleteConfirm": "Are you sure you want to delete this reservoir record?",
+      "deleted": "Record Deleted",
+      "deletedMsg": "Reservoir measurement removed successfully.",
+      "approved": "Reading Approved",
+      "approvedMsg": "Reservoir storage verified and published.",
+      "rejected": "Submission Rejected",
+      "rejectedMsg": "Reservoir reading rejected and returned with comments."
+    },
+    "empty": {
+      "measurements": "No reservoir measurements recorded yet."
+    }
+  },
+  "waterQuality": {
+    "description": "Bilateral water quality monitoring and compliance verification under the REIWQ treaty standards.",
+    "logButton": "Log Sample",
+    "selector": {
+      "label": "Select Water Quality Variable",
+      "placeholder": "Choose parameter..."
+    },
+    "stats": {
+      "activeStations": "Active WQ Stations",
+      "sampled": "Sampled",
+      "parameterResultsOnline": "parameter results online",
+      "alertExceedances": "Alert Exceedances",
+      "guidelineViolations": "Guideline violations",
+      "activeVariableMargins": "active variable margins",
+      "compliant": "Compliant"
+    },
+    "registry": {
+      "title": "Quality Stations Registry"
+    },
+    "legend": {
+      "compliant": "Compliant (Within Guidelines)",
+      "nonCompliant": "Non-Compliant (Exceeds Guidelines)",
+      "noValue": "No Value",
+      "stationCenter": "WQ Station Center"
+    },
+    "popup": {
+      "variable": "Variable",
+      "value": "Value",
+      "guideline": "Guideline",
+      "status": "Status",
+      "lastSampled": "Last Sampled"
+    },
+    "detail": {
+      "guidanceLimit": "Variable Guidance Limit",
+      "noLimit": "No Limit",
+      "trendsTitle": "{{param}} Historical Trends",
+      "parameterPlaceholder": "Parameter"
+    },
+    "matrix": {
+      "title": "Water Quality Exceedance Matrix (REIWQ Appendix A)",
+      "paramCode": "Parameter Code",
+      "totalSamples": "Total Samples",
+      "exceedances": "Limit Exceedances",
+      "minValue": "Minimum Value",
+      "maxValue": "Maximum Value",
+      "compliance": "Compliance Ratio",
+      "samples": "samples",
+      "alerts": "alerts",
+      "compliantPct": "% Compliant",
+      "alertPct": "% Alert",
+      "empty": "No parameter samples recorded to construct matrix."
+    },
+    "queue": {
+      "title": "Verification Queue — Pending Water Quality Logs",
+      "variableHeader": "Variable",
+      "valueHeader": "Value"
+    },
+    "history": {
+      "title": "WQ Samples Measurements History",
+      "variableHeader": "Variable",
+      "valueHeader": "Value"
+    },
+    "modal": {
+      "log": "Log Water Quality Sample",
+      "selectStation": "Select Station",
+      "stationPlaceholder": "Monitoring Station",
+      "selectVariable": "Select Water Quality Variable",
+      "variablePlaceholder": "WQ Parameter",
+      "valueLabel": "Variable Value",
+      "valuePlaceholder": "e.g. 7.2",
+      "samplingDate": "Sampling Date",
+      "edit": "Edit WQ Sample Reading",
+      "stationAndVariable": "STATION & VARIABLE",
+      "parameter": "Parameter:",
+      "reject": "Reject WQ Sample Log",
+      "rejectPlaceholder": "e.g. Value seems mathematically impossible, please verify lab reports."
+    },
+    "notify": {
+      "logged": "Sample Logged",
+      "loggedMsg": "Water quality sample recorded successfully.",
+      "logFailed": "Logging Failed",
+      "updated": "Record Updated",
+      "updatedMsg": "Water quality reading updated successfully.",
+      "deleteConfirm": "Are you sure you want to delete this water quality record?",
+      "deleted": "Record Deleted",
+      "deletedMsg": "Water quality reading removed successfully.",
+      "approved": "Reading Approved",
+      "approvedMsg": "Water quality reading verified and published.",
+      "rejected": "Submission Rejected",
+      "rejectedMsg": "Water quality reading rejected and returned with comments."
+    },
+    "empty": {
+      "measurements": "No WQ measurements recorded yet."
+    }
+  },
+  "rainfall": {
+    "description": "Bilateral transboundary meteorological rainfall monitoring and alert levels across sub-basins.",
+    "logButton": "Log Rainfall",
+    "noHistoryRecords": "No historical precipitation records available for charting.",
+    "stats": {
+      "basinAvgRain": "Basin Average Rain",
+      "meteorologicalNetwork": "meteorological network",
+      "dryAlertStations": "Dry / Alert Stations",
+      "lowPrecipitation": "Low precipitation (<50mm)",
+      "basinLevels": "basin levels",
+      "satisfactory": "Satisfactory"
+    },
+    "registry": {
+      "title": "Rainfall Stations Registry",
+      "rainfallHeader": "Rainfall",
+      "empty": "No rainfall stations preloaded yet."
+    },
+    "legend": {
+      "precipitationStatus": "Precipitation Status",
+      "sufficient": "Sufficient (>= 50 mm)",
+      "belowNormal": "Below Normal (< 50 mm)",
+      "noValue": "No Value",
+      "incoatiBound": "Incomati Basin Outline",
+      "maputoBound": "Maputo Basin Outline",
+      "stationCenter": "Station Center"
+    },
+    "detail": {
+      "latest24h": "Latest 24h Rainfall"
+    },
+    "chart": {
+      "hydrograph": "Precipitation Hydrograph (Events vs. Cumulative Sum)",
+      "hydrographDesc": "Shows individual daily rainfall event intensity (blue columns, mm/day) against seasonal cumulative running sum (teal curve, mm)."
+    },
+    "queue": {
+      "title": "Verification Queue — Pending Rainfall Logs",
+      "precipHeader": "Precipitation (mm)"
+    },
+    "history": {
+      "title": "Rainfall Measurements History",
+      "precipHeader": "Precipitation"
+    },
+    "modal": {
+      "log": "Log Rainfall Reading",
+      "selectStation": "Select Gauge Station",
+      "stationPlaceholder": "Meteorological Station",
+      "valueLabel": "Rainfall Value (mm)",
+      "valuePlaceholder": "e.g. 12.5",
+      "edit": "Edit Rainfall Reading",
+      "reject": "Reject Rainfall Log"
+    },
+    "notify": {
+      "logged": "Precipitation Logged",
+      "loggedMsg": "Rainfall reading recorded successfully.",
+      "logFailed": "Logging Failed",
+      "updated": "Record Updated",
+      "updatedMsg": "Precipitation record updated successfully.",
+      "deleteConfirm": "Are you sure you want to delete this rainfall record?",
+      "deleted": "Record Deleted",
+      "deletedMsg": "Rainfall measurement removed successfully.",
+      "approved": "Reading Approved",
+      "approvedMsg": "Precipitation reading verified and published.",
+      "rejected": "Submission Rejected",
+      "rejectedMsg": "Precipitation reading rejected and returned with comments."
+    },
+    "empty": {
+      "measurements": "No precipitation measurements recorded yet."
+    }
+  },
+  "groundwater": {
+    "description": "Groundwater reserves and aquifer levels monitoring across transboundary sub-basins.",
+    "logButton": "Log Aquifer Level",
+    "noHistoryRecords": "No piezometric readings available for charting.",
+    "stats": {
+      "basinAvgDepth": "Basin Average Depth",
+      "piezometricSurveillance": "piezometric surveillance",
+      "lowLevelAquifers": "Low-Level Aquifers",
+      "depthBelow10": "Depth below 10m limit",
+      "depthBelow10m": "Depth below 10m limit",
+      "waterTableMargins": "water table margins",
+      "stable": "Stable"
+    },
+    "registry": {
+      "title": "Groundwater Stations Registry",
+      "piezometricHeader": "Piezometric Level",
+      "piezometricLevel": "Piezometric Level",
+      "empty": "No groundwater stations preloaded yet."
+    },
+    "legend": {
+      "gwDepthStatus": "Groundwater Depth Status",
+      "goodLevels": "Good Levels (>= 10 m)",
+      "lowLevels": "Low Levels (< 10 m)",
+      "noValue": "No Value",
+      "incoatiBound": "Incomati Basin Outline",
+      "maputoBound": "Maputo Basin Outline",
+      "stationCenter": "Station Center",
+      "criticalLimit": "Critical Alert Limit"
+    },
+    "detail": {
+      "latestVerified": "Latest Verified Aquifer Depth"
+    },
+    "chart": {
+      "depletion": "Aquifer Storage & Depletion Trend",
+      "depletionDesc": "Hydrograph of piezometric head depth (m) over time. Values below 10m indicate critically dry conditions."
+    },
+    "queue": {
+      "title": "Verification Queue — Pending Aquifer Logs",
+      "aquiferDepthHeader": "Aquifer Depth (m)"
+    },
+    "history": {
+      "title": "Aquifer Level Measurements History",
+      "aquiferDepthHeader": "Aquifer Depth"
+    },
+    "modal": {
+      "log": "Log Aquifer Level Reading",
+      "selectStation": "Select Gauge Station",
+      "stationPlaceholder": "Piezometric Station",
+      "valueLabel": "Water Table Level Value (m)",
+      "valuePlaceholder": "e.g. 11.2",
+      "edit": "Edit Aquifer Level Reading",
+      "reject": "Reject Aquifer Level Log"
+    },
+    "notify": {
+      "logged": "Piezometric Reading Recorded",
+      "loggedMsg": "Groundwater table depth measurement recorded successfully.",
+      "logFailed": "Logging Failed",
+      "updated": "Record Updated",
+      "updatedMsg": "Aquifer level record updated successfully.",
+      "deleteConfirm": "Are you sure you want to delete this piezometric record?",
+      "deleted": "Record Deleted",
+      "deletedMsg": "Aquifer measurement removed successfully.",
+      "approved": "Reading Approved",
+      "approvedMsg": "Groundwater piezometric reading verified and published.",
+      "rejected": "Submission Rejected",
+      "rejectedMsg": "Piezometric entry rejected and returned with comments."
+    },
+    "empty": {
+      "measurements": "No aquifer levels recorded yet."
+    }
+  },
+  "map": {
+    "layers": "Map Layers",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen",
+    "toggleLayersPanel": "Toggle map layer options panel",
+    "baseMap": "Base Map",
+    "mapType": {
+      "map": "Map",
+      "muted": "Muted",
+      "sat": "Sat"
+    },
+    "basinOutlines": "Basin Outlines",
+    "stationMarkers": "Station Markers",
+    "stationsLegend": "Stations",
+    "stations": "Stations",
+    "stationStatus": {
+      "active": "Active",
+      "unconfirmed": "Unconfirmed",
+      "inactive": "Inactive"
+    },
+    "gisVisualization": "GIS Visualization",
+    "vizType": {
+      "gauges": "Gauges",
+      "hexBins": "Hex-Bins",
+      "hotspots": "Hotspots"
+    },
+    "popup": {
+      "hotspotZone": "Hotspot Zone:",
+      "hexBin": "Hexagon Bin",
+      "hexStations": "Hexagon Stations",
+      "value": "Value:",
+      "status": "Status:",
+      "avgValue": "Avg Value:",
+      "gauges": "Gauges",
+      "gaugesLabel": "Gauges:",
+      "highAlert": "High Alert / Stress Zone",
+      "normalHealthy": "Normal / Healthy",
+      "alertsActive": "Alerts Active",
+      "healthy": "Healthy",
+      "noData": "No Data"
+    },
+    "legend": {
+      "hexBins": "Hex-Bins Legend",
+      "hotspots": "Hotspots Legend",
+      "compliant": "Compliant (Healthy)",
+      "nonCompliant": "Non-Compliant (Alert)",
+      "noValue": "No Value (No Data)",
+      "alertHotspot": "Alert Hotspot (High Stress)",
+      "healthyHotspot": "Healthy Hotspot (Stable)",
+      "alertSingular": "alert",
+      "alertPlural": "alerts",
+      "descHexBins": "Aggregated spatial hexagons covering local basin zones:",
+      "descHotspots": "Stress density rings indicating regional alerts:",
+      "descGauges": "Size represents magnitude (bubble map). Outline represents status:",
+      "borderDashed": "Dashed",
+      "borderDotted": "Dotted",
+      "borderSolid": "Solid",
+      "incoatiBound": "Incomati Basin Outline",
+      "maputoBound": "Maputo Basin Outline"
+    }
+  },
+  "exportCsv": "Export CSV"
+}

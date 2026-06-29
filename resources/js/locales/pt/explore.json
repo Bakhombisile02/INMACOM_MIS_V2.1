@@ -57,7 +57,25 @@
     "openDetails": "Ver detalhes",
     "historicalTitle": "Tendência da bacia — últimos 90 dias",
     "historicalDescription": "Média diária em toda a bacia das estações que reportam. Valores provisórios são incluídos para mostrar o estado actual.",
-    "samples": "Amostras"
+    "samples": "Amostras",
+    "stationHistoricalTitle": "Tendência detalhada da estação",
+    "stationHistoricalDescription": "Seleccione uma estação ou toque num marcador no mapa para carregar o histórico ao nível da estação.",
+    "selectStationLabel": "Estação",
+    "selectStationPlaceholder": "Seleccione uma estação",
+    "selectStationEmpty": "Sem estações disponíveis",
+    "selectStationPrompt": "Escolha uma estação para ver o gráfico detalhado.",
+    "stationDetailTitle": "Resumo da estação seleccionada",
+    "stationDetailLatest": "Último valor",
+    "stationDetailAsOf": "Data/hora",
+    "stationDetailBasin": "Bacia",
+    "stationDetailCountry": "País",
+    "stationDetailConfidence": "Confiança"
+  },
+  "guide": {
+    "step1": "1. Escolha um separador do módulo",
+    "step2": "2. Filtre a confiança, se necessário",
+    "step3": "3. Toque num marcador da estação",
+    "step4": "4. Veja a tendência dessa estação"
   },
   "hazards": {
     "title": "Riscos activos por área",

@@ -1,0 +1,54 @@
+{
+  "title": "Disaster Management",
+  "stats": {
+    "activeIncidents": "Active Incidents",
+    "watchOrAboveAreas": "Areas at Watch+",
+    "criticalAreas": "Critical Areas"
+  },
+  "views": {
+    "matrix": "Alert Matrix",
+    "map": "Incident Map"
+  },
+  "matrix": {
+    "title": "Hazard Alert Status Matrix",
+    "noHazardTypes": "No hazard types configured.",
+    "noAreas": "No management areas configured.",
+    "noData": "No status data available.",
+    "score": "Score",
+    "calculatedAt": "Calculated",
+    "notes": "Notes",
+    "noNotes": "No notes recorded.",
+    "actionsRequired": "Actions Required"
+  },
+  "incidents": {
+    "title": "Recent Incidents",
+    "empty": "No incidents recorded.",
+    "reference": "Reference",
+    "hazard": "Hazard",
+    "area": "Area",
+    "status": "Status",
+    "severity": "Severity",
+    "occurred": "Occurred",
+    "reported": "Reported",
+    "resolved": "Resolved",
+    "active": "Active"
+  },
+  "incidentStatus": {
+    "reported": "Reported",
+    "under_investigation": "Under Investigation",
+    "active": "Active",
+    "contained": "Contained",
+    "resolved": "Resolved",
+    "closed": "Closed"
+  },
+  "severity": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "critical": "Critical"
+  },
+  "map": {
+    "legendTitle": "Incident Severity",
+    "noIncidentsWithLocation": "No incidents with location data to display on the map."
+  }
+}

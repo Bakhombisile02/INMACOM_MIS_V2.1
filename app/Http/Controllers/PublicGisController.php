@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Station;
+use App\Queries\HazardStatusQuery;
+use App\Queries\StationMeasurementQuery;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
@@ -64,6 +69,70 @@ class PublicGisController extends Controller
     }
 
     /**
+     * Public station-level historical series for Explore station detail charts.
+     *
+     * Returns only non-sensitive fields and only approved/pending records so
+     * public users can see verified + provisional trends consistently.
+     */
+    public function stationHistorical(Request $request, string $id): JsonResponse
+    {
+        $type = (string) $request->query('type', '');
+        if (! array_key_exists($type, self::MODULES)) {
+            return response()->json([
+                'message' => 'Invalid type parameter.',
+            ], 422);
+        }
+
+        $station = Station::query()
+            ->where('id', $id)
+            ->where('is_active', true)
+            ->first();
+
+        abort_unless($station, 404);
+
+        $fromRaw = $request->query('from');
+        $toRaw = $request->query('to');
+        $from = $this->parseOptionalDate($fromRaw, true);
+        $to = $this->parseOptionalDate($toRaw, false);
+
+        if (($fromRaw && ! $from) || ($toRaw && ! $to)) {
+            return response()->json([
+                'message' => 'Invalid date format. Use YYYY-MM-DD.',
+            ], 422);
+        }
+
+        $readings = StationMeasurementQuery::query()
+            ->forStations($id)
+            ->forTypes($type)
+            ->withStatuses(['approved', 'pending'])
+            ->forDateRange($from, $to)
+            ->orderBy('m.date', 'asc')
+            ->get()
+            ->map(function ($row) {
+                return [
+                    'id' => $row->id,
+                    'station_id' => $row->station_id,
+                    'measurement_type' => $row->measurement_type,
+                    'value' => (float) $row->value,
+                    'unit' => $row->unit,
+                    'date' => $row->date,
+                    'status' => $row->status,
+                    'confidence' => $row->status === 'approved' ? 'verified' : 'provisional',
+                ];
+            })->values();
+
+        return response()->json([
+            'station' => [
+                'id' => $station->id,
+                'code' => $station->code,
+                'name' => $station->name,
+            ],
+            'type' => $type,
+            'readings' => $readings,
+        ]);
+    }
+
+    /**
      * Group active stations by the measurement types they advertise via
      * station_capabilities. A single station may surface under multiple modules.
      */
@@ -89,16 +158,10 @@ class PublicGisController extends Controller
      */
     private function latestReadingsByType(): array
     {
-        $rows = DB::table('measurements as m')
-            ->whereIn('m.status', ['approved', 'pending'])
-            ->whereIn('m.measurement_type', array_keys(self::MODULES))
-            ->whereRaw("m.date = (
-                SELECT MAX(m2.date) FROM measurements as m2
-                WHERE m2.station_id = m.station_id
-                  AND m2.measurement_type = m.measurement_type
-                  AND m2.status IN ('approved','pending')
-            )")
-            ->select(['m.station_id', 'm.measurement_type', 'm.value', 'm.unit', 'm.date', 'm.status'])
+        $rows = StationMeasurementQuery::query()
+            ->withStatuses(['approved', 'pending'])
+            ->forTypes(array_keys(self::MODULES))
+            ->latestPerStation()
             ->get();
 
         $grouped = [];
@@ -174,14 +237,13 @@ class PublicGisController extends Controller
      */
     private function historicalDailyAverage(string $type, int $days): array
     {
-        $since = now()->subDays($days)->toDateString();
+        $since = now()->subDays($days);
 
-        return DB::table('measurements')
-            ->where('measurement_type', $type)
-            ->whereIn('status', ['approved', 'pending'])
-            ->whereDate('date', '>=', $since)
-            ->selectRaw('DATE(date) as date, CAST(AVG(value) AS DECIMAL(12,4)) as value, COUNT(*) as samples')
-            ->groupBy('date')
+        return StationMeasurementQuery::query()
+            ->forTypes($type)
+            ->withStatuses(['approved', 'pending'])
+            ->forDateRange($since, null)
+            ->aggregateDailyAverage()
             ->orderBy('date')
             ->get()
             ->map(fn ($r) => [
@@ -199,42 +261,11 @@ class PublicGisController extends Controller
      */
     private function hazardAreas(): array
     {
-        if (! Schema::hasTable('hazard_status_current') || ! Schema::hasTable('hazard_status_levels')) {
-            return [];
-        }
-
-        return DB::table('hazard_status_current as hsc')
-            ->join('hazard_status_levels as hsl', function ($join) {
-                $join->on('hsc.hazard_code', '=', 'hsl.hazard_code')
-                     ->on('hsc.level_code', '=', 'hsl.level_code');
-            })
-            ->join('management_areas as ma', 'hsc.area_id', '=', 'ma.id')
-            ->leftJoin('hazard_types as ht', 'hsc.hazard_code', '=', 'ht.code')
-            ->leftJoin(DB::raw('(
-                SELECT area_id, hazard_code, COUNT(*) as active_count
-                FROM disaster_incidents
-                WHERE resolved_at IS NULL
-                GROUP BY area_id, hazard_code
-            ) as ai'), function ($join) {
-                $join->on('ai.area_id', '=', 'hsc.area_id')
-                     ->on('ai.hazard_code', '=', 'hsc.hazard_code');
-            })
-            ->select([
-                'ma.id as area_id',
-                'ma.name as area_name',
-                'ma.country',
-                'ma.basin',
-                'hsc.hazard_code',
-                'ht.name as hazard_name',
-                'hsl.level_code',
-                'hsl.name as level_name',
-                'hsl.color',
-                'hsl.severity',
-                'hsc.calculated_at',
-                DB::raw('COALESCE(ai.active_count, 0) as active_incidents'),
-            ])
-            ->orderByDesc('hsl.severity')
-            ->orderBy('ma.name')
+        return HazardStatusQuery::query()
+            ->withDetails()
+            ->withActiveIncidentCounts()
+            ->orderBy('severity', 'desc')
+            ->orderBy('area_name')
             ->get()
             ->map(fn ($r) => (array) $r)
             ->all();
@@ -247,23 +278,15 @@ class PublicGisController extends Controller
             ->whereNotNull('country')
             ->distinct()
             ->count('country');
-        $lastSync = DB::table('measurements')
-            ->whereIn('status', ['approved', 'pending'])
-            ->max('submitted_at');
+        $lastSync = StationMeasurementQuery::query()
+            ->withStatuses(['approved', 'pending'])
+            ->maxSubmittedAt();
         $activeHazards = Schema::hasTable('disaster_incidents')
             ? DB::table('disaster_incidents')->whereNull('resolved_at')->count()
             : 0;
-        $watchOrAbove = 0;
-        if (Schema::hasTable('hazard_status_current') && Schema::hasTable('hazard_status_levels')) {
-            $watchOrAbove = DB::table('hazard_status_current as hsc')
-                ->join('hazard_status_levels as hsl', function ($join) {
-                    $join->on('hsc.hazard_code', '=', 'hsl.hazard_code')
-                         ->on('hsc.level_code', '=', 'hsl.level_code');
-                })
-                ->where('hsl.severity', '>=', 2)
-                ->distinct()
-                ->count('hsc.area_id');
-        }
+        $watchOrAbove = HazardStatusQuery::query()
+            ->withSeverityAtLeast(2)
+            ->countDistinctAreas();
 
         return [
             'total_stations' => $totalStations,
@@ -272,5 +295,20 @@ class PublicGisController extends Controller
             'active_hazards' => $activeHazards,
             'watch_or_above_areas' => $watchOrAbove,
         ];
+    }
+
+    private function parseOptionalDate(mixed $value, bool $startOfDay): ?Carbon
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        try {
+            $date = Carbon::parse((string) $value);
+
+            return $startOfDay ? $date->startOfDay() : $date->endOfDay();
+        } catch (\Throwable) {
+            return null;
+        }
     }
 }

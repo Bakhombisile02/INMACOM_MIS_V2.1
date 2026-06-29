@@ -1,0 +1,62 @@
+# Developer Quickstart
+
+To get started with developing and running the INMACOM MIS application locally, follow these quick steps:
+
+## Prerequisites
+- **PHP**: 8.3 or higher
+- **Composer**: Dependency manager for PHP
+- **Node.js**: v18 or higher (with npm)
+- **PostgreSQL**: Relational database
+- **Firebase Project**: An active Firebase project for authentication
+
+---
+
+## 1. Installation
+
+Clone the repository and install dependencies:
+```bash
+git clone https://github.com/Bakhombisile02/INMACOM_MIS_V2.1.git
+cd INMACOM_MIS_V2.1
+
+# Install backend dependencies
+composer install
+
+# Install frontend dependencies
+npm install
+```
+
+---
+
+## 2. Configuration
+
+Copy the sample environment file and fill in your database, email, and Firebase credentials:
+```bash
+cp .env.example .env
+```
+Ensure you set your Firebase service account configuration:
+```env
+FIREBASE_CREDENTIALS=storage/app/firebase-service-account.json
+```
+Place your Firebase Admin JSON credentials inside `storage/app/firebase-service-account.json`.
+
+---
+
+## 3. Database & Seeding
+
+Run database migrations and seed staging reference datasets:
+```bash
+php artisan migrate --force
+php artisan db:seed --force
+```
+
+---
+
+## 4. Run Development Stack
+
+Start the local stack concurrently using our Composer script:
+```bash
+composer dev
+```
+This boots:
+- The Laravel application on **`http://127.0.0.1:8000`**
+- The Vite hot-reloading development server on **`http://127.0.0.1:5173`**

@@ -1,0 +1,83 @@
+# Developer Guidelines & Conventions
+
+To maintain a consistent codebase across developers, follow these conventions when writing backend or frontend code.
+
+---
+
+## User Roles & Auth Conventions
+
+### Canonical Role Names
+Always use the canonical user role constants:
+*   `admin` (Clerk Admin)
+*   `manager` (Data Manager)
+*   `clerk` (Data Entry)
+
+> [!CAUTION]
+> Legacy documentation or database dumps may show outdated roles (`clerk_admin`, `data_manager`, `data_entry`). These are deprecated. Do not use legacy role names in new code or middlewares. Refer to `User.php` constants.
+
+---
+
+## Database & Model Conventions
+
+1.  **UUID Primary Keys:** All new domain models must use the `HasUuids` trait. Set the column type to `uuid('id')->primary()` in migrations.
+2.  **User Model Attributes:** The `User` model uses PHP 8 attributes `#[Fillable(...)]` and `#[Hidden(...)]` instead of standard Laravel properties:
+    ```php
+    #[Fillable(['display_name', 'email', 'firebase_uid', 'photo_url', 'role', 'email_verified_at'])]
+    #[Hidden(['remember_token'])]
+    class User extends Authenticatable { ... }
+    ```
+3.  **Extending Seeds:** Do not write standalone migrations to append reference datasets (like parameters, user categories, or basins). Instead, edit:
+    `database/seeders/DDRIteration2ReferenceDataSeeder.php`
+
+---
+
+## Frontend Component Conventions
+
+### 1. File Naming
+*   **Pages & Components:** Use PascalCase (e.g., `StationDrawer.tsx`, `DamLevels.tsx`).
+*   **Hooks & Utilities:** Use camelCase (e.g., `historyFilters.ts`).
+*   **Directories:** Use PascalCase for category groups (e.g. `Pages/Gis/`) or camelCase if helper folders.
+
+### 2. Styling Rules
+*   **Mantine Globals:** Configure layout styles in `app.tsx`. Do not specify custom `radius` or `size` properties inline on inputs/buttons unless an exception is approved.
+*   **CSS Modules:** Create page-specific styles using CSS modules (`MyPage.module.css`). Use standard CSS media queries for responsiveness. Do not import SCSS breakpoint variables.
+*   **Tailwind:** Limit Tailwind usage to flex/grid layouts, alignment, margins, and padding. Avoid long strings of utility classes for design aesthetics.
+
+### 3. UX Alerts & Notifications
+For transient status alerts (e.g., successful creations, validation errors, or approvals), use **Mantine Notifications**:
+```tsx
+import { notifications } from '@mantine/notifications';
+
+notifications.show({
+  title: 'Success',
+  message: 'Measurement has been approved',
+  color: 'green',
+});
+```
+Do not build custom inline alert panels unless explicitly required.
+
+### 4. Inertia Forms
+Inertia's `useForm` hook does not throw standard JS exceptions on validation failures. Ensure you handle errors using the `onError` hook:
+```tsx
+const { data, setData, post, processing, errors } = useForm({
+  value: '',
+});
+
+const submit = (e: React.FormEvent) => {
+  e.preventDefault();
+  post('/measurements', {
+    onError: (errs) => {
+      // Handle server validation failures
+    }
+  });
+};
+```
+
+---
+
+## Localization Checklist
+
+When adding user-facing text:
+*   [ ] Add the key and translated value to the English bundle (`resources/js/locales/en/`).
+*   [ ] Add the matching key and translated value to the Portuguese bundle (`resources/js/locales/pt/`).
+*   [ ] Call the translation function `t('key')` in the React view. Never hardcode English strings.

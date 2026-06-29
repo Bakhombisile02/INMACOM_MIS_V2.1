@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Queries\DisasterIncidentQuery;
+use App\Queries\HazardStatusQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,95 +32,42 @@ class DisasterController extends Controller
             ->get(['id', 'code', 'name', 'basin', 'country'])
             ->toArray();
 
-        $currentStatuses = DB::table('hazard_status_current as hsc')
-            ->join('hazard_status_levels as hsl', function ($join) {
-                $join->on('hsc.hazard_code', '=', 'hsl.hazard_code')
-                     ->on('hsc.level_code', '=', 'hsl.level_code');
-            })
-            ->join('management_areas as ma', 'hsc.area_id', '=', 'ma.id')
-            ->select([
-                'hsc.hazard_code',
-                'hsc.area_id',
-                'hsc.level_code',
-                'hsc.score',
-                'hsc.calculated_at',
-                'hsc.calculation_notes',
-                'hsl.name as level_name',
-                'hsl.color',
-                'hsl.severity',
-                'ma.name as area_name',
+        $currentStatuses = HazardStatusQuery::query()
+            ->withDetails()
+            ->get()
+            ->map(fn ($row) => (object) [
+                'hazard_code' => $row->hazard_code,
+                'area_id' => $row->area_id,
+                'level_code' => $row->level_code,
+                'score' => $row->score,
+                'calculated_at' => $row->calculated_at,
+                'calculation_notes' => $row->calculation_notes,
+                'level_name' => $row->level_name,
+                'color' => $row->color,
+                'severity' => $row->severity,
+                'area_name' => $row->area_name,
             ])
+            ->toArray();
+
+        $recentIncidents = DisasterIncidentQuery::query()
+            ->withDetails()
+            ->recent(50)
             ->get()
             ->toArray();
 
-        $recentIncidents = DB::table('disaster_incidents as di')
-            ->leftJoin('hazard_types as ht', 'di.hazard_code', '=', 'ht.code')
-            ->leftJoin('management_areas as ma', 'di.area_id', '=', 'ma.id')
-            ->select([
-                'di.id',
-                'di.reference',
-                'di.title',
-                'di.severity_level',
-                'di.incident_status',
-                'di.review_status',
-                'di.hazard_code',
-                'di.latitude',
-                'di.longitude',
-                'di.affected_radius_km',
-                'di.occurred_at',
-                'di.reported_at',
-                'di.resolved_at',
-                'di.area_id',
-                'ht.name as hazard_name',
-                'ma.name as area_name',
-            ])
-            ->orderBy('di.reported_at', 'desc')
-            ->limit(50)
-            ->get()
-            ->toArray();
-
-        $incidentStations = DB::table('incident_stations as ins')
-            ->join('stations as s', 'ins.station_id', '=', 's.id')
-            ->join('disaster_incidents as di', 'ins.incident_id', '=', 'di.id')
-            ->whereNull('di.resolved_at')
-            ->select([
-                'ins.incident_id',
-                'ins.station_id',
-                'ins.role',
-                's.code',
-                's.name',
-                's.latitude',
-                's.longitude',
-            ])
-            ->get()
-            ->toArray();
+        $incidentStations = DisasterIncidentQuery::getIncidentStations();
 
         $activeIncidentCount = DB::table('disaster_incidents')
             ->whereNull('resolved_at')
             ->count();
 
-        $watchOrAboveAreas = 0;
-        $criticalAreas = 0;
+        $watchOrAboveAreas = HazardStatusQuery::query()
+            ->withSeverityAtLeast(2)
+            ->countDistinctAreas();
 
-        if (Schema::hasTable('hazard_status_current') && Schema::hasTable('hazard_status_levels')) {
-            $watchOrAboveAreas = DB::table('hazard_status_current as hsc')
-                ->join('hazard_status_levels as hsl', function ($join) {
-                    $join->on('hsc.hazard_code', '=', 'hsl.hazard_code')
-                         ->on('hsc.level_code', '=', 'hsl.level_code');
-                })
-                ->where('hsl.severity', '>=', 2)
-                ->distinct()
-                ->count('hsc.area_id');
-
-            $criticalAreas = DB::table('hazard_status_current as hsc')
-                ->join('hazard_status_levels as hsl', function ($join) {
-                    $join->on('hsc.hazard_code', '=', 'hsl.hazard_code')
-                         ->on('hsc.level_code', '=', 'hsl.level_code');
-                })
-                ->where('hsl.severity', '>=', 4)
-                ->distinct()
-                ->count('hsc.area_id');
-        }
+        $criticalAreas = HazardStatusQuery::query()
+            ->withSeverityAtLeast(4)
+            ->countDistinctAreas();
 
         $canManage = $request->user() && in_array($request->user()->role, [
             User::ROLE_ADMIN,

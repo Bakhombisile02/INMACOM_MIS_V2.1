@@ -1,0 +1,1 @@
+import{$t as e}from"./app-DG7lb7hI.js";async function t(t,n,r){let i={id_token:await t.getIdToken()};r?.registrationPin&&(i.registration_pin=r.registrationPin.toUpperCase()),e.post(route(`auth.firebase`),i,{onError:e=>{let t=e.auth??e.id_token??`Authentication failed.`;n?.(String(t))}})}export{t};

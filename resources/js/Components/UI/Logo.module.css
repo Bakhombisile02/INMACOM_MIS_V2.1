@@ -1,0 +1,24 @@
+.root {
+    align-items: center;
+}
+
+.logoMark {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.wordmark {
+    letter-spacing: 0.06em;
+}
+
+@media (max-width: 36em) {
+    .logoMark {
+        width: 28px;
+        height: 28px;
+    }
+
+    .wordmark {
+        display: none;
+    }
+}
