@@ -1,0 +1,480 @@
+{
+  "common": {
+    "backToOverview": "Voltar ao Resumo",
+    "active": "Activo",
+    "stable": "Estável",
+    "noData": "Sem Dados",
+    "noHistoryRecords": "Nenhum registo histórico disponível para gráfico.",
+    "table": {
+      "code": "Código",
+      "stationName": "Nome da Estação",
+      "basin": "Bacia",
+      "gauge": "Estação",
+      "station": "Estação",
+      "value": "Valor",
+      "readingDate": "Data de Leitura",
+      "submittedBy": "Submetido Por",
+      "loggedAt": "Registado Em",
+      "loggedBy": "Registado Por",
+      "reviewedBy": "Revisto Por",
+      "reviewNotes": "Notas de Revisão",
+      "status": "Estado",
+      "actions": "Acções"
+    },
+    "status": {
+      "approved": "Aprovado",
+      "rejected": "Rejeitado",
+      "pending": "Pendente"
+    },
+    "actions": {
+      "approve": "Aprovar",
+      "reject": "Rejeitar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "saveRecord": "Guardar Registo",
+      "updateRecord": "Actualizar Registo",
+      "confirmReject": "Confirmar Rejeição"
+    },
+    "modal": {
+      "gaugingStation": "ESTAÇÃO DE MONITORIZAÇÃO",
+      "rejectHelp": "Forneça notas de revisão explicando o motivo da rejeição desta entrada.",
+      "reviewNotesLabel": "Notas de Revisão / Instruções de Revisão",
+      "reviewNotesPlaceholder": "ex. Valor parece matematicamente impossível, verifique os dados de calibração.",
+      "selectGaugeStation": "Seleccionar Estação de Medição",
+      "readingDateLabel": "Data de Leitura"
+    }
+  },
+  "flow": {
+    "description": "Monitorização do fluxo ecológico e estado de conformidade transfronteiriça conforme mandatado pelo tratado IIMA.",
+    "logButton": "Registar Descarga",
+    "stats": {
+      "basinAvgFlow": "Fluxo Médio da Bacia",
+      "acrossSubbasins": "nas sub-bacias",
+      "alertGauges": "Estações em Alerta",
+      "exceedanceDetected": "Excedência detectada",
+      "normal": "Normal",
+      "complianceMargins": "margens de conformidade"
+    },
+    "registry": {
+      "title": "Registo de Estações de Fluxo",
+      "flowRate": "Caudal"
+    },
+    "iima": {
+      "limit": "Limite Mínimo do Tratado"
+    },
+    "legend": {
+      "compliance": "Conformidade de Fluxo",
+      "stationCenter": "Centro da Estação",
+      "compliant": "Conforme (Azul)",
+      "nonCompliant": "Não Conforme (Vermelho)"
+    },
+    "popup": {
+      "flowRate": "Caudal",
+      "iimaLimit": "Limite IIMA",
+      "status": "Estado",
+      "dateTime": "Data e Hora",
+      "compliant": "Conforme (>= Limite IIMA)",
+      "nonCompliant": "Não Conforme (< Limite IIMA)",
+      "noLimit": "Sem Limite IIMA Definido",
+      "noValue": "Sem Valor"
+    },
+    "chart": {
+      "fdc": "Curva de Duração de Fluxo (CDF)",
+      "fdcDesc": "Traçado de probabilidade de excedência. Fluxo mediano (Q₅₀) e fluxo baixo (Q₉₅).",
+      "historical": "Descarga Diária Histórica",
+      "historicalDesc": "Série temporal do caudal diário (m³/s) nos últimos 365 dias."
+    },
+    "queue": {
+      "title": "Fila de Verificação — Registos de Fluxo Pendentes",
+      "dischargeHeader": "Descarga (m³/s)"
+    },
+    "history": {
+      "title": "Histórico de Medições de Descarga",
+      "dischargeHeader": "Descarga"
+    },
+    "modal": {
+      "log": "Registar Leitura de Descarga",
+      "selectStation": "Seleccionar Estação de Medição",
+      "stationPlaceholder": "Estação de Medição",
+      "valueLabel": "Valor de Descarga (m³/s)",
+      "valuePlaceholder": "ex. 15,4",
+      "edit": "Editar Leitura de Descarga",
+      "reject": "Rejeitar Registo de Descarga",
+      "rejectPlaceholder": "ex. Valor parece matematicamente impossível, verifique os dados de calibração."
+    },
+    "notify": {
+      "logged": "Descarga Registada",
+      "loggedMsg": "Medição de fluxo registada com sucesso.",
+      "logFailed": "Falha no Registo",
+      "updated": "Registo Actualizado",
+      "updatedMsg": "Medição de fluxo actualizada com sucesso.",
+      "deleteConfirm": "Tem a certeza que deseja eliminar este registo de fluxo?",
+      "deleted": "Registo Eliminado",
+      "deletedMsg": "Medição de fluxo removida com sucesso.",
+      "approved": "Descarga Aprovada",
+      "approvedMsg": "Leitura de fluxo verificada e publicada.",
+      "rejected": "Submissão Rejeitada",
+      "rejectedMsg": "Leitura de fluxo rejeitada e devolvida com comentários."
+    },
+    "empty": {
+      "measurements": "Nenhuma medição de fluxo registada ainda."
+    }
+  },
+  "dam": {
+    "description": "Estado dos níveis dos reservatórios e capacidade de armazenamento no Suazilândia, Moçambique e África do Sul.",
+    "logButton": "Registar Armazenamento",
+    "stats": {
+      "basinStorage": "Armazenamento Activo da Bacia",
+      "activeStorageCapacity": "capacidade de armazenamento activa",
+      "criticalReservoirs": "Reservatórios Críticos",
+      "storageBelow40": "Armazenamento abaixo de 40%",
+      "reservoirLevels": "níveis dos reservatórios"
+    },
+    "registry": {
+      "title": "Registo de Estações de Barragem",
+      "damName": "Nome da Barragem",
+      "storage": "Armazenamento",
+      "emptyPct": "% vazio",
+      "reservoirHeader": "Reservatório"
+    },
+    "legend": {
+      "title": "Localização do Reservatório",
+      "criticalLimit": "Limite Crítico (20%)"
+    },
+    "chart": {
+      "drawdownTitle": "Curva de Depleção do Reservatório e Sinais de Variabilidade",
+      "drawdownDesc": "Armazenamento observado (%), média móvel de 30 dias (laranja) e banda inferior de variabilidade de 1 desvio padrão (vermelho tracejado) para detecção precoce de risco de depleção."
+    },
+    "queue": {
+      "title": "Fila de Verificação — Registos de Armazenamento Pendentes",
+      "storagePctHeader": "Armazenamento (%)"
+    },
+    "history": {
+      "title": "Histórico de Medições de Armazenamento",
+      "storageHeader": "Armazenamento"
+    },
+    "modal": {
+      "log": "Registar Armazenamento do Reservatório",
+      "selectStation": "Seleccionar Estação de Barragem",
+      "stationPlaceholder": "Reservatório da Barragem",
+      "valueLabel": "Nível de Armazenamento (%)",
+      "valuePlaceholder": "ex. 75,4",
+      "edit": "Editar Armazenamento do Reservatório",
+      "reject": "Rejeitar Registo de Armazenamento"
+    },
+    "notify": {
+      "logged": "Armazenamento Registado",
+      "loggedMsg": "Capacidade de armazenamento do reservatório registada com sucesso.",
+      "logFailed": "Falha no Registo",
+      "updated": "Registo Actualizado",
+      "updatedMsg": "Medição do reservatório actualizada com sucesso.",
+      "deleteConfirm": "Tem a certeza que deseja eliminar este registo do reservatório?",
+      "deleted": "Registo Eliminado",
+      "deletedMsg": "Medição do reservatório removida com sucesso.",
+      "approved": "Leitura Aprovada",
+      "approvedMsg": "Armazenamento do reservatório verificado e publicado.",
+      "rejected": "Submissão Rejeitada",
+      "rejectedMsg": "Leitura do reservatório rejeitada e devolvida com comentários."
+    },
+    "empty": {
+      "measurements": "Nenhuma medição do reservatório registada ainda."
+    }
+  },
+  "waterQuality": {
+    "description": "Monitorização bilateral da qualidade da água e verificação de conformidade ao abrigo dos padrões do tratado REIWQ.",
+    "logButton": "Registar Amostra",
+    "selector": {
+      "label": "Seleccionar Variável de Qualidade da Água",
+      "placeholder": "Escolher parâmetro..."
+    },
+    "stats": {
+      "activeStations": "Estações QA Activas",
+      "sampled": "Amostrado",
+      "parameterResultsOnline": "resultados de parâmetros online",
+      "alertExceedances": "Excedências em Alerta",
+      "guidelineViolations": "Violações de directrizes",
+      "activeVariableMargins": "margens de variáveis activas",
+      "compliant": "Conforme"
+    },
+    "registry": {
+      "title": "Registo de Estações de Qualidade"
+    },
+    "legend": {
+      "compliant": "Conforme (Dentro das Directrizes)",
+      "nonCompliant": "Não Conforme (Excede as Directrizes)",
+      "noValue": "Sem Valor",
+      "stationCenter": "Centro da Estação QA"
+    },
+    "popup": {
+      "variable": "Variável",
+      "value": "Valor",
+      "guideline": "Directriz",
+      "status": "Estado",
+      "lastSampled": "Última Amostragem"
+    },
+    "detail": {
+      "guidanceLimit": "Limite de Orientação da Variável",
+      "noLimit": "Sem Limite",
+      "trendsTitle": "Tendências Históricas de {{param}}",
+      "parameterPlaceholder": "Parâmetro"
+    },
+    "matrix": {
+      "title": "Matriz de Excedência de Qualidade da Água (REIWQ Apêndice A)",
+      "paramCode": "Código do Parâmetro",
+      "totalSamples": "Total de Amostras",
+      "exceedances": "Excedências do Limite",
+      "minValue": "Valor Mínimo",
+      "maxValue": "Valor Máximo",
+      "compliance": "Rácio de Conformidade",
+      "samples": "amostras",
+      "alerts": "alertas",
+      "compliantPct": "% Conforme",
+      "alertPct": "% Alerta",
+      "empty": "Nenhuma amostra de parâmetro registada para construir a matriz."
+    },
+    "queue": {
+      "title": "Fila de Verificação — Registos de Qualidade da Água Pendentes",
+      "variableHeader": "Variável",
+      "valueHeader": "Valor"
+    },
+    "history": {
+      "title": "Histórico de Amostras de Qualidade da Água",
+      "variableHeader": "Variável",
+      "valueHeader": "Valor"
+    },
+    "modal": {
+      "log": "Registar Amostra de Qualidade da Água",
+      "selectStation": "Seleccionar Estação",
+      "stationPlaceholder": "Estação de Monitorização",
+      "selectVariable": "Seleccionar Variável de Qualidade da Água",
+      "variablePlaceholder": "Parâmetro QA",
+      "valueLabel": "Valor da Variável",
+      "valuePlaceholder": "ex. 7,2",
+      "samplingDate": "Data de Amostragem",
+      "edit": "Editar Leitura de Amostra QA",
+      "stationAndVariable": "ESTAÇÃO E VARIÁVEL",
+      "parameter": "Parâmetro:",
+      "reject": "Rejeitar Registo de Amostra QA",
+      "rejectPlaceholder": "ex. Valor parece matematicamente impossível, verifique os relatórios de laboratório."
+    },
+    "notify": {
+      "logged": "Amostra Registada",
+      "loggedMsg": "Amostra de qualidade da água registada com sucesso.",
+      "logFailed": "Falha no Registo",
+      "updated": "Registo Actualizado",
+      "updatedMsg": "Leitura de qualidade da água actualizada com sucesso.",
+      "deleteConfirm": "Tem a certeza que deseja eliminar este registo de qualidade da água?",
+      "deleted": "Registo Eliminado",
+      "deletedMsg": "Leitura de qualidade da água removida com sucesso.",
+      "approved": "Leitura Aprovada",
+      "approvedMsg": "Leitura de qualidade da água verificada e publicada.",
+      "rejected": "Submissão Rejeitada",
+      "rejectedMsg": "Leitura de qualidade da água rejeitada e devolvida com comentários."
+    },
+    "empty": {
+      "measurements": "Nenhuma medição QA registada ainda."
+    }
+  },
+  "rainfall": {
+    "description": "Monitorização meteorológica bilateral e transfronteiriça da precipitação e níveis de alerta nas sub-bacias.",
+    "logButton": "Registar Precipitação",
+    "noHistoryRecords": "Nenhum registo histórico de precipitação disponível para gráfico.",
+    "stats": {
+      "basinAvgRain": "Precipitação Média da Bacia",
+      "meteorologicalNetwork": "rede meteorológica",
+      "dryAlertStations": "Estações Secas / em Alerta",
+      "lowPrecipitation": "Precipitação baixa (<50mm)",
+      "basinLevels": "níveis da bacia",
+      "satisfactory": "Satisfatório"
+    },
+    "registry": {
+      "title": "Registo de Estações de Precipitação",
+      "rainfallHeader": "Precipitação",
+      "empty": "Nenhuma estação de precipitação pré-carregada ainda."
+    },
+    "legend": {
+      "precipitationStatus": "Estado da Precipitação",
+      "sufficient": "Suficiente (>= 50 mm)",
+      "belowNormal": "Abaixo do Normal (< 50 mm)",
+      "noValue": "Sem Valor",
+      "incoatiBound": "Contorno da Bacia do Incomati",
+      "maputoBound": "Contorno da Bacia do Maputo",
+      "stationCenter": "Centro da Estação"
+    },
+    "detail": {
+      "latest24h": "Precipitação nas Últimas 24h"
+    },
+    "chart": {
+      "hydrograph": "Hidrograma de Precipitação (Eventos vs. Soma Acumulada)",
+      "hydrographDesc": "Intensidade diária de eventos de precipitação (colunas azuis, mm/dia) vs. soma acumulada sazonal (curva teal, mm)."
+    },
+    "queue": {
+      "title": "Fila de Verificação — Registos de Precipitação Pendentes",
+      "precipHeader": "Precipitação (mm)"
+    },
+    "history": {
+      "title": "Histórico de Medições de Precipitação",
+      "precipHeader": "Precipitação"
+    },
+    "modal": {
+      "log": "Registar Leitura de Precipitação",
+      "selectStation": "Seleccionar Estação de Medição",
+      "stationPlaceholder": "Estação Meteorológica",
+      "valueLabel": "Valor de Precipitação (mm)",
+      "valuePlaceholder": "ex. 12,5",
+      "edit": "Editar Leitura de Precipitação",
+      "reject": "Rejeitar Registo de Precipitação"
+    },
+    "notify": {
+      "logged": "Precipitação Registada",
+      "loggedMsg": "Leitura de precipitação registada com sucesso.",
+      "logFailed": "Falha no Registo",
+      "updated": "Registo Actualizado",
+      "updatedMsg": "Registo de precipitação actualizado com sucesso.",
+      "deleteConfirm": "Tem a certeza que deseja eliminar este registo de precipitação?",
+      "deleted": "Registo Eliminado",
+      "deletedMsg": "Medição de precipitação removida com sucesso.",
+      "approved": "Leitura Aprovada",
+      "approvedMsg": "Leitura de precipitação verificada e publicada.",
+      "rejected": "Submissão Rejeitada",
+      "rejectedMsg": "Leitura de precipitação rejeitada e devolvida com comentários."
+    },
+    "empty": {
+      "measurements": "Nenhuma medição de precipitação registada ainda."
+    }
+  },
+  "groundwater": {
+    "description": "Monitorização das reservas de água subterrânea e níveis dos aquíferos nas sub-bacias transfronteiriças.",
+    "logButton": "Registar Nível do Aquífero",
+    "noHistoryRecords": "Nenhuma leitura piezométrica disponível para gráfico.",
+    "stats": {
+      "basinAvgDepth": "Profundidade Média da Bacia",
+      "piezometricSurveillance": "vigilância piezométrica",
+      "lowLevelAquifers": "Aquíferos de Nível Baixo",
+      "depthBelow10": "Profundidade abaixo do limite de 10m",
+      "depthBelow10m": "Profundidade abaixo do limite de 10m",
+      "waterTableMargins": "margens do lençol freático",
+      "stable": "Estável"
+    },
+    "registry": {
+      "title": "Registo de Estações de Água Subterrânea",
+      "piezometricHeader": "Nível Piezométrico",
+      "piezometricLevel": "Nível Piezométrico",
+      "empty": "Nenhuma estação de água subterrânea pré-carregada ainda."
+    },
+    "legend": {
+      "gwDepthStatus": "Estado da Profundidade da Água Subterrânea",
+      "goodLevels": "Bons Níveis (>= 10 m)",
+      "lowLevels": "Níveis Baixos (< 10 m)",
+      "noValue": "Sem Valor",
+      "incoatiBound": "Contorno da Bacia do Incomati",
+      "maputoBound": "Contorno da Bacia do Maputo",
+      "stationCenter": "Centro da Estação",
+      "criticalLimit": "Limite de Alerta Crítico"
+    },
+    "detail": {
+      "latestVerified": "Última Profundidade Verificada do Aquífero"
+    },
+    "chart": {
+      "depletion": "Armazenamento e Tendência de Depleção do Aquífero",
+      "depletionDesc": "Hidrograma da profundidade da carga piezométrica (m) ao longo do tempo. Valores abaixo de 10m indicam condições criticamente secas."
+    },
+    "queue": {
+      "title": "Fila de Verificação — Registos do Aquífero Pendentes",
+      "aquiferDepthHeader": "Profundidade do Aquífero (m)"
+    },
+    "history": {
+      "title": "Histórico de Medições do Nível do Aquífero",
+      "aquiferDepthHeader": "Profundidade do Aquífero"
+    },
+    "modal": {
+      "log": "Registar Leitura do Nível do Aquífero",
+      "selectStation": "Seleccionar Estação de Medição",
+      "stationPlaceholder": "Estação Piezométrica",
+      "valueLabel": "Valor do Nível Freático (m)",
+      "valuePlaceholder": "ex. 11,2",
+      "edit": "Editar Leitura do Nível do Aquífero",
+      "reject": "Rejeitar Registo do Nível do Aquífero"
+    },
+    "notify": {
+      "logged": "Leitura Piezométrica Registada",
+      "loggedMsg": "Medição da profundidade do nível freático registada com sucesso.",
+      "logFailed": "Falha no Registo",
+      "updated": "Registo Actualizado",
+      "updatedMsg": "Registo do nível do aquífero actualizado com sucesso.",
+      "deleteConfirm": "Tem a certeza que deseja eliminar este registo piezométrico?",
+      "deleted": "Registo Eliminado",
+      "deletedMsg": "Medição do aquífero removida com sucesso.",
+      "approved": "Leitura Aprovada",
+      "approvedMsg": "Leitura piezométrica de água subterrânea verificada e publicada.",
+      "rejected": "Submissão Rejeitada",
+      "rejectedMsg": "Entrada piezométrica rejeitada e devolvida com comentários."
+    },
+    "empty": {
+      "measurements": "Nenhum nível de aquífero registado ainda."
+    }
+  },
+  "map": {
+    "layers": "Camadas do Mapa",
+    "fullscreen": "Ecrã Inteiro",
+    "exitFullscreen": "Sair do Ecrã Inteiro",
+    "toggleLayersPanel": "Alternar painel de opções de camadas do mapa",
+    "baseMap": "Mapa Base",
+    "mapType": {
+      "map": "Mapa",
+      "muted": "Silenciado",
+      "sat": "Satélite"
+    },
+    "basinOutlines": "Contornos das Bacias",
+    "stationMarkers": "Marcadores de Estações",
+    "stationsLegend": "Estações",
+    "stations": "Estações",
+    "stationStatus": {
+      "active": "Activo",
+      "unconfirmed": "Não Confirmado",
+      "inactive": "Inactivo"
+    },
+    "gisVisualization": "Visualização SIG",
+    "vizType": {
+      "gauges": "Estações",
+      "hexBins": "Hex-Bins",
+      "hotspots": "Pontos Críticos"
+    },
+    "popup": {
+      "hotspotZone": "Zona de Ponto Crítico:",
+      "hexBin": "Hexágono Agregado",
+      "hexStations": "Estações do Hexágono",
+      "value": "Valor:",
+      "status": "Estado:",
+      "avgValue": "Valor Médio:",
+      "gauges": "Estações",
+      "gaugesLabel": "Estações:",
+      "highAlert": "Zona de Alto Alerta / Stress",
+      "normalHealthy": "Normal / Saudável",
+      "alertsActive": "Alertas Activos",
+      "healthy": "Saudável",
+      "noData": "Sem Dados"
+    },
+    "legend": {
+      "hexBins": "Legenda Hex-Bins",
+      "hotspots": "Legenda de Pontos Críticos",
+      "compliant": "Conforme (Saudável)",
+      "nonCompliant": "Não Conforme (Alerta)",
+      "noValue": "Sem Valor (Sem Dados)",
+      "alertHotspot": "Ponto Crítico de Alerta (Alto Stress)",
+      "healthyHotspot": "Ponto Crítico Saudável (Estável)",
+      "alertSingular": "alerta",
+      "alertPlural": "alertas",
+      "descHexBins": "Hexágonos espaciais agregados cobrindo zonas locais das bacias:",
+      "descHotspots": "Anéis de densidade de stress indicando alertas regionais:",
+      "descGauges": "O tamanho representa a magnitude (mapa de bolhas). O contorno representa o estado:",
+      "borderDashed": "Tracejado",
+      "borderDotted": "Pontilhado",
+      "borderSolid": "Sólido",
+      "incoatiBound": "Contorno da Bacia do Incomati",
+      "maputoBound": "Contorno da Bacia do Maputo"
+    }
+  },
+  "exportCsv": "Exportar CSV"
+}

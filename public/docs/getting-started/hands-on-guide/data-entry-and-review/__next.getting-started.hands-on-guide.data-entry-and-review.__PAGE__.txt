@@ -1,0 +1,68 @@
+1:"$Sreact.fragment"
+2:I[55169,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"TOCProvider"]
+3:I[769,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"Sidebar"]
+4:I[47486,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ClientWrapper"]
+6:I[63894,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"HeadingAnchor"]
+19:I[26579,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ImageZoom"]
+1a:I[97367,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"OutletBoundary"]
+1b:"$Sreact.suspense"
+5:T6e2,# Data Entry & Review
+
+This section covers the daily routine of water measurements data entry and the 2-step verification review workflow.
+
+---
+
+## 1. Navigating GIS Pages
+
+To view and enter measurements, select the appropriate parameter page from the **GIS Pages** menu:
+- **Flow Levels:** Streamflow discharge rate (m³/s).
+- **Dam Levels:** Storage volume (million m³) and percentage full.
+- **Water Quality:** pH, Electrical Conductivity (EC), Dissolved Oxygen (DO), etc.
+- **Rainfall:** Precipitation depth (mm).
+- **Groundwater:** Water table level below ground surface (m).
+
+---
+
+## 2. Submitting Daily Measurements (Clerks)
+
+Data Entry Clerks enter daily readings:
+
+![GIS Flow Levels](/screenshots/flow_levels.png)
+
+### Steps to enter data:
+1. Click **Add Measurement** on the GIS parameter page.
+2. Select the **Station** and the **Date/Time** of the reading.
+3. Input the measurement value (e.g. flow rate).
+4. Click **Submit**.
+
+Once submitted, the row is created with a `pending` status. It is visible on the dashboard in the **Pending Review** queue, but it is not factored into official compliance reports.
+
+---
+
+## 3. The 2-Step Verification Flow (Managers)
+
+A Water Resource Manager must verify all pending data:
+
+### Manager Actions:
+- **Approve:** Clicking **Approve** updates the status of the measurement to `approved`. The data is locked and becomes part of the active compliance dataset.
+- **Reject:** If the value is suspicious or incorrect, the manager clicks **Reject**. This opens a modal requiring a rejection comment. The measurement is marked `rejected`, and the submitter is notified.
+- **Audit Logging:** Every approval or rejection is recorded in the system audit logs, tracking the timestamp, action, and reviewing manager's ID.0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"x:mx-auto x:flex x:max-w-(--nextra-content-width)","children":["$","$L2",null,{"value":[{"value":"1. Navigating GIS Pages","id":"1-navigating-gis-pages","depth":2},{"value":"2. Submitting Daily Measurements (Clerks)","id":"2-submitting-daily-measurements-clerks","depth":2},{"value":"Steps to enter data:","id":"steps-to-enter-data","depth":3},{"value":"3. The 2-Step Verification Flow (Managers)","id":"3-the-2-step-verification-flow-managers","depth":2},{"value":"Manager Actions:","id":"manager-actions","depth":3}],"children":[["$","$L3",null,{}],["$","$L4",null,{"metadata":{"title":"Data Entry & Review","filePath":"app/getting-started/hands-on-guide/data-entry-and-review/page.mdx"},"sourceCode":"$5","children":[["$","div",null,{"id":"nextra-skip-nav"}],["$","main",null,{"data-pagefind-body":true,"children":[["$","h1",null,{"className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-bold x:mt-2 x:text-4xl","children":["Data Entry & Review","$undefined"]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"This section covers the daily routine of water measurements data entry and the 2-step verification review workflow."}],"\n",["$","hr",null,{"className":"x:my-[2em] nextra-border"}],"\n",["$","h2",null,{"id":"1-navigating-gis-pages","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["1. Navigating GIS Pages",["$","$L6",null,{"id":"1-navigating-gis-pages"}]]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["To view and enter measurements, select the appropriate parameter page from the ",["$","strong",null,{"children":"GIS Pages"}]," menu:"]}],"\n",["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n","$L7","\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n"]}],"\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17"]}]]}]]}]}],null,"$L18"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fH1W0CGycxmIj2F7exmpr"}
+7:["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Flow Levels:"}]," Streamflow discharge rate (m³/s)."]}]
+8:["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Dam Levels:"}]," Storage volume (million m³) and percentage full."]}]
+9:["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Water Quality:"}]," pH, Electrical Conductivity (EC), Dissolved Oxygen (DO), etc."]}]
+a:["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Rainfall:"}]," Precipitation depth (mm)."]}]
+b:["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Groundwater:"}]," Water table level below ground surface (m)."]}]
+c:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+d:["$","h2",null,{"id":"2-submitting-daily-measurements-clerks","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["2. Submitting Daily Measurements (Clerks)",["$","$L6",null,{"id":"2-submitting-daily-measurements-clerks"}]]}]
+e:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Data Entry Clerks enter daily readings:"}]
+f:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["$","$L19",null,{"alt":"GIS Flow Levels","placeholder":"blur","src":{"src":"/docs/_next/static/media/flow_levels.1zrvlnrx_thzp.png","width":1280,"height":800,"blurWidth":8,"blurHeight":5,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAbUlEQVR42h2MWwrCMBAAc//bCYIPUBFTk1aiMbvd7EswdP6GgQm9M7O0Br+NnHOt1czCysqiRN3MVe2Z0hY8dBYRxZVEFRBTKfd5XpZXGD6o30qdGsD+etsdjufTJYyduzcEYEKE+IhTnN7l8wf0q3Ft1U8MdQAAAABJRU5ErkJggg=="}}]}]
+10:["$","h3",null,{"id":"steps-to-enter-data","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":["Steps to enter data:",["$","$L6",null,{"id":"steps-to-enter-data"}]]}]
+11:["$","ol",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-decimal x:ms-6","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Add Measurement"}]," on the GIS parameter page."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Select the ",["$","strong",null,{"children":"Station"}]," and the ",["$","strong",null,{"children":"Date/Time"}]," of the reading."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":"Input the measurement value (e.g. flow rate)."}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Submit"}],"."]}],"\n"]}]
+12:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["Once submitted, the row is created with a ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"pending"}]," status. It is visible on the dashboard in the ",["$","strong",null,{"children":"Pending Review"}]," queue, but it is not factored into official compliance reports."]}]
+13:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+14:["$","h2",null,{"id":"3-the-2-step-verification-flow-managers","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["3. The 2-Step Verification Flow (Managers)",["$","$L6",null,{"id":"3-the-2-step-verification-flow-managers"}]]}]
+15:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"A Water Resource Manager must verify all pending data:"}]
+16:["$","h3",null,{"id":"manager-actions","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":["Manager Actions:",["$","$L6",null,{"id":"manager-actions"}]]}]
+17:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Approve:"}]," Clicking ",["$","strong",null,{"children":"Approve"}]," updates the status of the measurement to ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"approved"}],". The data is locked and becomes part of the active compliance dataset."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Reject:"}]," If the value is suspicious or incorrect, the manager clicks ",["$","strong",null,{"children":"Reject"}],". This opens a modal requiring a rejection comment. The measurement is marked ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"rejected"}],", and the submitter is notified."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Audit Logging:"}]," Every approval or rejection is recorded in the system audit logs, tracking the timestamp, action, and reviewing manager’s ID."]}],"\n"]}]
+18:["$","$L1a",null,{"children":["$","$1b",null,{"name":"Next.MetadataOutlet","children":"$@1c"}]}]
+1c:null

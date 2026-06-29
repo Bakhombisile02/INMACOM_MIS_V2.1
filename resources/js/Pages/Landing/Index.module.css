@@ -7,6 +7,7 @@
 
   @media (max-width: 62em) {
     flex-direction: column;
+    gap: 32px;
     padding-top: calc(var(--mantine-spacing-xl) * 2);
     padding-bottom: calc(var(--mantine-spacing-xl) * 2);
   }
@@ -40,6 +41,19 @@
   padding: 2px 8px;
 }
 
+.lead {
+  max-width: 60ch;
+}
+
+.actions {
+  gap: var(--mantine-spacing-sm);
+  flex-wrap: wrap;
+}
+
+.actionButton {
+  min-height: 44px;
+}
+
 .visual {
   flex: 1;
   display: flex;
@@ -49,5 +63,26 @@
 
   @media (max-width: 62em) {
     min-height: 280px;
+  }
+}
+
+@media (max-width: 48em) {
+  .lead {
+    font-size: var(--mantine-font-size-sm);
+    line-height: 1.55;
+  }
+
+  .actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .actionButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .visual {
+    min-height: 220px;
   }
 }

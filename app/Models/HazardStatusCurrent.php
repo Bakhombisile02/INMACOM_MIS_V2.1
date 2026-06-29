@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Queries\HazardStatusQuery;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Queries\HazardStatusQuery;
 
 #[Fillable([
     'hazard_code',

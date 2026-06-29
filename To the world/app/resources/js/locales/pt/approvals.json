@@ -1,0 +1,51 @@
+{
+  "tabs": {
+    "overview": "Visão geral",
+    "approvals": "Aprovações"
+  },
+  "queue": {
+    "pendingMeasurements": "Medições pendentes",
+    "pendingStationEdits": "Edições de estação pendentes",
+    "noPending": "Não há itens pendentes para revisão.",
+    "submittedBy": "Submetido por",
+    "submittedAt": "Submetido",
+    "field": "Campo",
+    "currentValue": "Atual",
+    "proposedValue": "Proposto",
+    "reviewNotes": "Notas de revisão",
+    "newStation": "Nova estação",
+    "selfOverride": "Auto-aprovado"
+  },
+  "actions": {
+    "approve": "Aprovar",
+    "reject": "Rejeitar",
+    "addComment": "Adicionar comentário",
+    "resolve": "Resolver",
+    "unresolve": "Reabrir",
+    "delete": "Apagar",
+    "viewThread": "Ver comentários"
+  },
+  "comments": {
+    "title": "Comentários",
+    "empty": "Ainda sem comentários. Inicie a discussão.",
+    "placeholder": "Escreva um comentário… use @ para mencionar um colega",
+    "post": "Publicar",
+    "reply": "Responder",
+    "fieldTag": "Etiquetar um campo (opcional)",
+    "noFieldTag": "Geral",
+    "resolvedBadge": "Resolvido",
+    "mentionedYou": "mencionou-o"
+  },
+  "notifications": {
+    "title": "Notificações",
+    "empty": "Tudo em dia.",
+    "markAllRead": "Marcar todas como lidas"
+  },
+  "revision": {
+    "approved": "Revisão aprovada.",
+    "rejected": "Revisão rejeitada.",
+    "alreadyReviewed": "A revisão já foi avaliada.",
+    "submittedForReview": "Alteração de estação submetida para revisão.",
+    "noChanges": "Sem alterações para submeter."
+  }
+}

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Queries\HazardStatusQuery;
+use App\Queries\StationMeasurementQuery;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
@@ -27,26 +29,18 @@ class DashboardController extends Controller
 
         $damStationIds = $damStations->pluck('id');
 
-        $latestDamMeasurements = DB::table('measurements as m1')
-            ->join(DB::raw('(SELECT station_id, MAX(date) as max_date 
-                             FROM measurements 
-                             WHERE measurement_type = \'dam_level\' 
-                               AND status = \'approved\' 
-                             GROUP BY station_id) as m2'), function($join) {
-                $join->on('m1.station_id', '=', 'm2.station_id')
-                     ->on('m1.date', '=', 'm2.max_date');
-            })
-            ->whereIn('m1.station_id', $damStationIds)
-            ->where('m1.measurement_type', 'dam_level')
-            ->where('m1.status', 'approved')
-            ->select('m1.*')
+        $latestDamMeasurements = StationMeasurementQuery::query()
+            ->forStations($damStationIds)
+            ->forTypes('dam_level')
+            ->withStatuses('approved')
+            ->latestPerStation()
             ->get()
             ->keyBy('station_id');
 
         $reservoirs = $damStations
             ->map(function ($station) use ($latestDamMeasurements) {
                 $latestMeasurement = $latestDamMeasurements->get($station->id);
-                
+
                 return [
                     'id' => $station->id,
                     'code' => $station->code,
@@ -67,21 +61,23 @@ class DashboardController extends Controller
         $ressanoGarcia = DB::table('stations')
             ->where(function ($query) {
                 $query->where('code', 'X2H036')
-                      ->orWhere('code', 'E-23')
-                      ->orWhere('gauge_code', 'E-23')
-                      ->orWhere('gauge_code', 'X2H036');
+                    ->orWhere('code', 'E-23')
+                    ->orWhere('gauge_code', 'E-23')
+                    ->orWhere('gauge_code', 'X2H036');
             })
             ->first();
-        
+
         $ressanoGarciaFlow = null;
         if ($ressanoGarcia) {
-            $latestFlow = DB::table('measurements')
-                ->where('station_id', $ressanoGarcia->id)
-                ->where('measurement_type', 'flow')
-                ->where('status', 'approved')
+            $latestFlow = StationMeasurementQuery::query()
+                ->forStations($ressanoGarcia->id)
+                ->forTypes('flow')
+                ->withStatuses('approved')
                 ->orderBy('date', 'desc')
+                ->limit(1)
+                ->get()
                 ->first();
-            
+
             if ($latestFlow) {
                 $ressanoGarciaFlow = [
                     'value' => (float) $latestFlow->value,
@@ -106,28 +102,27 @@ class DashboardController extends Controller
             ->get()
             ->keyBy('key_point_id');
 
-        $latestFlows = DB::table('measurements')
-            ->whereIn('station_id', $stationIds)
-            ->where('measurement_type', 'flow')
-            ->where('status', 'approved')
-            ->orderBy('date', 'desc')
+        $latestFlows = StationMeasurementQuery::query()
+            ->forStations($stationIds)
+            ->forTypes('flow')
+            ->withStatuses('approved')
+            ->latestPerStation()
             ->get()
-            ->unique('station_id')
             ->keyBy('station_id');
 
         $eflowPoints = $activeKeyPoints
             ->map(function ($point) use ($requirements, $latestFlows) {
                 $requirement = $requirements->get($point->id);
                 $latestFlow = $point->station_id ? $latestFlows->get($point->station_id) : null;
-                
+
                 $currentFlow = $latestFlow ? (float) $latestFlow->value : null;
                 $minRequired = $requirement ? (float) $requirement->min_flow_m3_s : null;
-                
+
                 $isCompliant = null;
                 if ($currentFlow !== null && $minRequired !== null) {
                     $isCompliant = $currentFlow >= $minRequired;
                 }
-                
+
                 return [
                     'id' => $point->id,
                     'code' => $point->code,
@@ -145,28 +140,23 @@ class DashboardController extends Controller
         // 5. Disaster / Hazard Status Levels and Scores per subcatchment (FSW and Ds)
         $hazardStatuses = [];
         if (Schema::hasTable('hazard_status_current')) {
-            $hazardStatuses = DB::table('hazard_status_current')
-                ->join('hazard_types', 'hazard_status_current.hazard_code', '=', 'hazard_types.code')
-                ->join('management_areas', 'hazard_status_current.area_id', '=', 'management_areas.id')
-                ->leftJoin('hazard_status_levels', function ($join) {
-                    $join->on('hazard_status_current.hazard_code', '=', 'hazard_status_levels.hazard_code')
-                         ->on('hazard_status_current.level_code', '=', 'hazard_status_levels.level_code');
-                })
-                ->select(
-                    'hazard_status_current.id',
-                    'hazard_status_current.hazard_code',
-                    'hazard_types.name as hazard_name',
-                    'management_areas.name as area_name',
-                    'management_areas.code as area_code',
-                    'hazard_status_current.level_code',
-                    'hazard_status_levels.name as level_name',
-                    'hazard_status_levels.severity',
-                    'hazard_status_levels.color',
-                    'hazard_status_current.score',
-                    'hazard_status_current.calculated_at'
-                )
-                ->orderBy('hazard_status_current.calculated_at', 'desc')
+            $hazardStatuses = HazardStatusQuery::query()
+                ->withDetails()
+                ->orderBy('calculated_at', 'desc')
                 ->get()
+                ->map(fn ($row) => (object) [
+                    'id' => $row->id,
+                    'hazard_code' => $row->hazard_code,
+                    'hazard_name' => $row->hazard_name,
+                    'area_name' => $row->area_name,
+                    'area_code' => $row->area_code,
+                    'level_code' => $row->level_code,
+                    'level_name' => $row->level_name,
+                    'severity' => $row->severity,
+                    'color' => $row->color,
+                    'score' => $row->score,
+                    'calculated_at' => $row->calculated_at,
+                ])
                 ->toArray();
         }
 
@@ -196,7 +186,9 @@ class DashboardController extends Controller
             ->toArray();
 
         // 7. Pending queue metrics for Data Managers
-        $pendingMeasurementsCount = DB::table('measurements')->where('status', 'pending')->count();
+        $pendingMeasurementsCount = StationMeasurementQuery::query()
+            ->withStatuses('pending')
+            ->count();
         $pendingIncidentsCount = DB::table('disaster_incidents')->where('review_status', 'pending')->count();
 
         return Inertia::render('Dashboard/Index', [

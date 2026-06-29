@@ -29,6 +29,8 @@ Route::get('/', function () {
 
 Route::get('/documents', [PublicDocumentsController::class, 'index'])->name('documents');
 Route::get('/explore', [PublicGisController::class, 'explore'])->name('explore');
+Route::get('/public/stations/{id}/historical-data', [PublicGisController::class, 'stationHistorical'])
+    ->name('public.stations.historical-data');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])

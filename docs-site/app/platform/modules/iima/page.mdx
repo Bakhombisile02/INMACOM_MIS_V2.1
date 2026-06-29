@@ -1,0 +1,71 @@
+# IIMA Compliance & Allocations
+
+The **Incomati and Maputo Agreement (IIMA)** dictates specific restrictions on water abstractions and minimum environmental flow rates (Eflows) at international borders. This module tracks and logs compliance with these requirements.
+
+![INMACOM MIS IIMA Thresholds & Allocations](/screenshots/thresholds.png)
+
+---
+
+## Data Models Reference
+
+```
+ ┌──────────────────────┐        ┌──────────────────────┐
+ │ iima_user_categories │◄───────│  iima_allocations    │ (Allocated shares
+ └──────────▲───────────┘        └──────────────────────┘  per country & cat)
+            │
+            │                    ┌──────────────────────┐
+            └────────────────────│  water_abstractions  │ (Actual volumes
+                                 └──────────────────────┘  abstracted)
+                                            │
+                                            ▼
+                                 ┌──────────────────────┐
+                                 │iima_compliance_record│ (Calculates
+                                 └──────────────────────┘  compliance %)
+```
+
+### 1. `iima_user_categories`
+Defines priority categories for water users. It includes:
+*   `assurance_pct_primary` / `allocation_share_primary`: Priorities for domestic, municipal, and ecological uses.
+*   `assurance_pct_secondary` / `allocation_share_secondary`: Secondary priorities (industrial and agriculture).
+
+### 2. `iima_eflow_requirements`
+Maintains the minimum environmental flow rate (m³/s) for critical cross-border locations:
+*   *Key Monitoring Point:* Sabie River, Crocodile River, Incomati Main Stem.
+*   *Tied Station:* Links to a specific physical telemetry station (`station_id`).
+
+### 3. `iima_allocations`
+Defines the volume of water (million m³/annum) allocated to Eswatini, Mozambique, and South Africa for each user category in a given subcatchment.
+
+### 4. `water_abstractions`
+Records the actual volume of water abstracted by each country in a given period.
+
+---
+
+## Compliance Calculation Workflow
+
+The system calculates compliance metrics on a recurring basis or when triggered by data uploads.
+
+### 1. Eflow Compliance
+*   The system compares the average flow rate (m³/s) at a border monitoring station over the evaluation period against the `min_flow_m3_s` defined in `iima_eflow_requirements`.
+*   If the actual flow is equal to or greater than the threshold, compliance is marked `true` (100%).
+*   If the actual flow drops below the threshold, compliance is marked `false`, and an alert is flagged on the manager's dashboard.
+
+### 2. Abstraction Compliance
+*   The system sums all abstractions logged in the `water_abstractions` table for a specific country, subcatchment, and user category.
+*   It compares this total against the corresponding `iima_allocations` limit.
+*   *Compliance Percentage:*
+    ```text
+    Compliance % = (Actual Abstraction / Allocated Volume) * 100
+    ```
+*   If the abstraction exceeds 100%, it violates the IIMA agreement and triggers restriction actions.
+
+---
+
+## Restriction Level Triggers
+
+When water availability in the basin drops to critical levels (e.g. during severe droughts), the IIMA mandates progressive curtailments on secondary uses:
+
+*   **Restriction Level 1:** Voluntary reduction guidelines for agricultural abstractions.
+*   **Restriction Level 2:** Mandatory $10\%$ curtailment on agricultural and industrial licenses.
+*   **Restriction Level 3:** $20\%$ curtailment on agriculture; suspension of non-essential industrial abstractions.
+*   **Restriction Level 4 (Critical):** All water resources are redirected to primary domestic consumption and ecological flows. Abstraction for other categories is suspended.

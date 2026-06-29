@@ -1,0 +1,24 @@
+{
+  "403": {
+    "title": "Access denied",
+    "description": "You do not have permission to view this page. If you believe this is a mistake, please contact your administrator."
+  },
+  "404": {
+    "title": "Nothing to see here",
+    "description": "The page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support."
+  },
+  "500": {
+    "title": "Something went wrong",
+    "description": "Our servers encountered an unexpected error. Please try again in a moment. If the problem persists, contact support."
+  },
+  "503": {
+    "title": "System under maintenance",
+    "description": "INMACOM MIS is temporarily unavailable for scheduled maintenance. Please check back shortly."
+  },
+  "default": {
+    "title": "An unexpected error occurred",
+    "description": "Something went wrong on our end. Please try refreshing the page or contact support if the problem persists."
+  },
+  "backHome": "Take me back to the dashboard",
+  "refresh": "Try again"
+}

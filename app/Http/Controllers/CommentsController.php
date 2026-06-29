@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\CommentMention;
 use App\Models\User;
+use App\Services\CommentMentionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -70,7 +71,7 @@ class CommentsController extends Controller
                 'body' => $validated['body'],
             ]);
 
-            $this->extractAndStoreMentions($comment);
+            CommentMentionService::extractAndStore($comment);
 
             return $comment;
         });
@@ -192,50 +193,6 @@ class CommentsController extends Controller
         abort_unless(in_array($key, self::ALLOWED_TYPES, true), 422, 'Unknown commentable type.');
 
         return $key;
-    }
-
-    /**
-     * Parse @mentions from the comment body, resolve to user IDs, and store CommentMention rows.
-     * Mentions look like `@[uuid]` (canonical) or fallback `@displayName` (best-effort lookup).
-     */
-    private function extractAndStoreMentions(Comment $comment): void
-    {
-        $userIds = [];
-
-        // Canonical: @[uuid]
-        if (preg_match_all('/@\[([0-9a-f-]{36})\]/i', $comment->body, $m)) {
-            $userIds = array_merge($userIds, $m[1]);
-        }
-
-        // Fallback: @display_name (no spaces). Skip if canonical mentions exist for that name.
-        if (preg_match_all('/(?<!\w)@([A-Za-z0-9_.-]{2,})(?![\[a-zA-Z0-9_.-])/', $comment->body, $m)) {
-            $names = array_diff($m[1], []);
-            if (!empty($names)) {
-                $found = User::query()
-                    ->whereIn('display_name', $names)
-                    ->pluck('id')
-                    ->all();
-                $userIds = array_merge($userIds, $found);
-            }
-        }
-
-        $userIds = array_values(array_unique(array_filter($userIds)));
-        if (empty($userIds)) {
-            return;
-        }
-
-        // Confirm users exist
-        $existing = User::whereIn('id', $userIds)->pluck('id')->all();
-
-        foreach ($existing as $uid) {
-            if ($uid === $comment->author_id) {
-                continue;
-            }
-            CommentMention::firstOrCreate([
-                'comment_id' => $comment->id,
-                'mentioned_user_id' => $uid,
-            ]);
-        }
     }
 
     private function serialize(Comment $c): array

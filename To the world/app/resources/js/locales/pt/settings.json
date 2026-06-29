@@ -1,0 +1,59 @@
+{
+  "title": "Configurações",
+  "subtitle": "Gerencie a sua conta, preferências e notificações.",
+  "tabs": {
+    "profile": "Perfil",
+    "appearance": "Aparência",
+    "notifications": "Notificações",
+    "dataPreferences": "Preferências de Dados"
+  },
+  "profile": {
+    "title": "Informações do Perfil",
+    "subtitle": "Atualize o seu nome de exibição e detalhes de contacto.",
+    "displayName": "Nome de Exibição",
+    "displayNameRequired": "O nome de exibição é obrigatório.",
+    "email": "Endereço de Email",
+    "emailReadOnly": "O email é gerido pelo seu fornecedor de autenticação e não pode ser alterado aqui.",
+    "country": "País",
+    "countryPlaceholder": "Selecionar país",
+    "organization": "Organização",
+    "telephone": "Telefone",
+    "saveProfile": "Guardar Perfil",
+    "saved": "Perfil atualizado com sucesso.",
+    "error": "Falha ao atualizar o perfil. Por favor, tente novamente."
+  },
+  "appearance": {
+    "themeTitle": "Tema",
+    "themeSubtitle": "Escolha como a interface é exibida. O padrão do sistema segue a configuração do seu SO.",
+    "themeLight": "Claro",
+    "themeDark": "Escuro",
+    "themeAuto": "Sistema",
+    "languageTitle": "Idioma",
+    "languageSubtitle": "Mude o idioma da interface. As alterações aplicam-se imediatamente.",
+    "saved": "Preferência de aparência guardada."
+  },
+  "notifications": {
+    "title": "Notificações por Email",
+    "subtitle": "Escolha quais eventos enviam um email para o seu endereço. Estas configurações entram em vigor quando a entrega de email estiver ativa.",
+    "measurementReviewed": "A minha medição submetida foi revista ou rejeitada",
+    "thresholdExceeded": "Um limite de conformidade é excedido numa estação",
+    "incidentReported": "Um novo incidente de desastre é reportado",
+    "incidentStatusChanged": "O estado ou gravidade de um incidente muda",
+    "pinUsed": "Um PIN de registo que criei foi utilizado",
+    "save": "Guardar Notificações",
+    "saved": "Preferências de notificação guardadas.",
+    "error": "Falha ao guardar as preferências de notificação."
+  },
+  "dataPreferences": {
+    "title": "Preferências de Dados",
+    "subtitle": "Filtros e configurações de exibição padrão aplicados nos módulos de dados.",
+    "timezone": "Fuso Horário de Exibição",
+    "timezonePlaceholder": "Selecionar fuso horário",
+    "rowsPerPage": "Linhas por Página",
+    "defaultCountry": "Filtro de País Padrão",
+    "defaultCountryPlaceholder": "Todos os países",
+    "save": "Guardar Preferências",
+    "saved": "Preferências de dados guardadas.",
+    "error": "Falha ao guardar as preferências de dados."
+  }
+}

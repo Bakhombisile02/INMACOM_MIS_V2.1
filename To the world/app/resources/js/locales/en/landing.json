@@ -1,0 +1,11 @@
+{
+  "eyebrow": "Welcome to INMACOM MIS",
+  "title": "A unified <1>data sharing</1> platform for member states",
+  "lead": "The Management Information System (MIS) is an online web application developed by INMACOM for the purpose of data sharing between member states.",
+  "disclaimer": {
+    "title": "Disclaimer",
+    "body": "INMACOM is maintaining this system as a public service. However, INMACOM does not assume any legal responsibility for the accuracy or completeness of the information contained on this site. Persons using information from this site for official purposes, or other purposes, for which accuracy and completeness are required, are hereby notified that they should first verify the information with the public records or other primary sources from which the information was obtained.",
+    "agreement": "By using this site, you agree to have read and accepted our Conditions of Use and Privacy Policy."
+  },
+  "memberStates": "Member States"
+}

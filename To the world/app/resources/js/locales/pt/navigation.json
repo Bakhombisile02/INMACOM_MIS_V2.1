@@ -1,0 +1,47 @@
+{
+  "dashboard": "Painel",
+  "stations": "Estações",
+  "thresholds": "Limiares",
+  "users": "Utilizadores",
+  "flowLevels": "Níveis de Caudal",
+  "damLevels": "Níveis de Barragem",
+  "waterQuality": "Qualidade da Água",
+  "rainfall": "Precipitação",
+  "groundwater": "Água Subterrânea",
+  "disasterManagement": "Gestão de Desastres",
+  "documentStorage": "Armazenamento de Documentos",
+  "auditLog": "Registo de Auditoria",
+  "profile": "Perfil",
+  "settings": "Configurações",
+  "logout": "Terminar sessão",
+  "unknownUser": "Utilizador INMACOM",
+  "profileFields": {
+    "email": "Email",
+    "country": "País",
+    "organization": "Organização",
+    "telephone": "Telefone"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "manager": "Gestor",
+    "clerk": "Operador"
+  },
+  "shell": {
+    "menu": "Menu",
+    "sidebarLabel": "Navegação do painel",
+    "toggleNavigation": "Alternar navegação",
+    "collapse": "Recolher",
+    "expand": "Expandir"
+  },
+  "placeholder": {
+    "default": "Este módulo está a ser preparado e estará disponível em breve.",
+    "thresholds": "As telas de configuração de limiares estão a ser preparadas.",
+    "users": "As telas de administração de utilizadores estão a ser preparadas.",
+    "flowLevels": "As telas de níveis de caudal estão a ser preparadas.",
+    "damLevels": "As telas de níveis de barragem estão a ser preparadas.",
+    "waterQuality": "As telas de qualidade da água estão a ser preparadas.",
+    "rainfall": "As telas de precipitação estão a ser preparadas.",
+    "groundwater": "As telas de água subterrânea estão a ser preparadas.",
+    "settings": "As telas de configurações estão a ser preparadas."
+  }
+}

@@ -1,0 +1,60 @@
+1:"$Sreact.fragment"
+2:I[55169,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"TOCProvider"]
+3:I[769,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"Sidebar"]
+4:I[47486,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ClientWrapper"]
+6:I[63894,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"HeadingAnchor"]
+7:I[26579,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ImageZoom"]
+14:I[97367,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"OutletBoundary"]
+15:"$Sreact.suspense"
+5:T663,# Station Management
+
+This section walks you through managing water monitoring stations and suggestion-based revision workflows.
+
+---
+
+## 1. Stations Registry
+
+To view the complete list of monitoring stations in the basin, navigate to the **Stations** tab.
+
+![Stations Registry](/screenshots/stations.png)
+
+This table displays the station metadata, including:
+- **Station Code:** Unique basin identifier (e.g. `X2H016`).
+- **Name & Basin:** Geographic name and associated river system.
+- **Latitude & Longitude:** Coordinate positions.
+- **Suggester / Status:** Shows who suggested the station and its review status.
+
+---
+
+## 2. Suggesting Revisions (Clerks)
+
+Data Entry Clerks cannot modify station metadata (such as names or coordinates) directly. Instead, they submit a **Revision Request**:
+
+1. Click on the station name to view its details.
+2. Click **Suggest Revision**.
+3. Edit the metadata fields in the form and click **Submit Suggestion**.
+4. The station's status becomes `pending_revision`.
+
+---
+
+## 3. Reviewing & Approving Revisions (Managers)
+
+When a station is in `pending_revision` status, it appears in the manager's review queue.
+
+### Manager Actions:
+- **Approve:** Clicking **Approve** copies the suggested changes into the active station record and updates the status to `approved`.
+- **Reject:** Clicking **Reject** opens a modal where the manager must provide a rejection note explaining the decision. The suggestion is discarded, and the active station remains unchanged.
+- **Comments Thread:** Managers and clerks can converse directly on the revision request to clarify details before making a final decision.0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"x:mx-auto x:flex x:max-w-(--nextra-content-width)","children":["$","$L2",null,{"value":[{"value":"1. Stations Registry","id":"1-stations-registry","depth":2},{"value":"2. Suggesting Revisions (Clerks)","id":"2-suggesting-revisions-clerks","depth":2},{"value":"3. Reviewing & Approving Revisions (Managers)","id":"3-reviewing--approving-revisions-managers","depth":2},{"value":"Manager Actions:","id":"manager-actions","depth":3}],"children":[["$","$L3",null,{}],["$","$L4",null,{"metadata":{"title":"Station Management","filePath":"app/getting-started/hands-on-guide/station-management/page.mdx"},"sourceCode":"$5","children":[["$","div",null,{"id":"nextra-skip-nav"}],["$","main",null,{"data-pagefind-body":true,"children":[["$","h1",null,{"className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-bold x:mt-2 x:text-4xl","children":["Station Management","$undefined"]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"This section walks you through managing water monitoring stations and suggestion-based revision workflows."}],"\n",["$","hr",null,{"className":"x:my-[2em] nextra-border"}],"\n",["$","h2",null,{"id":"1-stations-registry","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["1. Stations Registry",["$","$L6",null,{"id":"1-stations-registry"}]]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["To view the complete list of monitoring stations in the basin, navigate to the ",["$","strong",null,{"children":"Stations"}]," tab."]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["$","$L7",null,{"alt":"Stations Registry","placeholder":"blur","src":{"src":"/docs/_next/static/media/stations.35vpb7xoqr-0q.png","width":1280,"height":800,"blurWidth":8,"blurHeight":5,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAbklEQVR42h2MwQ7CMAxD8/8/BtxREQjQ0FARG1zWpombFpHNJ/tZNi0FLMrMvfffppRSCIEEVYHFE7Ob1rq1VkohD6o6vONhOI2v6MhJNSPUdXF+XHbH/fV2z5lFBFbJzAB8P/MzjtM0Z2/80/AH1r5xXVvOi+kAAAAASUVORK5CYII="}}]}],"\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12"]}]]}]]}]}],null,"$L13"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fH1W0CGycxmIj2F7exmpr"}
+8:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"This table displays the station metadata, including:"}]
+9:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Station Code:"}]," Unique basin identifier (e.g. ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"X2H016"}],")."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Name & Basin:"}]," Geographic name and associated river system."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Latitude & Longitude:"}]," Coordinate positions."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Suggester / Status:"}]," Shows who suggested the station and its review status."]}],"\n"]}]
+a:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+b:["$","h2",null,{"id":"2-suggesting-revisions-clerks","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["2. Suggesting Revisions (Clerks)",["$","$L6",null,{"id":"2-suggesting-revisions-clerks"}]]}]
+c:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["Data Entry Clerks cannot modify station metadata (such as names or coordinates) directly. Instead, they submit a ",["$","strong",null,{"children":"Revision Request"}],":"]}]
+d:["$","ol",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-decimal x:ms-6","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":"Click on the station name to view its details."}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Suggest Revision"}],"."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Edit the metadata fields in the form and click ",["$","strong",null,{"children":"Submit Suggestion"}],"."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["The station’s status becomes ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"pending_revision"}],"."]}],"\n"]}]
+e:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+f:["$","h2",null,{"id":"3-reviewing--approving-revisions-managers","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["3. Reviewing & Approving Revisions (Managers)",["$","$L6",null,{"id":"3-reviewing--approving-revisions-managers"}]]}]
+10:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["When a station is in ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"pending_revision"}]," status, it appears in the manager’s review queue."]}]
+11:["$","h3",null,{"id":"manager-actions","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":["Manager Actions:",["$","$L6",null,{"id":"manager-actions"}]]}]
+12:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Approve:"}]," Clicking ",["$","strong",null,{"children":"Approve"}]," copies the suggested changes into the active station record and updates the status to ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"approved"}],"."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Reject:"}]," Clicking ",["$","strong",null,{"children":"Reject"}]," opens a modal where the manager must provide a rejection note explaining the decision. The suggestion is discarded, and the active station remains unchanged."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Comments Thread:"}]," Managers and clerks can converse directly on the revision request to clarify details before making a final decision."]}],"\n"]}]
+13:["$","$L14",null,{"children":["$","$15",null,{"name":"Next.MetadataOutlet","children":"$@16"}]}]
+16:null

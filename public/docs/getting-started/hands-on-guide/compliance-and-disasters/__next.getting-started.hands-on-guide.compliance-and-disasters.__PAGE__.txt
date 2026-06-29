@@ -1,0 +1,59 @@
+1:"$Sreact.fragment"
+2:I[55169,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"TOCProvider"]
+3:I[769,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"Sidebar"]
+4:I[47486,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ClientWrapper"]
+6:I[63894,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"HeadingAnchor"]
+13:I[26579,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ImageZoom"]
+14:I[97367,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"OutletBoundary"]
+15:"$Sreact.suspense"
+5:T754,# Compliance & Disasters
+
+This section covers treaty compliance monitoring, threshold configuration, and disaster hazard reporting.
+
+---
+
+## 1. Compliance Thresholds (IIMA)
+
+To monitor and configure water treaty limits, managers navigate to the **Compliance Thresholds** tab.
+
+![Compliance Thresholds](/screenshots/thresholds.png)
+
+From this interface, Water Resource Managers can:
+- **Instream Flow Requirements (Eflows):** Configure the minimum flow rate required at cross-border stations (e.g. South Africa/Mozambique border). If a daily average drops below this value, a critical alert is triggered.
+- **Water Quality Limits:** Establish target ranges for parameters like salinity, pH, or EC. Exceeding these limits highlights the station in yellow on the main map.
+- **Water Allocations:** Set maximum annual abstraction limits for each country and monitoring sector (irrigation, municipal, industrial).
+
+---
+
+## 2. Disaster incident Alerting
+
+In the event of floods, dam spillages, or chemical spills, users must quickly report a **Disaster Incident**:
+
+1. Navigate to the **Disaster Management** tab.
+2. Click **Report Incident**.
+3. Select the affected **Management Area** and fill in the details:
+   - **Type:** Flood, pollution, dam failure, etc.
+   - **Severity:** Low, Medium, High, Critical.
+   - **Description:** Summary of the hazard.
+4. Click **Submit**.
+
+---
+
+## 3. Downstream Notifications
+
+Once a disaster incident is logged:
+- **Alert Generation:** An immediate notification is sent to all registered users of downstream countries. For example, if a chemical spill is reported in South Africa or Eswatini, a critical alert email and SMS is dispatched to ARA-Sul managers in Mozambique.
+- **Action Log:** A collaborative log is opened for the incident where managers from all affected countries can post updates and coordinate response efforts in real time.0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"x:mx-auto x:flex x:max-w-(--nextra-content-width)","children":["$","$L2",null,{"value":[{"value":"1. Compliance Thresholds (IIMA)","id":"1-compliance-thresholds-iima","depth":2},{"value":"2. Disaster incident Alerting","id":"2-disaster-incident-alerting","depth":2},{"value":"3. Downstream Notifications","id":"3-downstream-notifications","depth":2}],"children":[["$","$L3",null,{}],["$","$L4",null,{"metadata":{"title":"Compliance & Disasters","filePath":"app/getting-started/hands-on-guide/compliance-and-disasters/page.mdx"},"sourceCode":"$5","children":[["$","div",null,{"id":"nextra-skip-nav"}],["$","main",null,{"data-pagefind-body":true,"children":[["$","h1",null,{"className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-bold x:mt-2 x:text-4xl","children":["Compliance & Disasters","$undefined"]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"This section covers treaty compliance monitoring, threshold configuration, and disaster hazard reporting."}],"\n",["$","hr",null,{"className":"x:my-[2em] nextra-border"}],"\n",["$","h2",null,{"id":"1-compliance-thresholds-iima","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["1. Compliance Thresholds (IIMA)",["$","$L6",null,{"id":"1-compliance-thresholds-iima"}]]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["To monitor and configure water treaty limits, managers navigate to the ",["$","strong",null,{"children":"Compliance Thresholds"}]," tab."]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"$L7"}],"\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11"]}]]}]]}]}],null,"$L12"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fH1W0CGycxmIj2F7exmpr"}
+7:["$","$L13",null,{"alt":"Compliance Thresholds","placeholder":"blur","src":{"src":"/docs/_next/static/media/thresholds.3kddw74ln01gv.png","width":1280,"height":800,"blurWidth":8,"blurHeight":5,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAUklEQVR42m2KOQ4EMQgE+f8bHTtyYAlWC22OYRxPJX2oSP56PM7FLl3Cg34KwxGRvlTVAHfPTNKrsAgzjzHmnAAikuyNaKX3Wmvv3b2qqPX64gFvIHTERfGbEwAAAABJRU5ErkJggg=="}}]
+8:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"From this interface, Water Resource Managers can:"}]
+9:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Instream Flow Requirements (Eflows):"}]," Configure the minimum flow rate required at cross-border stations (e.g. South Africa/Mozambique border). If a daily average drops below this value, a critical alert is triggered."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Water Quality Limits:"}]," Establish target ranges for parameters like salinity, pH, or EC. Exceeding these limits highlights the station in yellow on the main map."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Water Allocations:"}]," Set maximum annual abstraction limits for each country and monitoring sector (irrigation, municipal, industrial)."]}],"\n"]}]
+a:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+b:["$","h2",null,{"id":"2-disaster-incident-alerting","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["2. Disaster incident Alerting",["$","$L6",null,{"id":"2-disaster-incident-alerting"}]]}]
+c:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["In the event of floods, dam spillages, or chemical spills, users must quickly report a ",["$","strong",null,{"children":"Disaster Incident"}],":"]}]
+d:["$","ol",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-decimal x:ms-6","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":["Navigate to the ",["$","strong",null,{"children":"Disaster Management"}]," tab."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Report Incident"}],"."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Select the affected ",["$","strong",null,{"children":"Management Area"}]," and fill in the details:","\n",["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Type:"}]," Flood, pollution, dam failure, etc."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Severity:"}]," Low, Medium, High, Critical."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Description:"}]," Summary of the hazard."]}],"\n"]}],"\n"]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Submit"}],"."]}],"\n"]}]
+e:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+f:["$","h2",null,{"id":"3-downstream-notifications","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["3. Downstream Notifications",["$","$L6",null,{"id":"3-downstream-notifications"}]]}]
+10:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Once a disaster incident is logged:"}]
+11:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Alert Generation:"}]," An immediate notification is sent to all registered users of downstream countries. For example, if a chemical spill is reported in South Africa or Eswatini, a critical alert email and SMS is dispatched to ARA-Sul managers in Mozambique."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Action Log:"}]," A collaborative log is opened for the incident where managers from all affected countries can post updates and coordinate response efforts in real time."]}],"\n"]}]
+12:["$","$L14",null,{"children":["$","$15",null,{"name":"Next.MetadataOutlet","children":"$@16"}]}]
+16:null

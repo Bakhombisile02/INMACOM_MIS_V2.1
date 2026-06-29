@@ -1,0 +1,91 @@
+{
+  "dashboard": {
+    "title": "INMACOM Operational Dashboard",
+    "subtitle": "Real-time cross-border hydrology, ecological flow compliance, and hazard monitoring system",
+    "tabs": {
+      "overview": "Overview & Control",
+      "hydrology": "Hydrology & Reservoirs",
+      "treaty": "Treaty Compliance (IIMA)",
+      "hazards": "Hazards & Incidents"
+    },
+    "cards": {
+      "stations": "Monitoring Stations",
+      "measurements": "Verified Readings",
+      "incidents": "Emergency Alerts",
+      "documents": "Library Documents",
+      "openStations": "Manage stations",
+      "openLibrary": "Open document library",
+      "liveData": "Live telemetry channels",
+      "monitorAlerts": "Track active emergency incidents"
+    },
+    "ressanoGarcia": {
+      "title": "Ressano Garcia Transboundary Mainstem (E-23 / X2H036)",
+      "compliant": "COMPLIANT",
+      "nonCompliant": "NON-COMPLIANT",
+      "currentFlow": "Current Mainstem Flow",
+      "minRequired": "Treaty Minimum Requirement",
+      "lastUpdated": "Last Telemetry Update",
+      "noData": "No active flow telemetry received for Ressano Garcia"
+    },
+    "verification": {
+      "title": "Verification Pipeline Queue",
+      "desc": "Pending submissions requiring immediate review and sign-off",
+      "pendingMeasurements": "Measurements pending approval",
+      "pendingIncidents": "Incidents pending review",
+      "reviewAction": "Open Verification Center",
+      "allClear": "Pipeline clear. All telemetry and disaster reports are fully verified!"
+    },
+    "compliance": {
+      "title": "IIMA Cross-Border Ecological Flow Key Points",
+      "subtitle": "Compliance dashboard tracking flow allocations against treaty minimum thresholds",
+      "basinFilter": "River Basin Filter",
+      "allBasins": "All River Basins",
+      "incomati": "Incomati Basin",
+      "maputo": "Maputo Basin",
+      "keyPoint": "Key point",
+      "river": "River",
+      "country": "Country",
+      "minRequiredEflow": "Required E-flow",
+      "currentEflow": "Current flow",
+      "status": "Compliance status",
+      "compliant": "Compliant",
+      "nonCompliant": "Non-compliant",
+      "noRequirement": "No dynamic requirements found",
+      "noFlowData": "No recent telemetry",
+      "lastChecked": "Last checked"
+    },
+    "hazards": {
+      "subcatchmentHazardScores": "Subcatchment Hazard Status Levels (IAAP-5)",
+      "subtitle": "Confidence-weighted drought and flood hazard scoring calculated in real-time",
+      "floodWeight": "Flood Status Weight (FSW)",
+      "droughtScore": "Drought Score (Ds)",
+      "score": "Score",
+      "severity": "Severity",
+      "area": "Management Area",
+      "calculated": "Calculated at",
+      "activeIncidents": "Active Emergency & Pollution Logs",
+      "noIncidents": "No active disaster, drought or spill logs in progress",
+      "reported": "Reported at",
+      "incidentStatus": "Phase",
+      "chemicalDetails": "US EPA Chemical Release Details",
+      "mass": "Est. Release Mass",
+      "fishKill": "Fish kill observed",
+      "waterborne": "Waterborne pathogen warning",
+      "yes": "Yes",
+      "no": "No",
+      "reference": "Ref",
+      "severe": "Severe Alert",
+      "moderate": "Moderate Alert",
+      "watch": "Watch Alert",
+      "allClear": "All Clear"
+    },
+    "reservoirs": {
+      "title": "Major Dam Storage Capacities (% of FSC)",
+      "subtitle": "Current storage volume mapped against Full Supply Capacity (FSC)",
+      "fsc": "Full Supply Capacity",
+      "currentStorage": "Current Storage",
+      "percentFill": "Percent fill level",
+      "noReservoirs": "No active reservoir telemetry received"
+    }
+  }
+}

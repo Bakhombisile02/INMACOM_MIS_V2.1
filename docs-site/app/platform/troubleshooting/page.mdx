@@ -1,0 +1,60 @@
+# Troubleshooting Guide
+
+This page details common local development and environment setup issues and how to resolve them.
+
+---
+
+## Database Issues
+
+### 1. Error: `relation "documents" already exists`
+This error occurs when running `php artisan migrate` if old legacy migration folders are reintroduced.
+
+*   **Cause:** Early iterations of the codebase had separate migrations creating folders and documents tables. These tables were merged and superceded by `database/migrations/2026_05_16_120000_create_documents_tables.php`.
+*   **Fix:** Ensure you are not copying old migrations from `Old INMACOM CODE` or staging backups into the `database/migrations` directory. Delete any duplicate migrations and run:
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
+
+### 2. Database Relation Cache Conflicts
+If you modify a migration and the database fails to reflect it:
+*   Clear the cache and re-run migrations:
+    ```bash
+    php artisan config:clear
+    php artisan cache:clear
+    php artisan migrate:fresh --seed
+    ```
+
+---
+
+## Firebase Configuration Issues
+
+### 1. Error: `FIREBASE_CREDENTIALS file not found`
+Occurs if the backend cannot load the Google service account JSON.
+
+*   **Check:** Verify that the service account file actually exists at `storage/app/firebase-service-account.json`.
+*   **Check env:** Ensure that your `.env` contains the exact path:
+    ```env
+    FIREBASE_CREDENTIALS=storage/app/firebase-service-account.json
+    ```
+*   **Clear config:** If you modified `.env` recently, Laravel may have cached the configuration. Run:
+    ```bash
+    php artisan config:clear
+    ```
+
+### 2. Google OAuth Redirect Mismatches
+If Google sign-in fails with a redirect uri error:
+*   Ensure that the local host address in your browser matches the authorized domains list in your Firebase Console (Authentication -> Settings -> Authorized Domains).
+*   Typically, `localhost` is authorized by default, but if you access the app via a custom domain or IP (e.g. `127.0.0.1:8000`), you must add it to the authorized list.
+
+---
+
+## Local Development Port Conflicts
+
+When running `composer dev`, four separate processes launch concurrently. Ensure the following ports are free:
+
+| Service | Port | Description |
+| :--- | :--- | :--- |
+| **Laravel Server** | `8000` | Run `lsof -i :8000` to find blocking processes. |
+| **Vite Dev Server** | `5173` | Serves React assets in real-time. |
+| **Nextra Server** | `3000` | Serves this documentation wiki. |
+| **PostgreSQL** | `5432` | Local relational database. |

@@ -10,9 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable([
     'code',
     'name',
-    'type',
+    'basin',
+    'is_active',
     'country',
-    'parent_id',
+    'description',
 ])]
 class ManagementArea extends Model
 {

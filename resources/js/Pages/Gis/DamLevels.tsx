@@ -45,13 +45,20 @@ import {
     IconUpload,
     IconX,
 } from '@tabler/icons-react';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GisMap, { type GisStationData } from '@/Components/Dashboard/GisMap';
 import GisPageInfoDrawer from '@/Components/Gis/GisPageInfoDrawer';
 import MeasurementImportModal from '@/Components/Gis/MeasurementImportModal';
 import { DamDrawdownChart } from '@/Components/Gis/HistoricalCharts';
+import {
+    filterAndSortHistoryRows,
+    getHistoryDateBounds,
+    isDateWithinBounds,
+    type HistoryRangeOption,
+    type HistorySortOption,
+} from '@/Components/Gis/historyFilters';
 
 interface StationDamRow {
     id: string;
@@ -130,6 +137,11 @@ export default function DamLevels({
     const [infoStationId, setInfoStationId] = useState<string | null>(null);
     const [historicalData, setHistoricalData] = useState<any>(null);
     const [historicalLoading, setHistoricalLoading] = useState(false);
+    const [historySearch, setHistorySearch] = useState('');
+    const [historySort, setHistorySort] = useState<HistorySortOption>('date_desc');
+    const [historyRange, setHistoryRange] = useState<HistoryRangeOption>('all');
+    const [historyFrom, setHistoryFrom] = useState('');
+    const [historyTo, setHistoryTo] = useState('');
 
     // Dialog state
     const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
@@ -232,7 +244,7 @@ export default function DamLevels({
         setSelectedStationId(stationId);
         setHistoricalLoading(true);
         try {
-            const res = await fetch(`/stations/${stationId}/historical-data`);
+            const res = await fetch(`/stations/${stationId}/historical-data?type=dam_level`);
             const data = await res.json();
             setHistoricalData(data);
         } catch (error) {
@@ -357,7 +369,64 @@ export default function DamLevels({
     };
 
     const targetStation = selectedStationId ? stations.find(s => s.id === selectedStationId) : null;
-    const targetHistorical = historicalData ? historicalData.readings.filter((r: any) => r.measurement_type === 'dam_level') : [];
+    const targetHistorical = useMemo(
+        () => (historicalData?.readings ?? []).filter((r: any) => r.measurement_type === 'dam_level'),
+        [historicalData],
+    );
+
+    const historyDateBounds = useMemo(
+        () => getHistoryDateBounds(historyRange, historyFrom, historyTo),
+        [historyRange, historyFrom, historyTo],
+    );
+
+    const filteredChartHistory = useMemo(
+        () => targetHistorical.filter((row: any) => isDateWithinBounds(row.date, historyDateBounds)),
+        [targetHistorical, historyDateBounds],
+    );
+
+    const historyRows = useMemo(() => {
+        if (!selectedStationId) {
+            return historicalLogs;
+        }
+
+        const stationRows = (historicalData?.history_logs as HistoricalDamRow[] | undefined)
+            ?? historicalLogs.filter((row) => row.station_id === selectedStationId);
+
+        return stationRows;
+    }, [selectedStationId, historicalData, historicalLogs]);
+
+    const filteredHistoryRows = useMemo(
+        () => filterAndSortHistoryRows(historyRows, {
+            search: historySearch,
+            sort: historySort,
+            bounds: historyDateBounds,
+            searchText: (row) => [
+                row.station_code,
+                row.station_name,
+                row.status,
+                row.submitted_by ?? '',
+                row.reviewed_by ?? '',
+                row.review_notes ?? '',
+            ].join(' '),
+        }),
+        [historyRows, historySearch, historySort, historyDateBounds],
+    );
+
+    const historySortOptions = [
+        { value: 'date_desc', label: t('common.history.sort.dateDesc') },
+        { value: 'date_asc', label: t('common.history.sort.dateAsc') },
+        { value: 'value_desc', label: t('common.history.sort.valueDesc') },
+        { value: 'value_asc', label: t('common.history.sort.valueAsc') },
+    ];
+
+    const historyRangeOptions = [
+        { value: 'all', label: t('common.history.range.all') },
+        { value: '30d', label: t('common.history.range.last30') },
+        { value: '90d', label: t('common.history.range.last90') },
+        { value: '180d', label: t('common.history.range.last180') },
+        { value: '365d', label: t('common.history.range.last365') },
+        { value: 'custom', label: t('common.history.range.custom') },
+    ];
 
     return (
         <>
@@ -620,7 +689,7 @@ export default function DamLevels({
                                         {historicalLoading ? (
                                             <Flex justify="center" align="center" h={240}><IconRefresh className="animate-spin" /></Flex>
                                         ) : (
-                                            <DamDrawdownChart data={targetHistorical} />
+                                            <DamDrawdownChart data={filteredChartHistory} />
                                         )}
                                     </Card>
                                 </SimpleGrid>
@@ -645,6 +714,54 @@ export default function DamLevels({
                 {/* RECENT HISTORICAL DISCHARGE CRUD TABLE */}
                 <Card withBorder radius="md" p="md" mt="xl">
                     <Title order={4} mb="md">{t('dam.history.title')}</Title>
+                    <Grid gutter="sm" mb="sm">
+                        <Grid.Col span={{ base: 12, md: 4 }}>
+                            <TextInput
+                                label={t('common.history.searchLabel')}
+                                placeholder={t('common.history.searchPlaceholder')}
+                                leftSection={<IconSearch size={16} />}
+                                value={historySearch}
+                                onChange={(event) => setHistorySearch(event.currentTarget.value)}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={{ base: 12, md: 3 }}>
+                            <Select
+                                label={t('common.history.sortLabel')}
+                                data={historySortOptions}
+                                value={historySort}
+                                onChange={(value) => setHistorySort((value as HistorySortOption) || 'date_desc')}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={{ base: 12, md: 3 }}>
+                            <Select
+                                label={t('common.history.rangeLabel')}
+                                data={historyRangeOptions}
+                                value={historyRange}
+                                onChange={(value) => setHistoryRange((value as HistoryRangeOption) || 'all')}
+                            />
+                        </Grid.Col>
+                        {historyRange === 'custom' && (
+                            <>
+                                <Grid.Col span={{ base: 12, md: 1 }}>
+                                    <TextInput
+                                        label={t('common.history.fromLabel')}
+                                        type="date"
+                                        value={historyFrom}
+                                        onChange={(event) => setHistoryFrom(event.currentTarget.value)}
+                                    />
+                                </Grid.Col>
+                                <Grid.Col span={{ base: 12, md: 1 }}>
+                                    <TextInput
+                                        label={t('common.history.toLabel')}
+                                        type="date"
+                                        value={historyTo}
+                                        onChange={(event) => setHistoryTo(event.currentTarget.value)}
+                                    />
+                                </Grid.Col>
+                            </>
+                        )}
+                    </Grid>
+                    <Text size="xs" c="dimmed" mb="sm">{t('common.history.records', { count: filteredHistoryRows.length })}</Text>
                     <ScrollArea h={400}>
                         <Table highlightOnHover verticalSpacing="xs" withRowBorders={false} withTableBorder={false}>
                             <Table.Thead style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
@@ -660,8 +777,8 @@ export default function DamLevels({
                                 </Table.Tr>
                             </Table.Thead>
                             <Table.Tbody>
-                                {historicalLogs.length > 0 ? (
-                                    historicalLogs.map((row) => {
+                                {filteredHistoryRows.length > 0 ? (
+                                    filteredHistoryRows.map((row) => {
                                         const isOwner = row.submitted_by === auth.user?.display_name;
                                         const canEdit = isOwner || canManage;
 

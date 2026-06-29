@@ -57,7 +57,7 @@ function EmptyState({ height = 240, message }: { height?: number; message: strin
 const shortDate = (iso: string | number) => {
     const d = new Date(iso);
     if (isNaN(d.getTime())) return String(iso);
-    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
 function sampleStdDev(values: number[]) {

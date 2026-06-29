@@ -1,0 +1,15 @@
+{
+  "index": "Overview",
+  "architecture": {
+    "title": "System Architecture"
+  },
+  "modules": {
+    "title": "Feature Modules"
+  },
+  "guidelines": {
+    "title": "Developer Guidelines"
+  },
+  "troubleshooting": {
+    "title": "Troubleshooting"
+  }
+}

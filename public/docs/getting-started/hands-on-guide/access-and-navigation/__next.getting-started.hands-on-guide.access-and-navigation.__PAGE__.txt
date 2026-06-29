@@ -1,0 +1,66 @@
+1:"$Sreact.fragment"
+2:I[55169,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"TOCProvider"]
+3:I[769,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"Sidebar"]
+4:I[47486,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ClientWrapper"]
+16:I[63894,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"HeadingAnchor"]
+17:I[26579,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ImageZoom"]
+18:I[97367,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"OutletBoundary"]
+19:"$Sreact.suspense"
+5:T7e4,# Access & Navigation
+
+This section details how to access the INMACOM MIS portal, log in securely, and navigate the primary maps and dashboards.
+
+---
+
+## 1. Landing Page & Public Access
+
+When you first navigate to the portal, you are presented with the landing page. This page is publicly accessible and provides an overview of the river basin, treaty documents, and key contact details.
+
+![INMACOM MIS Landing Page](/screenshots/landing.png)
+
+From this screen, you can:
+- Explore the public basin map by clicking **Explore Map**.
+- Access public files and treaty agreements under the **Documents** tab.
+- Click **Sign In** in the top-right corner to access your authenticated dashboard.
+
+---
+
+## 2. Authentication and PIN-gating
+
+For secure access, user sign-up is protected by a **PIN-gate**:
+1. **Verification:** New users must enter a valid 6-digit registration PIN provided by their country administrator.
+2. **Account Setup:** Upon PIN validation, the user enters their email and password to create a Firebase account.
+3. **Session Verification:** If an email is verified, they are logged in and redirected to the main dashboard.
+
+---
+
+## 3. Geographic Dashboard Navigation
+
+Once logged in, the primary dashboard displays a geographic representation of the **Incomati and Maputo Basins** across Mozambique, South Africa, and Eswatini.
+
+![INMACOM MIS Dashboard](/screenshots/dashboard.png)
+
+### Core Interactive Elements
+- **GIS Map View:** Shows real-time monitoring stations. Circle markers indicate the status of each station:
+  - 🟢 **Green:** Station is active and all measurements are within compliance thresholds.
+  - 🟡 **Yellow:** Low priority warning (minor threshold exceeded).
+  - 🔴 **Red:** Critical alert (minimum instream flow violated or hazard reported).
+- **Basin Statistics Panel:** Displays a summary of total abstraction volumes, active alerts, and pending reviews.
+- **Top Navigation Bar:** Quickly switch between Stations registry, GIS pages, IIMA Compliance, and the Document Library.0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"x:mx-auto x:flex x:max-w-(--nextra-content-width)","children":["$","$L2",null,{"value":[{"value":"1. Landing Page & Public Access","id":"1-landing-page--public-access","depth":2},{"value":"2. Authentication and PIN-gating","id":"2-authentication-and-pin-gating","depth":2},{"value":"3. Geographic Dashboard Navigation","id":"3-geographic-dashboard-navigation","depth":2},{"value":"Core Interactive Elements","id":"core-interactive-elements","depth":3}],"children":[["$","$L3",null,{}],["$","$L4",null,{"metadata":{"title":"Access & Navigation","filePath":"app/getting-started/hands-on-guide/access-and-navigation/page.mdx"},"sourceCode":"$5","children":[["$","div",null,{"id":"nextra-skip-nav"}],["$","main",null,{"data-pagefind-body":true,"children":[["$","h1",null,{"className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-bold x:mt-2 x:text-4xl","children":["Access & Navigation","$undefined"]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"This section details how to access the INMACOM MIS portal, log in securely, and navigate the primary maps and dashboards."}],"\n",["$","hr",null,{"className":"x:my-[2em] nextra-border"}],"\n",["$","h2",null,{"id":"1-landing-page--public-access","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["1. Landing Page & Public Access","$L6"]}],"\n","$L7","\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14"]}]]}]]}]}],null,"$L15"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fH1W0CGycxmIj2F7exmpr"}
+6:["$","$L16",null,{"id":"1-landing-page--public-access"}]
+7:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"When you first navigate to the portal, you are presented with the landing page. This page is publicly accessible and provides an overview of the river basin, treaty documents, and key contact details."}]
+8:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["$","$L17",null,{"alt":"INMACOM MIS Landing Page","placeholder":"blur","src":{"src":"/docs/_next/static/media/landing.0u5dvy6eds4lm.png","width":1280,"height":800,"blurWidth":8,"blurHeight":5,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAcElEQVR42k2KQQ6DIBRE/2GAjwaqwYWJ0CYtUF2gUe9g4sYj6Nn90Y0vM5uZByilQEJSOeeMMbwAH4KP7Tf8tda00ocoSABnzB2jVEq/dZmPfXu7ClJdT9aOTfMpyxitD64b+vxVAImVUkWW5UKwByfPcRhNb3DGkwAAAABJRU5ErkJggg=="}}]}]
+9:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"From this screen, you can:"}]
+a:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":["Explore the public basin map by clicking ",["$","strong",null,{"children":"Explore Map"}],"."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Access public files and treaty agreements under the ",["$","strong",null,{"children":"Documents"}]," tab."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["Click ",["$","strong",null,{"children":"Sign In"}]," in the top-right corner to access your authenticated dashboard."]}],"\n"]}]
+b:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+c:["$","h2",null,{"id":"2-authentication-and-pin-gating","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["2. Authentication and PIN-gating",["$","$L16",null,{"id":"2-authentication-and-pin-gating"}]]}]
+d:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["For secure access, user sign-up is protected by a ",["$","strong",null,{"children":"PIN-gate"}],":"]}]
+e:["$","ol",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-decimal x:ms-6","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Verification:"}]," New users must enter a valid 6-digit registration PIN provided by their country administrator."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Account Setup:"}]," Upon PIN validation, the user enters their email and password to create a Firebase account."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Session Verification:"}]," If an email is verified, they are logged in and redirected to the main dashboard."]}],"\n"]}]
+f:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+10:["$","h2",null,{"id":"3-geographic-dashboard-navigation","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["3. Geographic Dashboard Navigation",["$","$L16",null,{"id":"3-geographic-dashboard-navigation"}]]}]
+11:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["Once logged in, the primary dashboard displays a geographic representation of the ",["$","strong",null,{"children":"Incomati and Maputo Basins"}]," across Mozambique, South Africa, and Eswatini."]}]
+12:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["$","$L17",null,{"alt":"INMACOM MIS Dashboard","placeholder":"blur","src":{"src":"/docs/_next/static/media/dashboard.1gdlq6t8bg6ud.png","width":1280,"height":800,"blurWidth":8,"blurHeight":5,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAXUlEQVR42h2MMRIDIQwD+f8zkxKYSfAZ27K5iXJbqNFK7aMhar33McacE8B5aBEI4FJdIkx3T+A+d/NgBd9GkH8oVnJBfV/j/frKElUkRBYPGxUrGCIqs6rOUdu0fzNLc9qDNrjBAAAAAElFTkSuQmCC"}}]}]
+13:["$","h3",null,{"id":"core-interactive-elements","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-8 x:text-2xl","children":["Core Interactive Elements",["$","$L16",null,{"id":"core-interactive-elements"}]]}]
+14:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"GIS Map View:"}]," Shows real-time monitoring stations. Circle markers indicate the status of each station:","\n",["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":["🟢 ",["$","strong",null,{"children":"Green:"}]," Station is active and all measurements are within compliance thresholds."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["🟡 ",["$","strong",null,{"children":"Yellow:"}]," Low priority warning (minor threshold exceeded)."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["🔴 ",["$","strong",null,{"children":"Red:"}]," Critical alert (minimum instream flow violated or hazard reported)."]}],"\n"]}],"\n"]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Basin Statistics Panel:"}]," Displays a summary of total abstraction volumes, active alerts, and pending reviews."]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Top Navigation Bar:"}]," Quickly switch between Stations registry, GIS pages, IIMA Compliance, and the Document Library."]}],"\n"]}]
+15:["$","$L18",null,{"children":["$","$19",null,{"name":"Next.MetadataOutlet","children":"$@1a"}]}]
+1a:null

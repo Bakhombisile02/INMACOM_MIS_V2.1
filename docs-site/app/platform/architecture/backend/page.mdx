@@ -1,0 +1,113 @@
+# Backend & Routing Architecture
+
+The backend of INMACOM MIS is powered by **Laravel 13**. It serves as the data provider, business logic validator, and controller engine for our Inertia.js React views.
+
+---
+
+## Directory Structure
+
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Auth/                 # Firebase Auth & Invite Controllers
+│   │   ├── AuditController.php   # System audit log viewing & CSV exports
+│   │   ├── CommentsController.php# Polymorphic comment threads & user mentions
+│   │   ├── DashboardController.php# Calculates summaries for the home dashboard
+│   │   ├── DisasterController.php # Incident reporting and details
+│   │   ├── GisController.php      # Live/pending/historical data lists and CRUD
+│   │   ├── LibraryController.php  # Document library folder listing
+│   │   ├── SettingsController.php # Profile and language preferences updates
+│   │   ├── StationsController.php # Station CRUD, details and CSV upload
+│   │   ├── ThresholdsController.php# Eflow compliance & allocation targets config
+│   │   └── UsersController.php    # User management, role promotions & deletes
+│   └── Middleware/
+│       └── EnsureRole.php         # Custom role-based access controller
+```
+
+---
+
+## Route Organization
+
+Routes are separated into two main files in the `routes/` directory:
+1.  **`routes/auth.php`:** Unauthenticated guest paths (login UI, register UI, PIN check/reservation) and auth actions.
+2.  **`routes/web.php`:** Public explorer pages (`/`, `/explore`, `/documents`) and the private dashboard routes wrapped with standard Laravel auth and role middleware.
+
+---
+
+## Role-Based Access Control (`EnsureRole`)
+
+Role authorization is controlled via the `EnsureRole` middleware. Registered roles are defined in the `User` model:
+*   `admin` (Clerk Admin)
+*   `manager` (Data Manager)
+*   `clerk` (Data Entry)
+
+### Middleware Implementation
+The middleware inspects the authenticated session and compares the user's role against the parameters specified in the route configuration:
+```php
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class EnsureRole
+{
+    public function handle(Request $request, Closure $next, string ...$roles): Response
+    {
+        $user = $request->user();
+
+        if (! $user || ! in_array($user->role, $roles, true)) {
+            abort(403, 'Insufficient role.');
+        }
+
+        return $next($request);
+    }
+}
+```
+
+### Route Registration Examples
+In `routes/web.php`, the middleware is invoked with parameters `role:admin,manager` or `role:admin` to restrict sensitive operations:
+```php
+// Creating/updating stations requires admin or manager roles
+Route::post('/stations', [StationsController::class, 'store'])
+    ->middleware('role:admin,manager');
+
+// Deleting stations is restricted solely to admins
+Route::delete('/stations/{station}', [StationsController::class, 'destroy'])
+    ->middleware('role:admin');
+```
+
+---
+
+## The 2-Step Verification Backend Flow
+
+A core business requirement of INMACOM MIS is that data added by a `clerk` (Data Entry) is marked as `pending` and must be reviewed by a `manager` or `admin` (Approver) before it becomes live.
+
+### 1. Measurement Verification
+When a clerk submits a new water measurement:
+*   `GisController@storeMeasurement` saves the record with status `pending`.
+*   A manager views pending records and submits a request to:
+    *   **Approve:** `POST /measurements/{id}/approve` -> updates status to `approved`.
+    *   **Reject:** `POST /measurements/{id}/reject` -> updates status to `rejected` and appends a polymorphic rejection comment.
+
+```php
+public function approveMeasurement($id)
+{
+    $measurement = Measurement::findOrFail($id);
+    $measurement->update([
+        'status' => 'approved',
+        'reviewed_by_id' => auth()->id(),
+        'reviewed_at' => now(),
+    ]);
+
+    // Logs the approval audit entry...
+    return back();
+}
+```
+
+### 2. Station Revisions Verification
+When a clerk edits station metadata (coordinates, telemetry, name), the changes are not immediately written to the main `stations` table.
+*   The edit request creates a new record in the `station_revisions` table with status `pending`.
+*   An administrator or manager approves the revision (`POST /station-revisions/{id}/approve`), which copies the modifications into the parent `stations` record and marks the revision `approved`.
+*   If rejected (`POST /station-revisions/{id}/reject`), the status is marked `rejected` and the original station record remains unchanged.

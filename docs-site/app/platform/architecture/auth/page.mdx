@@ -1,0 +1,118 @@
+# Authentication & Registration Flow
+
+INMACOM MIS implements a hybrid authentication structure. The frontend handles authentication credentials via the **Firebase Client SDK**, while the backend verifies identities and manages sessions using the **Firebase Admin SDK** (`kreait/laravel-firebase`).
+
+---
+
+## High-Level Authentication Flow
+
+The diagram below details how a user logs in:
+
+```
+  React Client                    Firebase Auth Server             Laravel Backend
+       │                                   │                              │
+       │─── 1. Submit Credentials ────────>│                              │
+       │                                   │                              │
+       │<── 2. Return Firebase ID Token ───│                              │
+       │                                   │                              │
+       │─── 3. POST /auth/firebase (Token) ──────────────────────────────>│
+       │                                                                  │─── 4. Verify ID Token
+       │                                                                  │    (Admin SDK)
+       │                                                                  │─── 5. Log user in &
+       │                                                                  │    generate Session
+       │<── 6. Redirect to /dashboard ────────────────────────────────────│
+```
+
+---
+
+## Session Synchronization (`/auth/firebase`)
+
+Once the frontend successfully authenticates the user against Firebase, it receives a cryptographically signed **ID Token**. This token is sent to the Laravel server to initiate a local session:
+
+*   **Endpoint:** `POST /auth/firebase`
+*   **Controller Method:** `App\Http\Controllers\Auth\FirebaseAuthController@authenticate`
+*   **Middleware:** `throttle:firebase-auth` (rate limiting)
+*   **Payload:**
+    ```json
+    {
+      "id_token": "eyJhbGci...",
+      "registration_pin": "A1B2C3" (optional)
+    }
+    ```
+
+### Server Token Verification
+Laravel uses the Firebase Admin SDK to decode and verify the token:
+```php
+$firebaseAuth = app(\Kreait\Firebase\Contract\Auth::class);
+$token = $firebaseAuth->verifyIdToken($request->string('id_token'));
+
+$uid = $token->claims()->get('sub');
+$email = $token->claims()->get('email');
+$emailVerified = (bool) $token->claims()->get('email_verified', false);
+```
+If the token is valid and the email is verified, Laravel:
+1.  Finds or creates a matching user record (see PIN-gating below).
+2.  Authenticates the user session locally via `Auth::login($user, remember: true)`.
+3.  Regenerates the session ID to protect against session fixation.
+
+---
+
+## Registration PIN-Gate & Invitations
+
+To prevent unauthorized registrations, the system restricts new account creation to users possessing a valid **Registration PIN** or an **Invite Token**.
+
+### 1. The PIN Verification Flow (Verification & Reservation)
+When a user signs up:
+1.  **Verify PIN:** The client posts the PIN code to `POST /register/pin/verify` which checks if a matching unused PIN exists in the `registration_pins` table.
+2.  **Firebase Sign-up:** The client creates the Firebase identity.
+3.  **Reserve PIN:** The client calls `POST /register/pin/reserve` containing the PIN code, the user email, and the generated Firebase UID. This locks the PIN to that user during the verification email gap.
+4.  **Verification Email:** The user clicks the link in their email.
+5.  **Authenticate & Consume:** The user returns, logs in, and `authenticate()` consumes the PIN, converting it into the user's permanent role (`admin`, `manager`, or `clerk`).
+
+```
+                ┌───────────────────────────────────────┐
+                │        Client submits 6-digit PIN     │
+                └───────────────────┬───────────────────┘
+                                    ▼
+                      /register/pin/verify [POST]
+                                    │
+                                    ▼
+                ┌───────────────────────────────────────┐
+                │       Creates Firebase User           │
+                └───────────────────┬───────────────────┘
+                                    ▼
+                     /register/pin/reserve [POST]
+                                    │
+                       (Saves UID and Email to PIN)
+                                    ▼
+                ┌───────────────────────────────────────┐
+                │       User Verifies Email Link        │
+                └───────────────────┬───────────────────┘
+                                    ▼
+                        /auth/firebase [POST]
+                                    │
+                       (Consumes PIN → Creates User)
+```
+
+### 2. One-Time Invite Links
+Administrators can generate unique invite links that bypass the manual PIN entry page.
+*   **Route:** `GET /register/invite/_token_`
+*   Invoking this endpoint verifies the invite token, caches the details in the Inertia response, and immediately redirects the user to the signup form with the PIN pre-validated and populated.
+*   The invite link is **one-time use** and expires once clicked to prevent credential sharing.
+
+---
+
+## Authentication Middleware
+
+### 1. `throttle:firebase-auth`
+All Firebase authentication and PIN endpoints must be rate-limited to prevent brute-force attacks. This throttle limits requests to 5 attempts per minute per IP address.
+
+### 2. Route Protection
+Authenticated pages require standard Laravel auth and verified middleware:
+```php
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+```
+*   `auth`: Verifies that a valid Laravel session exists.
+*   `verified`: Enforces that the Firebase email verification claim is completed.

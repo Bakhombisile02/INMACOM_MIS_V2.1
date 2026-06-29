@@ -1,0 +1,65 @@
+{
+  "title": "Audit Log",
+  "subtitle": "System event history and accountability trail",
+  "export": "Export CSV",
+  "stats": {
+    "today": "Events today",
+    "selfApprovals": "Self-approvals this month",
+    "roleChanges": "Role changes",
+    "mostActive": "Most active this month"
+  },
+  "filters": {
+    "all": "All actions",
+    "allEntities": "All entity types",
+    "allActors": "All users",
+    "actionType": "Action",
+    "entityType": "Entity",
+    "actor": "Actor",
+    "from": "From",
+    "to": "To",
+    "reset": "Reset filters",
+    "apply": "Apply filters"
+  },
+  "actions": {
+    "self_approval": "Self-Approval",
+    "measurement_approved": "Measurement Approved",
+    "measurement_rejected": "Measurement Rejected",
+    "station_revision_approved": "Station Revision Approved",
+    "station_revision_rejected": "Station Revision Rejected",
+    "role_change": "Role Change",
+    "user_deleted": "User Deleted",
+    "record_deactivation": "Record Deactivated",
+    "document_uploaded": "Document Uploaded",
+    "document_deleted": "Document Deleted"
+  },
+  "entities": {
+    "Measurement": "Measurement",
+    "StationRevision": "Station Revision",
+    "User": "User",
+    "Station": "Station",
+    "Document": "Document"
+  },
+  "sentences": {
+    "self_approval": "Self-approved {{entity}}",
+    "measurement_approved": "Approved measurement: {{entity}}",
+    "measurement_rejected": "Rejected measurement: {{entity}}",
+    "station_revision_approved": "Approved station revision: {{entity}}",
+    "station_revision_rejected": "Rejected station revision: {{entity}}",
+    "role_change": "Changed role for {{entity}}",
+    "user_deleted": "Deleted user {{entity}}",
+    "record_deactivation": "Deactivated {{entity}}",
+    "document_uploaded": "Uploaded document: {{entity}}",
+    "document_deleted": "Deleted document: {{entity}}"
+  },
+  "detail": {
+    "reason": "Reason",
+    "before": "Before",
+    "after": "After",
+    "ip": "IP address",
+    "noState": "No state snapshot recorded",
+    "expand": "Show details",
+    "collapse": "Hide details"
+  },
+  "empty": "No audit events match the selected filters.",
+  "noEvents": "No audit events recorded yet."
+}

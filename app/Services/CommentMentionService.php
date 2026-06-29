@@ -24,9 +24,9 @@ class CommentMentionService
                 $userIds = array_merge($userIds, $m[1]);
             }
 
-            // Fallback: @display_name (no spaces). Skip if canonical mentions exist for that name.
+            // Fallback: @display_name (no spaces). Duplicates are deduplicated below.
             if (preg_match_all('/(?<!\w)@([A-Za-z0-9_.-]{2,})(?![\[a-zA-Z0-9_.-])/', $comment->body, $m)) {
-                $names = array_diff($m[1], []);
+                $names = $m[1];
                 if (! empty($names)) {
                     $found = User::query()
                         ->whereRaw('LOWER(display_name) IN ('.implode(',', array_fill(0, count($names), '?')).')', array_map('strtolower', $names))

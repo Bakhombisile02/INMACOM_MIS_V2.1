@@ -1,0 +1,54 @@
+{
+  "title": "Gestão de Desastres",
+  "stats": {
+    "activeIncidents": "Incidentes Activos",
+    "watchOrAboveAreas": "Áreas em Vigilância+",
+    "criticalAreas": "Áreas Críticas"
+  },
+  "views": {
+    "matrix": "Matriz de Alertas",
+    "map": "Mapa de Incidentes"
+  },
+  "matrix": {
+    "title": "Matriz de Estado de Alerta de Risco",
+    "noHazardTypes": "Nenhum tipo de risco configurado.",
+    "noAreas": "Nenhuma área de gestão configurada.",
+    "noData": "Nenhum dado de estado disponível.",
+    "score": "Pontuação",
+    "calculatedAt": "Calculado em",
+    "notes": "Notas",
+    "noNotes": "Sem notas registadas.",
+    "actionsRequired": "Acções Necessárias"
+  },
+  "incidents": {
+    "title": "Incidentes Recentes",
+    "empty": "Nenhum incidente registado.",
+    "reference": "Referência",
+    "hazard": "Risco",
+    "area": "Área",
+    "status": "Estado",
+    "severity": "Severidade",
+    "occurred": "Ocorrido em",
+    "reported": "Reportado em",
+    "resolved": "Resolvido",
+    "active": "Activo"
+  },
+  "incidentStatus": {
+    "reported": "Reportado",
+    "under_investigation": "Em Investigação",
+    "active": "Activo",
+    "contained": "Contido",
+    "resolved": "Resolvido",
+    "closed": "Encerrado"
+  },
+  "severity": {
+    "low": "Baixo",
+    "medium": "Médio",
+    "high": "Alto",
+    "critical": "Crítico"
+  },
+  "map": {
+    "legendTitle": "Severidade do Incidente",
+    "noIncidentsWithLocation": "Nenhum incidente com dados de localização para mostrar no mapa."
+  }
+}

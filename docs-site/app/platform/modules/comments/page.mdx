@@ -1,0 +1,72 @@
+# Comments & Mentions Module
+
+To enable collaborative reviews, the system integrates a polymorphic commenting system with support for user `@mentions` and read status tracking.
+
+---
+
+## Polymorphic Comments
+
+Comments are stored in a single `comments` table. Using Laravel's **Polymorphic Relations**, a comment can belong to any model implementing the relationship.
+
+### 1. Database Fields
+*   `id` (UUID): Primary key.
+*   `actor_id` (UUID): The author of the comment.
+*   `commentable_id` (UUID) & `commentable_type` (string): Polymorphic coordinates.
+*   `content` (text): Comment message.
+*   `is_resolved` (boolean): Flag for marking discussion items as complete.
+
+### 2. Supported Parent Models
+*   `App\Models\Measurement`: Reviews and rejection feedback.
+*   `App\Models\Station`: Station metadata threads.
+*   `App\Models\StationRevision`: Validation checks on proposed changes.
+*   `App\Models\DisasterIncident`: Incident status logs.
+
+```php
+// Inside Comment.php
+public function commentable()
+{
+    return $this->morphTo();
+}
+```
+
+---
+
+## The Mentions Workflow
+
+Users can grab another developer's or manager's attention by typing `@DisplayName` in comment boxes.
+
+```
+  User types comment              System processes text            Dispatches notifications
+  ┌──────────────────┐            ┌──────────────────┐            ┌──────────────────┐
+  │  "Review this    │───────────>│ Regex parses     │───────────>│ Inserts records  │
+  │  @Simon test"    │            │ '@Simon' → Uid   │            │ in 'mentions'    │
+  └──────────────────┘            └──────────────────┘            └──────────────────┘
+```
+
+### 1. User Search API
+While typing, the frontend editor queries the search endpoint to fetch matching users for autocomplete:
+*   **Route:** `GET /users/search?q={query}`
+*   **Controller Method:** `CommentsController@searchUsers`
+*   **Response:**
+    ```json
+    [
+      { "id": "uuid-abc", "display_name": "Simon Ngoepe", "email": "simon@inmacom.co.za" }
+    ]
+    ```
+
+### 2. Mention Extraction & Logging
+When a comment is stored, the backend parses the text using regular expressions to extract mentioned display names:
+1.  **Regex Match:** `/@([^@\s]+)/` matches words starting with `@`.
+2.  **User Mapping:** Maps matches against user display names in the database.
+3.  **Insert Notifications:** For each match, a record is added to the `comment_mentions` table:
+    *   `comment_id`: The created comment.
+    *   `user_id`: The mentioned user.
+    *   `is_read`: Boolean default `false`.
+
+---
+
+## Read Status Tracking
+
+*   **View Mentions:** `GET /comments/mentions/me` -> returns unread comments where the authenticated user was tagged.
+*   **Mark Read:** `POST /comments/mentions/read` -> sends an array of mention IDs to mark as `is_read = true` and logs the `read_at` timestamp.
+*   **Frontend Indicator:** The navigation bar displays an active badge with count if the user has unread mentions.

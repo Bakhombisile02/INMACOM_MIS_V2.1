@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Queries\DisasterIncidentQuery;
 use App\Queries\HazardStatusQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,47 +49,13 @@ class DisasterController extends Controller
             ])
             ->toArray();
 
-        $recentIncidents = DB::table('disaster_incidents as di')
-            ->leftJoin('hazard_types as ht', 'di.hazard_code', '=', 'ht.code')
-            ->leftJoin('management_areas as ma', 'di.area_id', '=', 'ma.id')
-            ->select([
-                'di.id',
-                'di.reference',
-                'di.title',
-                'di.severity_level',
-                'di.incident_status',
-                'di.review_status',
-                'di.hazard_code',
-                'di.latitude',
-                'di.longitude',
-                'di.affected_radius_km',
-                'di.occurred_at',
-                'di.reported_at',
-                'di.resolved_at',
-                'di.area_id',
-                'ht.name as hazard_name',
-                'ma.name as area_name',
-            ])
-            ->orderBy('di.reported_at', 'desc')
-            ->limit(50)
+        $recentIncidents = DisasterIncidentQuery::query()
+            ->withDetails()
+            ->recent(50)
             ->get()
             ->toArray();
 
-        $incidentStations = DB::table('incident_stations as ins')
-            ->join('stations as s', 'ins.station_id', '=', 's.id')
-            ->join('disaster_incidents as di', 'ins.incident_id', '=', 'di.id')
-            ->whereNull('di.resolved_at')
-            ->select([
-                'ins.incident_id',
-                'ins.station_id',
-                'ins.role',
-                's.code',
-                's.name',
-                's.latitude',
-                's.longitude',
-            ])
-            ->get()
-            ->toArray();
+        $incidentStations = DisasterIncidentQuery::getIncidentStations();
 
         $activeIncidentCount = DB::table('disaster_incidents')
             ->whereNull('resolved_at')

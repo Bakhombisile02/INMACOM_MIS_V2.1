@@ -1,0 +1,113 @@
+# Onboarding & Local Setup
+
+This guide details the onboarding workflow for developers setting up the INMACOM MIS repository locally. Follow these steps to prepare your environment.
+
+---
+
+## Prerequisites
+
+Before starting, ensure you have the following installed on your machine:
+*   **PHP:** Version `^8.3` (with standard extensions: `pdo_pgsql`, `sqlite3`, `curl`, `mbstring`, `xml`, `bcmath`)
+*   **Composer:** For managing PHP packages
+*   **Node.js & npm:** For managing frontend assets (React/Vite)
+*   **PostgreSQL:** Relational database server running locally or via a proxy (port `5432`)
+*   **Firebase Account:** Access to a Firebase project with Web Auth enabled
+
+---
+
+## Environment Setup
+
+### 1. Clone & Setup Repository
+To install all dependencies and generate keys, run the setup task:
+```bash
+composer setup
+```
+This single command will sequentially:
+1. Run `composer install` to download backend libraries.
+2. Copy `.env.example` to `.env` if not already present.
+3. Generate the application key (`php artisan key:generate`).
+4. Run migrations (`php artisan migrate --force`).
+5. Run `npm install --ignore-scripts` to install node packages.
+6. Build frontend assets (`npm run build`).
+
+### 2. Database Connection
+Open your `.env` file and configure the PostgreSQL connection parameters. Below is the default configuration:
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=inmacom
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+If connecting to Cloud SQL for PostgreSQL locally, run the Cloud SQL Auth Proxy:
+```bash
+cloud-sql-proxy inmacom-v2:REGION:inmacom-v2-instance
+```
+
+### 3. Firebase Configuration
+The application relies on Firebase Authentication. You must configure both the client SDK variables and the admin service account.
+
+#### Client SDK (Public Variables in `.env`)
+```env
+VITE_FIREBASE_API_KEY=AIzaSy...
+VITE_FIREBASE_AUTH_DOMAIN=inmacom-v2.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=inmacom-v2
+VITE_FIREBASE_STORAGE_BUCKET=inmacom-v2.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=204965956136
+VITE_FIREBASE_APP_ID=1:204965956136:web:00cf8dd385679c67cf431d
+VITE_FIREBASE_MEASUREMENT_ID=G-1VPF47MDVY
+```
+
+#### Admin SDK Credentials
+1. Obtain the service account private key JSON from the Firebase Console (Project Settings → Service Accounts).
+2. Save it at: `storage/app/firebase-service-account.json`.
+3. In your `.env`, point the configuration key to this file:
+```env
+FIREBASE_CREDENTIALS=storage/app/firebase-service-account.json
+```
+
+> [!WARNING]
+> Never commit `firebase-service-account.json` to the git repository. It is ignored by default via `.gitignore` and contain critical private keys.
+
+---
+
+## Running the Development Stack
+
+To start the local servers concurrently (Laravel dev server, Vite asset builder, queue listener, and real-time logs), execute:
+```bash
+composer dev
+```
+This runs the `npx concurrently` process under the hood:
+*   **Server:** `php artisan serve` (Runs on [http://localhost:8000](http://localhost:8000))
+*   **Vite:** `npm run dev` (Compiles React components in real-time)
+*   **Queue:** `php artisan queue:listen` (Processes background jobs)
+*   **Logs:** `php artisan pail` (Real-time tailing of application log entries)
+
+---
+
+## Database Seeding & User Roles
+
+To populate your database with seed data containing treaty thresholds, stations, user categories, and mock measurements, run:
+```bash
+# Seed all database tables
+php artisan db:seed --class=DDRIteration2ReferenceDataSeeder --force
+```
+
+### Promoting User Roles
+All new registered users default to the `clerk` role. To promote a user to `manager` or `admin`, run the role artisan command:
+```bash
+php artisan user:role <email> <role>
+```
+*   **Roles available:** `admin`, `manager`, `clerk`
+*   *Example:* `php artisan user:role developer@inmacom.co.za admin`
+
+---
+
+## Running Tests
+
+To verify your environment and validate code changes:
+```bash
+composer test
+```
+This clears configs and executes PHPUnit testing. The test suite is configured (via `phpunit.xml`) to use an isolated in-memory SQLite database, which does not overwrite your local PostgreSQL data.

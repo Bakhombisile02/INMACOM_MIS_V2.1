@@ -1,0 +1,65 @@
+{
+  "title": "Registo de Auditoria",
+  "subtitle": "Histórico de eventos do sistema e trilha de responsabilidade",
+  "export": "Exportar CSV",
+  "stats": {
+    "today": "Eventos hoje",
+    "selfApprovals": "Auto-aprovações este mês",
+    "roleChanges": "Alterações de função",
+    "mostActive": "Mais ativo este mês"
+  },
+  "filters": {
+    "all": "Todas as ações",
+    "allEntities": "Todos os tipos",
+    "allActors": "Todos os utilizadores",
+    "actionType": "Ação",
+    "entityType": "Entidade",
+    "actor": "Ator",
+    "from": "De",
+    "to": "Até",
+    "reset": "Limpar filtros",
+    "apply": "Aplicar filtros"
+  },
+  "actions": {
+    "self_approval": "Auto-aprovação",
+    "measurement_approved": "Medição Aprovada",
+    "measurement_rejected": "Medição Rejeitada",
+    "station_revision_approved": "Revisão de Estação Aprovada",
+    "station_revision_rejected": "Revisão de Estação Rejeitada",
+    "role_change": "Alteração de Função",
+    "user_deleted": "Utilizador Eliminado",
+    "record_deactivation": "Registo Desativado",
+    "document_uploaded": "Documento Carregado",
+    "document_deleted": "Documento Eliminado"
+  },
+  "entities": {
+    "Measurement": "Medição",
+    "StationRevision": "Revisão de Estação",
+    "User": "Utilizador",
+    "Station": "Estação",
+    "Document": "Documento"
+  },
+  "sentences": {
+    "self_approval": "Auto-aprovação de {{entity}}",
+    "measurement_approved": "Medição aprovada: {{entity}}",
+    "measurement_rejected": "Medição rejeitada: {{entity}}",
+    "station_revision_approved": "Revisão de estação aprovada: {{entity}}",
+    "station_revision_rejected": "Revisão de estação rejeitada: {{entity}}",
+    "role_change": "Função alterada para {{entity}}",
+    "user_deleted": "Utilizador eliminado: {{entity}}",
+    "record_deactivation": "{{entity}} desativado",
+    "document_uploaded": "Documento carregado: {{entity}}",
+    "document_deleted": "Documento eliminado: {{entity}}"
+  },
+  "detail": {
+    "reason": "Motivo",
+    "before": "Antes",
+    "after": "Depois",
+    "ip": "Endereço IP",
+    "noState": "Nenhum instantâneo de estado registado",
+    "expand": "Mostrar detalhes",
+    "collapse": "Ocultar detalhes"
+  },
+  "empty": "Nenhum evento de auditoria corresponde aos filtros selecionados.",
+  "noEvents": "Nenhum evento de auditoria registado ainda."
+}

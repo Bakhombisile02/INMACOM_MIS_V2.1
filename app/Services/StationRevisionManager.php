@@ -21,6 +21,23 @@ class StationRevisionManager
         string $changeType,
         array $proposedChanges
     ): StationRevision {
+        $validChangeTypes = [
+            StationRevision::CHANGE_TYPE_CREATE,
+            StationRevision::CHANGE_TYPE_UPDATE,
+            StationRevision::CHANGE_TYPE_DELETE,
+        ];
+        if (! in_array($changeType, $validChangeTypes, true)) {
+            throw new \InvalidArgumentException("Invalid change type: {$changeType}");
+        }
+
+        if ($changeType === StationRevision::CHANGE_TYPE_CREATE && $stationId !== null) {
+            throw new \InvalidArgumentException('station_id must be null for CREATE operations');
+        }
+
+        if (in_array($changeType, [StationRevision::CHANGE_TYPE_UPDATE, StationRevision::CHANGE_TYPE_DELETE], true) && $stationId === null) {
+            throw new \InvalidArgumentException('station_id is required for UPDATE and DELETE operations');
+        }
+
         return StationRevision::create([
             'station_id' => $stationId,
             'submitted_by_id' => $submitter->id,
@@ -41,6 +58,10 @@ class StationRevisionManager
         User $reviewer,
         ?string $reviewNotes = null
     ): void {
+        if (! $reviewer->canApprove()) {
+            throw new \RuntimeException('User does not have permission to approve revisions.');
+        }
+
         DB::transaction(function () use ($revision, $reviewer, $reviewNotes) {
             // Re-fetch with lock to prevent concurrent modifications
             $revision = StationRevision::lockForUpdate()->findOrFail($revision->id);
@@ -64,9 +85,21 @@ class StationRevisionManager
                 $revision->station_id = $station->id;
                 $stationName = $station->name;
             } elseif ($revision->change_type === StationRevision::CHANGE_TYPE_DELETE) {
-                // Delete flow: delete the station
+                // Delete flow: delete the station and its dependencies explicitly
                 $station = Station::findOrFail($revision->station_id);
                 $stationName = $station->name;
+
+                DB::table('station_capabilities')->where('station_id', $station->id)->delete();
+                DB::table('station_operational_statuses')->where('station_id', $station->id)->delete();
+                DB::table('management_area_stations')->where('station_id', $station->id)->delete();
+                DB::table('compliance_thresholds')->where('station_id', $station->id)->delete();
+                DB::table('incident_stations')->where('station_id', $station->id)->delete();
+                DB::table('measurements')->where('station_id', $station->id)->delete();
+
+                DB::table('iima_eflow_requirements')->where('station_id', $station->id)->update(['station_id' => null]);
+                DB::table('iima_eflow_key_points')->where('station_id', $station->id)->update(['station_id' => null]);
+                DB::table('hazard_indicator_readings')->where('station_id', $station->id)->update(['station_id' => null]);
+
                 $station->delete();
             } elseif ($revision->change_type === StationRevision::CHANGE_TYPE_UPDATE) {
                 // Update flow: proposed_changes is a diff of from/to per field.
@@ -108,6 +141,7 @@ class StationRevisionManager
                 entityType: 'StationRevision',
                 entityId: $revision->id,
                 entityLabel: $stationLabel.' ('.$revision->change_type.')',
+                actorId: $reviewer->id,
                 previousState: ['status' => 'pending'],
                 newState: ['status' => 'approved'],
                 reason: $reviewNotes,
@@ -119,6 +153,7 @@ class StationRevisionManager
                     entityType: 'StationRevision',
                     entityId: $revision->id,
                     entityLabel: $stationLabel,
+                    actorId: $reviewer->id,
                     reason: 'Self-approved station revision',
                 );
             }
@@ -135,6 +170,10 @@ class StationRevisionManager
         User $reviewer,
         ?string $reviewNotes = null
     ): void {
+        if (! $reviewer->canApprove()) {
+            throw new \RuntimeException('User does not have permission to reject revisions.');
+        }
+
         DB::transaction(function () use ($revision, $reviewer, $reviewNotes) {
             // Re-fetch with lock to prevent concurrent modifications
             $revision = StationRevision::lockForUpdate()->findOrFail($revision->id);
@@ -158,6 +197,7 @@ class StationRevisionManager
                 entityType: 'StationRevision',
                 entityId: $revision->id,
                 entityLabel: $stationLabel.' ('.$revision->change_type.')',
+                actorId: $reviewer->id,
                 previousState: ['status' => 'pending'],
                 newState: ['status' => 'rejected'],
                 reason: $reviewNotes,

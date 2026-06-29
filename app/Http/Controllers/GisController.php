@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Station;
-use App\Models\User;
 use App\Queries\StationMeasurementQuery;
-use App\Services\AuditService;
+use App\Services\MeasurementStateManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -232,41 +231,7 @@ class GisController extends Controller
         $user = auth()->user();
         abort_unless($user, 403);
 
-        $validated = $request->validate([
-            'station_id' => ['required', 'uuid', 'exists:stations,id'],
-            'measurement_type' => ['required', 'string', 'in:flow,dam_level,water_quality,rainfall,groundwater_level'],
-            'parameter_id' => ['required_if:measurement_type,water_quality', 'nullable', 'uuid', 'exists:water_quality_parameters,id'],
-            'value' => ['required', 'numeric'],
-            'unit' => ['required', 'string'],
-            'date' => ['required', 'date'],
-            'fsc' => ['nullable', 'numeric'],
-        ]);
-
-        $status = 'pending';
-        $isSelfOverride = false;
-
-        // Auto-approve if submitted by Admin or Manager
-        if ($user->canApprove()) {
-            $status = 'approved';
-            $isSelfOverride = true;
-        }
-
-        DB::table('measurements')->insert([
-            'id' => (string) Str::uuid(),
-            'station_id' => $validated['station_id'],
-            'measurement_type' => $validated['measurement_type'],
-            'parameter_id' => $validated['parameter_id'] ?? null,
-            'value' => $validated['value'],
-            'unit' => $validated['unit'],
-            'date' => Carbon::parse($validated['date']),
-            'fsc' => $validated['fsc'] ?? null,
-            'status' => $status,
-            'submitted_by_id' => $user->id,
-            'submitted_at' => now(),
-            'reviewed_by_id' => $isSelfOverride ? $user->id : null,
-            'reviewed_at' => $isSelfOverride ? now() : null,
-            'is_self_override' => $isSelfOverride,
-        ]);
+        MeasurementStateManager::store($user, $request->all());
 
         return back();
     }
@@ -276,37 +241,7 @@ class GisController extends Controller
         $user = auth()->user();
         abort_unless($user, 403);
 
-        $validated = $request->validate([
-            'value' => ['required', 'numeric'],
-            'unit' => ['required', 'string'],
-            'date' => ['required', 'date'],
-            'fsc' => ['nullable', 'numeric'],
-        ]);
-
-        $measurement = DB::table('measurements')->where('id', $id)->first();
-        abort_unless($measurement, 404);
-
-        // Access check: only owner or manager/admin can update
-        $canEdit = ($measurement->submitted_by_id === $user->id) || $user->canApprove();
-        abort_unless($canEdit, 403);
-
-        $updateData = [
-            'value' => $validated['value'],
-            'unit' => $validated['unit'],
-            'date' => Carbon::parse($validated['date']),
-            'fsc' => $validated['fsc'] ?? null,
-        ];
-
-        // If a data clerk edits a rejected/approved record, revert status to pending
-        if ($user->role === User::ROLE_CLERK) {
-            $updateData['status'] = 'pending';
-            $updateData['reviewed_by_id'] = null;
-            $updateData['reviewed_at'] = null;
-            $updateData['review_notes'] = null;
-            $updateData['is_self_override'] = false;
-        }
-
-        DB::table('measurements')->where('id', $id)->update($updateData);
+        MeasurementStateManager::update($user, $id, $request->all());
 
         return back();
     }
@@ -314,9 +249,13 @@ class GisController extends Controller
     public function destroyMeasurement(string $id): RedirectResponse
     {
         $user = auth()->user();
-        abort_unless($user && $user->canApprove(), 403);
+        abort_unless($user, 403);
 
-        DB::table('measurements')->where('id', $id)->delete();
+        try {
+            MeasurementStateManager::delete($user, $id);
+        } catch (\RuntimeException $e) {
+            abort(403, $e->getMessage());
+        }
 
         return back();
     }
@@ -324,45 +263,12 @@ class GisController extends Controller
     public function approveMeasurement(Request $request, string $id): RedirectResponse
     {
         $user = auth()->user();
-        abort_unless($user && $user->canApprove(), 403);
+        abort_unless($user, 403);
 
-        $measurement = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->where('m.id', $id)
-            ->select('m.*', 's.name as station_name', 's.code as station_code')
-            ->first();
-
-        DB::table('measurements')->where('id', $id)->update([
-            'status' => 'approved',
-            'reviewed_by_id' => $user->id,
-            'reviewed_at' => now(),
-            'review_notes' => $request->input('review_notes') ?? 'Approved by Data Manager',
-        ]);
-
-        if ($measurement) {
-            $isSelf = $measurement->submitted_by_id === $user->id;
-            $label = ($measurement->station_name ?? $measurement->station_code ?? $id)
-                .' ('.$measurement->measurement_type.')';
-
-            AuditService::record(
-                actionType: AuditService::ACTION_MEASUREMENT_APPROVED,
-                entityType: 'Measurement',
-                entityId: $id,
-                entityLabel: $label,
-                previousState: ['status' => 'pending'],
-                newState: ['status' => 'approved'],
-                reason: $request->input('review_notes'),
-            );
-
-            if ($isSelf) {
-                AuditService::record(
-                    actionType: AuditService::ACTION_SELF_APPROVAL,
-                    entityType: 'Measurement',
-                    entityId: $id,
-                    entityLabel: $label,
-                    reason: 'Self-approved measurement',
-                );
-            }
+        try {
+            MeasurementStateManager::approve($user, $id, $request->input('review_notes'));
+        } catch (\RuntimeException $e) {
+            return back()->with('status', $e->getMessage());
         }
 
         return back();
@@ -371,37 +277,16 @@ class GisController extends Controller
     public function rejectMeasurement(Request $request, string $id): RedirectResponse
     {
         $user = auth()->user();
-        abort_unless($user && $user->canApprove(), 403);
+        abort_unless($user, 403);
 
         $request->validate([
             'review_notes' => ['required', 'string'],
         ]);
 
-        $measurement = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->where('m.id', $id)
-            ->select('m.*', 's.name as station_name', 's.code as station_code')
-            ->first();
-
-        DB::table('measurements')->where('id', $id)->update([
-            'status' => 'rejected',
-            'reviewed_by_id' => $user->id,
-            'reviewed_at' => now(),
-            'review_notes' => $request->input('review_notes'),
-        ]);
-
-        if ($measurement) {
-            $label = ($measurement->station_name ?? $measurement->station_code ?? $id)
-                .' ('.$measurement->measurement_type.')';
-            AuditService::record(
-                actionType: AuditService::ACTION_MEASUREMENT_REJECTED,
-                entityType: 'Measurement',
-                entityId: $id,
-                entityLabel: $label,
-                previousState: ['status' => 'pending'],
-                newState: ['status' => 'rejected'],
-                reason: $request->input('review_notes'),
-            );
+        try {
+            MeasurementStateManager::reject($user, $id, (string) $request->input('review_notes'));
+        } catch (\RuntimeException $e) {
+            return back()->with('status', $e->getMessage());
         }
 
         return back();
@@ -647,7 +532,7 @@ class GisController extends Controller
         }
 
         if (! empty($inserts)) {
-            DB::table('measurements')->insert($inserts);
+            MeasurementStateManager::import($user, $measurementType, $inserts);
         }
 
         $count = count($inserts);

@@ -246,4 +246,53 @@ class StationRevisionManagerTest extends TestCase
 
         StationRevisionManager::approve($revision, $reviewer);
     }
+
+    public function test_propose_throws_exception_on_invalid_change_type(): void
+    {
+        $submitter = User::factory()->create(['role' => User::ROLE_CLERK]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid change type: invalid_type');
+
+        StationRevisionManager::propose($submitter, null, 'invalid_type', []);
+    }
+
+    public function test_propose_throws_exception_on_invalid_station_id_for_create(): void
+    {
+        $submitter = User::factory()->create(['role' => User::ROLE_CLERK]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('station_id must be null for CREATE operations');
+
+        StationRevisionManager::propose($submitter, 'existing-station-uuid', StationRevision::CHANGE_TYPE_CREATE, []);
+    }
+
+    public function test_propose_throws_exception_on_null_station_id_for_update_or_delete(): void
+    {
+        $submitter = User::factory()->create(['role' => User::ROLE_CLERK]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('station_id is required for UPDATE and DELETE operations');
+
+        StationRevisionManager::propose($submitter, null, StationRevision::CHANGE_TYPE_UPDATE, []);
+    }
+
+    public function test_approve_reject_throws_exception_on_unauthorized_user(): void
+    {
+        $submitter = User::factory()->create(['role' => User::ROLE_CLERK]);
+        $unauthorized = User::factory()->create(['role' => User::ROLE_CLERK]); // Clerk cannot approve
+
+        $revision = StationRevision::create([
+            'station_id' => null,
+            'submitted_by_id' => $submitter->id,
+            'status' => StationRevision::STATUS_PENDING,
+            'change_type' => StationRevision::CHANGE_TYPE_CREATE,
+            'proposed_changes' => ['some' => 'changes'],
+        ]);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('User does not have permission to approve revisions.');
+
+        StationRevisionManager::approve($revision, $unauthorized);
+    }
 }

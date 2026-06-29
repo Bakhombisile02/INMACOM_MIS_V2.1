@@ -1,5 +1,5 @@
 .header {
-    height: 56px;
+    height: 64px;
     background-color: var(--mantine-color-body);
     border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
     position: sticky;
@@ -8,10 +8,20 @@
 }
 
 .inner {
-    height: 56px;
+    height: 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+@media (max-width: 48em) {
+    .header {
+        height: 60px;
+    }
+
+    .inner {
+        height: 60px;
+    }
 }
 
 .logoLink {

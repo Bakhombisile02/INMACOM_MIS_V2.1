@@ -31,6 +31,10 @@
     flex-wrap: wrap;
 }
 
+.searchInput {
+    width: min(100%, 320px);
+}
+
 .toolbarTitle {
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -69,8 +73,8 @@
 
 .menuBtn {
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: 8px;
+    right: 8px;
 }
 
 .cardBody {
@@ -95,4 +99,31 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2));
+}
+
+@media (max-width: 48em) {
+    .hero {
+        padding: 24px 0;
+    }
+
+    .heroTitle {
+        font-size: 28px;
+    }
+
+    .heroSubtitle {
+        font-size: 14px;
+    }
+
+    .toolbar {
+        align-items: stretch;
+        margin-bottom: 16px;
+    }
+
+    .searchInput {
+        width: 100%;
+    }
+
+    .thumb {
+        min-height: 120px;
+    }
 }

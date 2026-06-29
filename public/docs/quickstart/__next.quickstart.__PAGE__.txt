@@ -1,0 +1,92 @@
+1:"$Sreact.fragment"
+2:I[55169,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"TOCProvider"]
+3:I[769,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"Sidebar"]
+4:I[47486,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ClientWrapper"]
+6:I[63894,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"HeadingAnchor"]
+1c:I[83987,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ToggleWordWrapButton"]
+1d:I[97367,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+5:T59c,# Developer Quickstart
+
+To get started with developing and running the INMACOM MIS application locally, follow these quick steps:
+
+## Prerequisites
+- **PHP**: 8.3 or higher
+- **Composer**: Dependency manager for PHP
+- **Node.js**: v18 or higher (with npm)
+- **PostgreSQL**: Relational database
+- **Firebase Project**: An active Firebase project for authentication
+
+---
+
+## 1. Installation
+
+Clone the repository and install dependencies:
+```bash
+git clone https://github.com/Bakhombisile02/INMACOM_MIS_V2.1.git
+cd INMACOM_MIS_V2.1
+
+# Install backend dependencies
+composer install
+
+# Install frontend dependencies
+npm install
+```
+
+---
+
+## 2. Configuration
+
+Copy the sample environment file and fill in your database, email, and Firebase credentials:
+```bash
+cp .env.example .env
+```
+Ensure you set your Firebase service account configuration:
+```env
+FIREBASE_CREDENTIALS=storage/app/firebase-service-account.json
+```
+Place your Firebase Admin JSON credentials inside `storage/app/firebase-service-account.json`.
+
+---
+
+## 3. Database & Seeding
+
+Run database migrations and seed staging reference datasets:
+```bash
+php artisan migrate --force
+php artisan db:seed --force
+```
+
+---
+
+## 4. Run Development Stack
+
+Start the local stack concurrently using our Composer script:
+```bash
+composer dev
+```
+This boots:
+- The Laravel application on **`http://127.0.0.1:8000`**
+- The Vite hot-reloading development server on **`http://127.0.0.1:5173`**0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"x:mx-auto x:flex x:max-w-(--nextra-content-width)","children":["$","$L2",null,{"value":[{"value":"Prerequisites","id":"prerequisites","depth":2},{"value":"1. Installation","id":"1-installation","depth":2},{"value":"2. Configuration","id":"2-configuration","depth":2},{"value":"3. Database & Seeding","id":"3-database--seeding","depth":2},{"value":"4. Run Development Stack","id":"4-run-development-stack","depth":2}],"children":[["$","$L3",null,{}],["$","$L4",null,{"metadata":{"title":"Developer Quickstart","filePath":"app/quickstart/page.mdx"},"sourceCode":"$5","children":[["$","div",null,{"id":"nextra-skip-nav"}],["$","main",null,{"data-pagefind-body":true,"children":[["$","h1",null,{"className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-bold x:mt-2 x:text-4xl","children":["Developer Quickstart","$undefined"]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"To get started with developing and running the INMACOM MIS application locally, follow these quick steps:"}],"\n",["$","h2",null,{"id":"prerequisites","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["Prerequisites",["$","$L6",null,{"id":"prerequisites"}]]}],"\n",["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"PHP"}],": 8.3 or higher"]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Composer"}],": Dependency manager for PHP"]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Node.js"}],": v18 or higher (with npm)"]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"PostgreSQL"}],": Relational database"]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":[["$","strong",null,{"children":"Firebase Project"}],": An active Firebase project for authentication"]}],"\n"]}],"\n",["$","hr",null,{"className":"x:my-[2em] nextra-border"}],"\n",["$","h2",null,{"id":"1-installation","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["1. Installation","$L7"]}],"\n","$L8","\n","$L9","\n","$La","\n","$Lb","\n","$Lc","\n","$Ld","\n","$Le","\n","$Lf","\n","$L10","\n","$L11","\n","$L12","\n","$L13","\n","$L14","\n","$L15","\n","$L16","\n","$L17","\n","$L18","\n","$L19","\n","$L1a"]}]]}]]}]}],null,"$L1b"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fH1W0CGycxmIj2F7exmpr"}
+7:["$","$L6",null,{"id":"1-installation"}]
+8:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Clone the repository and install dependencies:"}]
+9:["$","div",null,{"data-pagefind-ignore":"all","className":"nextra-code x:relative x:not-first:mt-[1.25em]","children":["$undefined",["$","pre",null,{"className":"x:group x:focus-visible:nextra-focus x:overflow-x-auto x:subpixel-antialiased x:text-[.9em] x:bg-white x:dark:bg-black x:py-4 x:ring-1 x:ring-inset x:ring-gray-300 x:dark:ring-neutral-700 x:contrast-more:ring-gray-900 x:contrast-more:dark:ring-gray-50 x:contrast-more:contrast-150 x:rounded-md not-prose","tabIndex":"0","children":[["$","div",null,{"className":"x:group-hover:opacity-100 x:group-focus:opacity-100 x:opacity-0 x:transition x:focus-within:opacity-100 x:flex x:gap-1 x:absolute x:right-4 x:top-2","children":[["$","$L1c",null,{"children":["$","svg",null,{"viewBox":"0 0 24 24","fill":"currentColor","height":"1em","children":["$","path",null,{"d":"M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4z"}]}]}],false]}],["$","code",null,{"className":"nextra-code","dir":"ltr","children":[["$","span",null,{"children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"git"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" clone"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" https://github.com/Bakhombisile02/INMACOM_MIS_V2.1.git"}]]}],"\n",["$","span",null,{"children":[["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":"cd"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" INMACOM_MIS_V2.1"}]]}],"\n",["$","span",null,{"children":" "}],"\n",["$","span",null,{"children":["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"# Install backend dependencies"}]}],"\n",["$","span",null,{"children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"composer"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}]]}],"\n",["$","span",null,{"children":" "}],"\n",["$","span",null,{"children":["$","span",null,{"style":{"--shiki-light":"#6A737D","--shiki-dark":"#6A737D"},"children":"# Install frontend dependencies"}]}],"\n",["$","span",null,{"children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"npm"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" install"}]]}]]}]]}]]}]
+a:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+b:["$","h2",null,{"id":"2-configuration","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["2. Configuration",["$","$L6",null,{"id":"2-configuration"}]]}]
+c:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Copy the sample environment file and fill in your database, email, and Firebase credentials:"}]
+d:["$","div",null,{"data-pagefind-ignore":"all","className":"nextra-code x:relative x:not-first:mt-[1.25em]","children":["$undefined",["$","pre",null,{"className":"x:group x:focus-visible:nextra-focus x:overflow-x-auto x:subpixel-antialiased x:text-[.9em] x:bg-white x:dark:bg-black x:py-4 x:ring-1 x:ring-inset x:ring-gray-300 x:dark:ring-neutral-700 x:contrast-more:ring-gray-900 x:contrast-more:dark:ring-gray-50 x:contrast-more:contrast-150 x:rounded-md not-prose","tabIndex":"0","children":[["$","div",null,{"className":"x:group-hover:opacity-100 x:group-focus:opacity-100 x:opacity-0 x:transition x:focus-within:opacity-100 x:flex x:gap-1 x:absolute x:right-4 x:top-2","children":[["$","$L1c",null,{"children":["$","svg",null,{"viewBox":"0 0 24 24","fill":"currentColor","height":"1em","children":["$","path",null,{"d":"M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4z"}]}]}],false]}],["$","code",null,{"className":"nextra-code","dir":"ltr","children":["$","span",null,{"children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"cp"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" .env.example"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" .env"}]]}]}]]}]]}]
+e:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Ensure you set your Firebase service account configuration:"}]
+f:["$","div",null,{"data-pagefind-ignore":"all","className":"nextra-code x:relative x:not-first:mt-[1.25em]","children":["$undefined",["$","pre",null,{"className":"x:group x:focus-visible:nextra-focus x:overflow-x-auto x:subpixel-antialiased x:text-[.9em] x:bg-white x:dark:bg-black x:py-4 x:ring-1 x:ring-inset x:ring-gray-300 x:dark:ring-neutral-700 x:contrast-more:ring-gray-900 x:contrast-more:dark:ring-gray-50 x:contrast-more:contrast-150 x:rounded-md not-prose","tabIndex":"0","children":[["$","div",null,{"className":"x:group-hover:opacity-100 x:group-focus:opacity-100 x:opacity-0 x:transition x:focus-within:opacity-100 x:flex x:gap-1 x:absolute x:right-4 x:top-2","children":[["$","$L1c",null,{"children":["$","svg",null,{"viewBox":"0 0 24 24","fill":"currentColor","height":"1em","children":["$","path",null,{"d":"M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4z"}]}]}],false]}],["$","code",null,{"className":"nextra-code","dir":"ltr","children":["$","span",null,{"children":["$","span",null,{"children":"FIREBASE_CREDENTIALS=storage/app/firebase-service-account.json"}]}]}]]}]]}]
+10:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["Place your Firebase Admin JSON credentials inside ",["$","code",null,{"className":"nextra-code","dir":"ltr","children":"storage/app/firebase-service-account.json"}],"."]}]
+11:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+12:["$","h2",null,{"id":"3-database--seeding","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["3. Database & Seeding",["$","$L6",null,{"id":"3-database--seeding"}]]}]
+13:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Run database migrations and seed staging reference datasets:"}]
+14:["$","div",null,{"data-pagefind-ignore":"all","className":"nextra-code x:relative x:not-first:mt-[1.25em]","children":["$undefined",["$","pre",null,{"className":"x:group x:focus-visible:nextra-focus x:overflow-x-auto x:subpixel-antialiased x:text-[.9em] x:bg-white x:dark:bg-black x:py-4 x:ring-1 x:ring-inset x:ring-gray-300 x:dark:ring-neutral-700 x:contrast-more:ring-gray-900 x:contrast-more:dark:ring-gray-50 x:contrast-more:contrast-150 x:rounded-md not-prose","tabIndex":"0","children":[["$","div",null,{"className":"x:group-hover:opacity-100 x:group-focus:opacity-100 x:opacity-0 x:transition x:focus-within:opacity-100 x:flex x:gap-1 x:absolute x:right-4 x:top-2","children":[["$","$L1c",null,{"children":["$","svg",null,{"viewBox":"0 0 24 24","fill":"currentColor","height":"1em","children":["$","path",null,{"d":"M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4z"}]}]}],false]}],["$","code",null,{"className":"nextra-code","dir":"ltr","children":[["$","span",null,{"children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"php"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" artisan"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" migrate"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --force"}]]}],"\n",["$","span",null,{"children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"php"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" artisan"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" db:seed"}],["$","span",null,{"style":{"--shiki-light":"#005CC5","--shiki-dark":"#79B8FF"},"children":" --force"}]]}]]}]]}]]}]
+15:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+16:["$","h2",null,{"id":"4-run-development-stack","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["4. Run Development Stack",["$","$L6",null,{"id":"4-run-development-stack"}]]}]
+17:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Start the local stack concurrently using our Composer script:"}]
+18:["$","div",null,{"data-pagefind-ignore":"all","className":"nextra-code x:relative x:not-first:mt-[1.25em]","children":["$undefined",["$","pre",null,{"className":"x:group x:focus-visible:nextra-focus x:overflow-x-auto x:subpixel-antialiased x:text-[.9em] x:bg-white x:dark:bg-black x:py-4 x:ring-1 x:ring-inset x:ring-gray-300 x:dark:ring-neutral-700 x:contrast-more:ring-gray-900 x:contrast-more:dark:ring-gray-50 x:contrast-more:contrast-150 x:rounded-md not-prose","tabIndex":"0","children":[["$","div",null,{"className":"x:group-hover:opacity-100 x:group-focus:opacity-100 x:opacity-0 x:transition x:focus-within:opacity-100 x:flex x:gap-1 x:absolute x:right-4 x:top-2","children":[["$","$L1c",null,{"children":["$","svg",null,{"viewBox":"0 0 24 24","fill":"currentColor","height":"1em","children":["$","path",null,{"d":"M4 19h6v-2H4v2zM20 5H4v2h16V5zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v-2l-3 3l3 3v-2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4z"}]}]}],false]}],["$","code",null,{"className":"nextra-code","dir":"ltr","children":["$","span",null,{"children":[["$","span",null,{"style":{"--shiki-light":"#6F42C1","--shiki-dark":"#B392F0"},"children":"composer"}],["$","span",null,{"style":{"--shiki-light":"#032F62","--shiki-dark":"#9ECBFF"},"children":" dev"}]]}]}]]}]]}]
+19:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"This boots:"}]
+1a:["$","ul",null,{"className":"x:[:is(ol,ul)_&]:my-[.75em] x:not-first:mt-[1.25em] x:list-disc x:ms-[1.5em]","children":["\n",["$","li",null,{"className":"x:my-[.5em]","children":["The Laravel application on ",["$","strong",null,{"children":["$","code",null,{"className":"nextra-code","dir":"ltr","children":"http://127.0.0.1:8000"}]}]]}],"\n",["$","li",null,{"className":"x:my-[.5em]","children":["The Vite hot-reloading development server on ",["$","strong",null,{"children":["$","code",null,{"className":"nextra-code","dir":"ltr","children":"http://127.0.0.1:5173"}]}]]}],"\n"]}]
+1b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+1f:null

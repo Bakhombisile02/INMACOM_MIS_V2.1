@@ -1,0 +1,1 @@
+import{t as e}from"./createReactComponent-ClZ1pMpe.js";var t=e(`outline`,`chevron-left`,`ChevronLeft`,[[`path`,{d:`M15 6l-6 6l6 6`,key:`svg-0`}]]),n=e(`outline`,`folder`,`Folder`,[[`path`,{d:`M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2`,key:`svg-0`}]]);export{t as n,n as t};

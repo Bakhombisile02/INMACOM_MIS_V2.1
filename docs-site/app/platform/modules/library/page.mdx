@@ -1,0 +1,66 @@
+# Document Library Module
+
+The Document Library provides a shared transboundary repository for storing treaty documents, meeting minutes, maps, and CSV templates.
+
+![INMACOM MIS Document Library](/screenshots/library.png)
+
+---
+
+## Folder & Document Schema
+
+The database supports a recursive folder tree and document storage links:
+
+```
+  ┌────────────────────────────────────────────────────────┐
+  │                        folders                         │
+  │  - id (UUID)                                           │
+  │  - name (string)                                       │
+  │  - parent_id (UUID, references folders.id) ◄────────┐  │ (Recursive hierarchy)
+  └───────────────────────────┬─────────────────────────┴──┘
+                              │
+                              ▼
+  ┌────────────────────────────────────────────────────────┐
+  │                       documents                        │
+  │  - id (UUID)                                           │
+  │  - file_name (string)                                  │
+  │  - folder_id (UUID, references folders.id)             │
+  │  - file_type (string)                                  │
+  │  - file_size (integer)                                 │
+  │  - uploaded_by_id (UUID, references users.id)          │
+  │  - category (string)                                   │
+  └────────────────────────────────────────────────────────┘
+```
+
+### 1. `folders`
+A recursive model containing:
+*   `name`: Folder display name.
+*   `parent_id`: Reference to another folder. If `null`, it exists at the root level of the library.
+
+### 2. `documents`
+Stores metadata and path references for uploaded files:
+*   `file_name`: Original name of the uploaded document.
+*   `file_type`: Mime type (e.g. `application/pdf`, `text/csv`).
+*   `uploaded_by_id`: User who uploaded the file.
+*   `category`: Category tag (`treaty`, `meeting_minutes`, `technical_report`, `map`).
+
+---
+
+## Upload & Storage Workflow
+
+File uploads are managed by `DocumentUploadController.php` and the standard Laravel file storage configuration.
+
+### 1. File Upload (`store`)
+When a file is uploaded:
+1.  **Validation:** The controller validates file constraints (maximum size, permitted extensions: PDF, CSV, Excel, DOCX).
+2.  **Storage Disk:** The file is saved to the local disk:
+    ```php
+    $path = $request->file('file')->store('library-documents');
+    ```
+3.  **DB Logging:** A new record is written to `documents` containing the storage reference path.
+
+### 2. File Download (`download`)
+*   To prevent exposure of local directory paths, files are served via a gated Laravel route: `GET /library/documents/{document}/download`.
+*   The controller resolves the document path, verifies user credentials, and returns a streamed download file response:
+    ```php
+    return Storage::download($document->file_path, $document->file_name);
+    ```

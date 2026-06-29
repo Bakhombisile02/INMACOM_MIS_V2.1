@@ -1,0 +1,68 @@
+{
+  "public": {
+    "title": "Public Document Library",
+    "subtitle": "Browse and download publicly available reports, datasets and resources."
+  },
+  "private": {
+    "title": "Document Library",
+    "subtitle": "Internal document workspace. Upload, manage and access private files."
+  },
+  "search": "Search documents",
+  "sections": {
+    "library": "Library",
+    "mediaTypes": "Media types",
+    "storages": "Storages",
+    "storagesEmpty": "No storages defined yet."
+  },
+  "categories": {
+    "all": "All files"
+  },
+  "library": {
+    "documents": "Documents",
+    "images": "Images",
+    "videos": "Videos",
+    "audio": "Audio",
+    "archives": "Archives"
+  },
+  "fileCount": "{{count}} file",
+  "fileCount_other": "{{count}} files",
+  "actions": {
+    "menu": "File actions",
+    "download": "Download",
+    "preview": "Preview",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied to clipboard"
+  },
+  "empty": {
+    "noUploadsTitle": "No files uploaded yet",
+    "noUploadsMessage": "There are no files in this library yet. Once a clerk admin or data manager uploads files, they will appear here.",
+    "noMatchTitle": "No matches",
+    "noMatchMessage": "No documents match your current filter or search."
+  },
+  "nav": {
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "openNav": "Open navigation",
+    "closeNav": "Close navigation"
+  },
+  "upload": {
+    "title": "Upload document",
+    "titleAccept": "Drop files here",
+    "titleReject": "File too large",
+    "subtitle": "Drag\u2019n\u2019drop files here to upload. Attach a single file, up to 50 MB.",
+    "selectFiles": "Select files",
+    "modalTitle": "Upload document",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "mediaTypeLabel": "Media type",
+    "storageLabel": "Storage",
+    "storagePlaceholder": "Unassigned",
+    "visibilityLabel": "Visibility",
+    "visibilityPrivate": "Private",
+    "visibilityPublic": "Public",
+    "cancel": "Cancel",
+    "submit": "Upload",
+    "success": "Document uploaded",
+    "error": "Could not upload document"
+  }
+}

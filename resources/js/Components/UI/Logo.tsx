@@ -1,15 +1,16 @@
 import { Group, Text } from '@mantine/core';
+import classes from './Logo.module.css';
 
 export default function Logo() {
     return (
-        <Group gap="xs" wrap="nowrap">
+        <Group gap="xs" wrap="nowrap" className={classes.root}>
             <img
                 src="/images/inmacom-logo.png"
                 alt="INMACOM MIS"
-                style={{ width: 32, height: 32, objectFit: 'contain' }}
+                className={classes.logoMark}
             />
 
-            <Text fw={700} c="#1f3f62" style={{ letterSpacing: '0.06em' }}>
+            <Text fw={700} c="#1f3f62" className={classes.wordmark}>
                 INMACOM MIS
             </Text>
         </Group>

@@ -1,0 +1,38 @@
+{
+  "header": {
+    "home": "Início",
+    "explore": "Explorar dados",
+    "basinInsights": "Análises da bacia",
+    "hazards": "Riscos",
+    "documents": "Documentos",
+    "library": "Biblioteca",
+    "login": "Entrar",
+    "dashboard": "Painel",
+    "reports": "Relatórios",
+    "operations": "Operações",
+    "profile": "Perfil",
+    "toggleNavigation": "Alternar navegação",
+    "navigation": "Navegação"
+  },
+  "language": {
+    "label": "Idioma",
+    "english": "English",
+    "portuguese": "Português"
+  },
+  "footer": {
+    "copyright": "© {{year}} INMACOM. Todos os direitos reservados.",
+    "privacy": "Política de Privacidade",
+    "terms": "Condições de Uso"
+  },
+  "actions": {
+    "getStarted": "Começar",
+    "exploreLiveData": "Explorar dados em direto",
+    "signIn": "Entrar",
+    "learnMore": "Saber mais",
+    "logout": "Terminar sessão",
+    "back": "Voltar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "submit": "Submeter"
+  }
+}

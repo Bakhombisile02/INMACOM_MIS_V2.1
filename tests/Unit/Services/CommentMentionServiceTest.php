@@ -7,6 +7,7 @@ use App\Models\CommentMention;
 use App\Models\User;
 use App\Services\CommentMentionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CommentMentionServiceTest extends TestCase
@@ -20,7 +21,7 @@ class CommentMentionServiceTest extends TestCase
 
         $comment = Comment::create([
             'commentable_type' => 'station',
-            'commentable_id' => \Illuminate\Support\Str::uuid(),
+            'commentable_id' => Str::uuid(),
             'author_id' => $author->id,
             'body' => "Hey @[{$target->id}] please review this.",
         ]);
@@ -43,7 +44,7 @@ class CommentMentionServiceTest extends TestCase
 
         $comment = Comment::create([
             'commentable_type' => 'station',
-            'commentable_id' => \Illuminate\Support\Str::uuid(),
+            'commentable_id' => Str::uuid(),
             'author_id' => $author->id,
             'body' => 'Hey @JohnDoe can you check this out?',
         ]);
@@ -66,7 +67,7 @@ class CommentMentionServiceTest extends TestCase
         // Self mention via display name
         $comment1 = Comment::create([
             'commentable_type' => 'station',
-            'commentable_id' => \Illuminate\Support\Str::uuid(),
+            'commentable_id' => Str::uuid(),
             'author_id' => $author->id,
             'body' => 'Self note @SelfAuthor',
         ]);
@@ -81,7 +82,7 @@ class CommentMentionServiceTest extends TestCase
         // Self mention via UUID
         $comment2 = Comment::create([
             'commentable_type' => 'station',
-            'commentable_id' => \Illuminate\Support\Str::uuid(),
+            'commentable_id' => Str::uuid(),
             'author_id' => $author->id,
             'body' => "Self note @[{$author->id}]",
         ]);
@@ -97,11 +98,11 @@ class CommentMentionServiceTest extends TestCase
     public function test_extract_and_store_ignores_non_existent_users(): void
     {
         $author = User::factory()->create(['role' => User::ROLE_CLERK]);
-        $fakeUuid = \Illuminate\Support\Str::uuid()->toString();
+        $fakeUuid = Str::uuid()->toString();
 
         $comment = Comment::create([
             'commentable_type' => 'station',
-            'commentable_id' => \Illuminate\Support\Str::uuid(),
+            'commentable_id' => Str::uuid(),
             'author_id' => $author->id,
             'body' => "Hey @[{$fakeUuid}] and @FakeUser please review.",
         ]);
@@ -123,7 +124,7 @@ class CommentMentionServiceTest extends TestCase
 
         $comment = Comment::create([
             'commentable_type' => 'station',
-            'commentable_id' => \Illuminate\Support\Str::uuid(),
+            'commentable_id' => Str::uuid(),
             'author_id' => $author->id,
             'body' => "Hey @[{$target->id}] and @JaneDoe, please help @[{$target->id}].",
         ]);

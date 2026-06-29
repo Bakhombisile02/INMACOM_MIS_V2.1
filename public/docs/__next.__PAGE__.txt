@@ -1,0 +1,50 @@
+1:"$Sreact.fragment"
+2:I[55169,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"TOCProvider"]
+3:I[769,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"Sidebar"]
+4:I[47486,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"ClientWrapper"]
+b:I[63894,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"HeadingAnchor"]
+c:I[97367,["/docs/_next/static/chunks/3hs2pwbbib5u_.js","/docs/_next/static/chunks/35dngrx1ezn4t.js","/docs/_next/static/chunks/1-8s9_t85wwr4.js","/docs/_next/static/chunks/0lo6x77_pgkbq.js","/docs/_next/static/chunks/1af9orcugng0l.js"],"OutletBoundary"]
+d:"$Sreact.suspense"
+5:T941,# INMACOM MIS Documentation Portal
+
+Welcome to the official documentation and user support portal for the **Incomati and Maputo Basins Management Information System (INMACOM MIS)**. 
+
+The INMACOM MIS is a transboundary water resources management platform tracking stations, water measurements, compliance with the Incomati and Maputo Agreement (IIMA), disaster incidents, and shared document library workflows across Mozambique, South Africa, and Eswatini.
+
+---
+
+## Navigation & Support
+
+Start exploring the portal by choosing one of the sections below:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginTop: '20px' }}>
+  <div style={{ padding: '20px', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.1)', background: 'var(--nextra-bg-100)' }}>
+    <h3>🚀 Getting Started</h3>
+    <p>Read the developer setup guide and access our hands-on user guide to learn how to operate the portal.</p>
+    <a href="/docs/getting-started/quickstart/" style={{ color: '#3b82f6', fontWeight: 600 }}>Get Started →</a>
+  </div>
+  
+  <div style={{ padding: '20px', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.1)', background: 'var(--nextra-bg-100)' }}>
+    <h3>🌐 Platform Architecture</h3>
+    <p>Dive deep into our database schema, Firebase authentication, monolithic Laravel routes, and React Inertia frontend layer.</p>
+    <a href="/docs/platform/architecture/database/" style={{ color: '#3b82f6', fontWeight: 600 }}>Explore System Architecture →</a>
+  </div>
+
+  <div style={{ padding: '20px', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.1)', background: 'var(--nextra-bg-100)' }}>
+    <h3>⚡ Feature Modules</h3>
+    <p>Learn about station revision review flows, GIS parameters, compliance checking (Eflows), comments, and audit logs.</p>
+    <a href="/docs/platform/modules/stations/" style={{ color: '#3b82f6', fontWeight: 600 }}>Explore Feature Modules →</a>
+  </div>
+
+  <div style={{ padding: '20px', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.1)', background: 'var(--nextra-bg-100)' }}>
+    <h3>📞 Technical Support</h3>
+    <p>Get technical support contact details for Mozambique (ARA-Sul), South Africa (DWS), and Eswatini departments.</p>
+    <a href="/docs/support/" style={{ color: '#3b82f6', fontWeight: 600 }}>Contact Support →</a>
+  </div>
+</div>0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"x:mx-auto x:flex x:max-w-(--nextra-content-width)","children":["$","$L2",null,{"value":[{"value":"Navigation & Support","id":"navigation--support","depth":2}],"children":[["$","$L3",null,{}],["$","$L4",null,{"metadata":{"title":"INMACOM MIS Documentation Portal","filePath":"app/page.mdx"},"sourceCode":"$5","children":[["$","div",null,{"id":"nextra-skip-nav"}],["$","main",null,{"data-pagefind-body":true,"children":[["$","h1",null,{"className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-bold x:mt-2 x:text-4xl","children":["INMACOM MIS Documentation Portal","$undefined"]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":["Welcome to the official documentation and user support portal for the ",["$","strong",null,{"children":"Incomati and Maputo Basins Management Information System (INMACOM MIS)"}],"."]}],"\n",["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"The INMACOM MIS is a transboundary water resources management platform tracking stations, water measurements, compliance with the Incomati and Maputo Agreement (IIMA), disaster incidents, and shared document library workflows across Mozambique, South Africa, and Eswatini."}],"\n","$L6","\n","$L7","\n","$L8","\n","$L9"]}]]}]]}]}],null,"$La"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"fH1W0CGycxmIj2F7exmpr"}
+6:["$","hr",null,{"className":"x:my-[2em] nextra-border"}]
+7:["$","h2",null,{"id":"navigation--support","className":"x:tracking-tight x:text-slate-900 x:dark:text-slate-100 x:font-semibold x:target:animate-[fade-in_1.5s] x:mt-10 x:border-b x:pb-1 x:text-3xl nextra-border","children":["Navigation & Support",["$","$Lb",null,{"id":"navigation--support"}]]}]
+8:["$","p",null,{"className":"x:not-first:mt-[1.25em] x:leading-7","children":"Start exploring the portal by choosing one of the sections below:"}]
+9:["$","div",null,{"style":{"display":"grid","gridTemplateColumns":"repeat(auto-fit, minmax(250px, 1fr))","gap":"20px","marginTop":"20px"},"children":[["$","div",null,{"style":{"padding":"20px","borderRadius":"8px","border":"1px solid rgba(0, 0, 0, 0.1)","background":"var(--nextra-bg-100)"},"children":[["$","h3",null,{"children":"🚀 Getting Started"}],["$","p",null,{"children":"Read the developer setup guide and access our hands-on user guide to learn how to operate the portal."}],["$","a",null,{"href":"/docs/getting-started/quickstart/","style":{"color":"#3b82f6","fontWeight":600},"children":"Get Started →"}]]}],["$","div",null,{"style":{"padding":"20px","borderRadius":"8px","border":"1px solid rgba(0, 0, 0, 0.1)","background":"var(--nextra-bg-100)"},"children":[["$","h3",null,{"children":"🌐 Platform Architecture"}],["$","p",null,{"children":"Dive deep into our database schema, Firebase authentication, monolithic Laravel routes, and React Inertia frontend layer."}],["$","a",null,{"href":"/docs/platform/architecture/database/","style":{"color":"#3b82f6","fontWeight":600},"children":"Explore System Architecture →"}]]}],["$","div",null,{"style":{"padding":"20px","borderRadius":"8px","border":"1px solid rgba(0, 0, 0, 0.1)","background":"var(--nextra-bg-100)"},"children":[["$","h3",null,{"children":"⚡ Feature Modules"}],["$","p",null,{"children":"Learn about station revision review flows, GIS parameters, compliance checking (Eflows), comments, and audit logs."}],["$","a",null,{"href":"/docs/platform/modules/stations/","style":{"color":"#3b82f6","fontWeight":600},"children":"Explore Feature Modules →"}]]}],["$","div",null,{"style":{"padding":"20px","borderRadius":"8px","border":"1px solid rgba(0, 0, 0, 0.1)","background":"var(--nextra-bg-100)"},"children":[["$","h3",null,{"children":"📞 Technical Support"}],["$","p",null,{"children":"Get technical support contact details for Mozambique (ARA-Sul), South Africa (DWS), and Eswatini departments."}],["$","a",null,{"href":"/docs/support/","style":{"color":"#3b82f6","fontWeight":600},"children":"Contact Support →"}]]}]]}]
+a:["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]
+e:null
