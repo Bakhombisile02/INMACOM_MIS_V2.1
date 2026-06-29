@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -42,175 +43,14 @@ class ThresholdsController extends Controller
         $user = auth()->user();
         $canManage = ($user?->canApprove() ?? false);
 
-        // On-the-fly Seeding for user categories if empty
-        $this->seedUserCategoriesIfEmpty();
-        $this->seedAllocationsIfEmpty();
-
-        // 1. Load active Water Quality parameters list
-        $parameters = DB::table('water_quality_parameters')
-            ->where('is_active', true)
-            ->orderBy('display_order')
-            ->get(['id', 'code', 'name', 'default_unit', 'is_priority_pollutant']);
-
-        // 2. Build WQ Compliance Thresholds query
-        $wqQuery = DB::table('compliance_thresholds as ct')
-            ->join('stations as s', 's.id', '=', 'ct.station_id')
-            ->join('water_quality_parameters as wqp', 'wqp.id', '=', 'ct.parameter_id')
-            ->select([
-                'ct.id',
-                'ct.station_id',
-                'ct.parameter_id',
-                'ct.data_type',
-                'ct.min_value',
-                'ct.max_value',
-                'ct.unit',
-                'ct.notes',
-                's.code as station_code',
-                's.name as station_name',
-                's.country as station_country',
-                's.river_basin as station_basin',
-                'wqp.code as parameter_code',
-                'wqp.name as parameter_name',
-                'wqp.is_priority_pollutant',
-            ]);
-
-        // Filters
-        if ($search = $request->string('search')->toString()) {
-            $wqQuery->where(function ($q) use ($search) {
-                $q->whereRaw('lower(s.code) like ?', ['%'.mb_strtolower($search).'%'])
-                    ->orWhereRaw('lower(s.name) like ?', ['%'.mb_strtolower($search).'%'])
-                    ->orWhereRaw('lower(wqp.code) like ?', ['%'.mb_strtolower($search).'%'])
-                    ->orWhereRaw('lower(wqp.name) like ?', ['%'.mb_strtolower($search).'%']);
-            });
-        }
-
-        if ($basin = $request->string('basin')->toString()) {
-            $wqQuery->where('s.river_basin', $basin);
-        }
-
-        if ($paramCode = $request->string('parameter')->toString()) {
-            $wqQuery->where('wqp.code', $paramCode);
-        }
-
-        if ($request->boolean('is_priority')) {
-            $wqQuery->where('wqp.is_priority_pollutant', true);
-        }
-
-        if ($request->boolean('is_custom')) {
-            $wqQuery->where('ct.notes', 'not like', 'REIWQ%');
-        }
-
-        $complianceThresholds = $wqQuery
-            ->orderBy('s.name')
-            ->orderBy('wqp.display_order')
-            ->paginate(30)
-            ->withQueryString()
-            ->through(fn ($row) => [
-                'id' => $row->id,
-                'station_id' => $row->station_id,
-                'station_code' => $row->station_code,
-                'station_name' => $row->station_name,
-                'station_country' => $row->station_country,
-                'station_basin' => $row->station_basin,
-                'parameter_id' => $row->parameter_id,
-                'parameter_code' => $row->parameter_code,
-                'parameter_name' => $row->parameter_name,
-                'is_priority_pollutant' => (bool) $row->is_priority_pollutant,
-                'min_value' => $row->min_value !== null ? (float) $row->min_value : null,
-                'max_value' => $row->max_value !== null ? (float) $row->max_value : null,
-                'unit' => $row->unit,
-                'notes' => $row->notes,
-                'is_custom' => strpos($row->notes ?? '', 'REIWQ') === false,
-            ]);
-
-        // 3. Load IIMA Ecological Flow Requirements
-        $eflowRequirements = DB::table('iima_eflow_requirements as er')
-            ->leftJoin('management_areas as ma', 'ma.id', '=', 'er.subcatchment_id')
-            ->leftJoin('stations as s', 's.id', '=', 'er.station_id')
-            ->select([
-                'er.id',
-                'er.river',
-                'er.key_point',
-                'er.mean_annual_mm3',
-                'er.min_flow_m3_s',
-                'er.source_article',
-                'er.note',
-                'ma.name as subcatchment_name',
-                'ma.code as subcatchment_code',
-                's.code as station_code',
-                's.name as station_name',
-            ])
-            ->orderBy('er.river')
-            ->orderBy('er.key_point')
-            ->get()
-            ->map(fn ($row) => [
-                'id' => $row->id,
-                'river' => $row->river,
-                'key_point' => $row->key_point,
-                'mean_annual_mm3' => (float) $row->mean_annual_mm3,
-                'min_flow_m3_s' => (float) $row->min_flow_m3_s,
-                'source_article' => $row->source_article,
-                'note' => $row->note,
-                'subcatchment_name' => $row->subcatchment_name,
-                'subcatchment_code' => $row->subcatchment_code,
-                'station_code' => $row->station_code,
-                'station_name' => $row->station_name,
-            ]);
-
-        // 4. Load IIMA Water Allocations
-        $allocations = DB::table('iima_allocations as al')
-            ->join('management_areas as ma', 'ma.id', '=', 'al.subcatchment_id')
-            ->join('iima_user_categories as uc', 'uc.code', '=', 'al.user_category')
-            ->select([
-                'al.id',
-                'al.subcatchment_id',
-                'al.country',
-                'al.user_category',
-                'al.allocation_mm3_a',
-                'al.effective_from',
-                'al.note',
-                'ma.name as subcatchment_name',
-                'ma.code as subcatchment_code',
-                'uc.name as user_category_name',
-            ])
-            ->orderBy('ma.name')
-            ->orderBy('al.country')
-            ->orderBy('uc.name')
-            ->get()
-            ->map(fn ($row) => [
-                'id' => $row->id,
-                'subcatchment_id' => $row->subcatchment_id,
-                'subcatchment_name' => $row->subcatchment_name,
-                'subcatchment_code' => $row->subcatchment_code,
-                'country' => $row->country,
-                'user_category' => $row->user_category,
-                'user_category_name' => $row->user_category_name,
-                'allocation_mm3_a' => (float) $row->allocation_mm3_a,
-                'effective_from' => (int) $row->effective_from,
-                'note' => $row->note,
-            ]);
-
-        // 5. Load Active Subcatchments & User Categories (for Modal dropdown selects)
-        $subcatchments = DB::table('management_areas')
-            ->where('is_active', true)
-            ->orderBy('name')
-            ->get(['id', 'code', 'name']);
-
-        $userCategories = DB::table('iima_user_categories')
-            ->orderBy('name')
-            ->get(['code', 'name']);
-
-        // 6. Load Writable Hazard Indicators settings
-        $hazardSettings = $this->getHazardSettings();
-
         return Inertia::render('Thresholds/Index', [
-            'complianceThresholds' => $complianceThresholds,
-            'eflowRequirements' => $eflowRequirements,
-            'allocations' => $allocations,
-            'parameters' => $parameters,
-            'subcatchments' => $subcatchments,
-            'userCategories' => $userCategories,
-            'hazardSettings' => $hazardSettings,
+            'complianceThresholds' => $this->getComplianceThresholds($request),
+            'eflowRequirements' => $this->getEflowRequirements(),
+            'allocations' => $this->getAllocations(),
+            'parameters' => $this->getWaterQualityParameters(),
+            'subcatchments' => $this->getSubcatchments(),
+            'userCategories' => $this->getUserCategories(),
+            'hazardSettings' => $this->getHazardSettings(),
             'filters' => [
                 'search' => $request->string('search')->toString(),
                 'basin' => $request->string('basin')->toString(),
@@ -483,65 +323,173 @@ class ThresholdsController extends Controller
         return json_decode(file_get_contents($path), true);
     }
 
-    private function seedUserCategoriesIfEmpty(): void
+    private function getComplianceThresholds(Request $request): LengthAwarePaginator
     {
-        if (DB::table('iima_user_categories')->count() === 0) {
-            DB::table('iima_user_categories')->insert([
-                ['id' => (string) Str::uuid(), 'code' => 'domestic', 'name' => 'Domestic & Municipal', 'priority_order' => 1],
-                ['id' => (string) Str::uuid(), 'code' => 'irrigation', 'name' => 'Irrigation Agriculture', 'priority_order' => 2],
-                ['id' => (string) Str::uuid(), 'code' => 'industrial', 'name' => 'Industry & Mining', 'priority_order' => 3],
-                ['id' => (string) Str::uuid(), 'code' => 'forestry', 'name' => 'Commercial Forestry', 'priority_order' => 4],
-                ['id' => (string) Str::uuid(), 'code' => 'other', 'name' => 'Other Water Uses', 'priority_order' => 5],
+        $wqQuery = DB::table('compliance_thresholds as ct')
+            ->join('stations as s', 's.id', '=', 'ct.station_id')
+            ->join('water_quality_parameters as wqp', 'wqp.id', '=', 'ct.parameter_id')
+            ->select([
+                'ct.id',
+                'ct.station_id',
+                'ct.parameter_id',
+                'ct.data_type',
+                'ct.min_value',
+                'ct.max_value',
+                'ct.unit',
+                'ct.notes',
+                's.code as station_code',
+                's.name as station_name',
+                's.country as station_country',
+                's.river_basin as station_basin',
+                'wqp.code as parameter_code',
+                'wqp.name as parameter_name',
+                'wqp.is_priority_pollutant',
             ]);
+
+        // Filters
+        if ($search = $request->string('search')->toString()) {
+            $wqQuery->where(function ($q) use ($search) {
+                $q->whereRaw('lower(s.code) like ?', ['%'.mb_strtolower($search).'%'])
+                    ->orWhereRaw('lower(s.name) like ?', ['%'.mb_strtolower($search).'%'])
+                    ->orWhereRaw('lower(wqp.code) like ?', ['%'.mb_strtolower($search).'%'])
+                    ->orWhereRaw('lower(wqp.name) like ?', ['%'.mb_strtolower($search).'%']);
+            });
         }
+
+        if ($basin = $request->string('basin')->toString()) {
+            $wqQuery->where('s.river_basin', $basin);
+        }
+
+        if ($paramCode = $request->string('parameter')->toString()) {
+            $wqQuery->where('wqp.code', $paramCode);
+        }
+
+        if ($request->boolean('is_priority')) {
+            $wqQuery->where('wqp.is_priority_pollutant', true);
+        }
+
+        if ($request->boolean('is_custom')) {
+            $wqQuery->where(function ($q) {
+                $q->where('ct.notes', 'not like', 'REIWQ%')
+                    ->orWhereNull('ct.notes');
+            });
+        }
+
+        return $wqQuery
+            ->orderBy('s.name')
+            ->orderBy('wqp.display_order')
+            ->paginate(30)
+            ->withQueryString()
+            ->through(fn ($row) => [
+                'id' => $row->id,
+                'station_id' => $row->station_id,
+                'station_code' => $row->station_code,
+                'station_name' => $row->station_name,
+                'station_country' => $row->station_country,
+                'station_basin' => $row->station_basin,
+                'parameter_id' => $row->parameter_id,
+                'parameter_code' => $row->parameter_code,
+                'parameter_name' => $row->parameter_name,
+                'is_priority_pollutant' => (bool) $row->is_priority_pollutant,
+                'min_value' => $row->min_value !== null ? (float) $row->min_value : null,
+                'max_value' => $row->max_value !== null ? (float) $row->max_value : null,
+                'unit' => $row->unit,
+                'notes' => $row->notes,
+                'is_custom' => ! str_starts_with($row->notes ?? '', 'REIWQ'),
+            ]);
     }
 
-    private function seedAllocationsIfEmpty(): void
+    private function getEflowRequirements(): Collection
     {
-        if (DB::table('iima_allocations')->count() === 0) {
-            $komatiId = DB::table('management_areas')->where('code', 'INC-KOMATI')->value('id');
-            $usuthuId = DB::table('management_areas')->where('code', 'MAP-USUTHU')->value('id');
+        return DB::table('iima_eflow_requirements as er')
+            ->leftJoin('management_areas as ma', 'ma.id', '=', 'er.subcatchment_id')
+            ->leftJoin('stations as s', 's.id', '=', 'er.station_id')
+            ->select([
+                'er.id',
+                'er.river',
+                'er.key_point',
+                'er.mean_annual_mm3',
+                'er.min_flow_m3_s',
+                'er.source_article',
+                'er.note',
+                'ma.name as subcatchment_name',
+                'ma.code as subcatchment_code',
+                's.code as station_code',
+                's.name as station_name',
+            ])
+            ->orderBy('er.river')
+            ->orderBy('er.key_point')
+            ->get()
+            ->map(fn ($row) => [
+                'id' => $row->id,
+                'river' => $row->river,
+                'key_point' => $row->key_point,
+                'mean_annual_mm3' => (float) $row->mean_annual_mm3,
+                'min_flow_m3_s' => (float) $row->min_flow_m3_s,
+                'source_article' => $row->source_article,
+                'note' => $row->note,
+                'subcatchment_name' => $row->subcatchment_name,
+                'subcatchment_code' => $row->subcatchment_code,
+                'station_code' => $row->station_code,
+                'station_name' => $row->station_name,
+            ]);
+    }
 
-            if ($komatiId && $usuthuId) {
-                DB::table('iima_allocations')->insert([
-                    [
-                        'id' => (string) Str::uuid(),
-                        'subcatchment_id' => $komatiId,
-                        'country' => 'South Africa',
-                        'user_category' => 'irrigation',
-                        'allocation_mm3_a' => 220.0,
-                        'effective_from' => 2026,
-                        'note' => 'IIMA Table 4-1 default allocation',
-                    ],
-                    [
-                        'id' => (string) Str::uuid(),
-                        'subcatchment_id' => $komatiId,
-                        'country' => 'Eswatini',
-                        'user_category' => 'irrigation',
-                        'allocation_mm3_a' => 120.0,
-                        'effective_from' => 2026,
-                        'note' => 'IIMA Table 4-1 default allocation',
-                    ],
-                    [
-                        'id' => (string) Str::uuid(),
-                        'subcatchment_id' => $usuthuId,
-                        'country' => 'Eswatini',
-                        'user_category' => 'domestic',
-                        'allocation_mm3_a' => 15.5,
-                        'effective_from' => 2026,
-                        'note' => 'IAAP-10 reference allocation',
-                    ],
-                    [
-                        'id' => (string) Str::uuid(),
-                        'subcatchment_id' => $usuthuId,
-                        'country' => 'Mozambique',
-                        'user_category' => 'irrigation',
-                        'allocation_mm3_a' => 45.0,
-                        'effective_from' => 2026,
-                        'note' => 'IAAP-10 reference allocation',
-                    ],
-                ]);
-            }
-        }
+    private function getAllocations(): Collection
+    {
+        return DB::table('iima_allocations as al')
+            ->join('management_areas as ma', 'ma.id', '=', 'al.subcatchment_id')
+            ->join('iima_user_categories as uc', 'uc.code', '=', 'al.user_category')
+            ->select([
+                'al.id',
+                'al.subcatchment_id',
+                'al.country',
+                'al.user_category',
+                'al.allocation_mm3_a',
+                'al.effective_from',
+                'al.note',
+                'ma.name as subcatchment_name',
+                'ma.code as subcatchment_code',
+                'uc.name as user_category_name',
+            ])
+            ->orderBy('ma.name')
+            ->orderBy('al.country')
+            ->orderBy('uc.name')
+            ->get()
+            ->map(fn ($row) => [
+                'id' => $row->id,
+                'subcatchment_id' => $row->subcatchment_id,
+                'subcatchment_name' => $row->subcatchment_name,
+                'subcatchment_code' => $row->subcatchment_code,
+                'country' => $row->country,
+                'user_category' => $row->user_category,
+                'user_category_name' => $row->user_category_name,
+                'allocation_mm3_a' => (float) $row->allocation_mm3_a,
+                'effective_from' => (int) $row->effective_from,
+                'note' => $row->note,
+            ]);
+    }
+
+    private function getWaterQualityParameters(): Collection
+    {
+        return DB::table('water_quality_parameters')
+            ->where('is_active', true)
+            ->orderBy('display_order')
+            ->get(['id', 'code', 'name', 'default_unit', 'is_priority_pollutant']);
+    }
+
+    private function getSubcatchments(): Collection
+    {
+        return DB::table('management_areas')
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get(['id', 'code', 'name']);
+    }
+
+    private function getUserCategories(): Collection
+    {
+        return DB::table('iima_user_categories')
+            ->orderBy('name')
+            ->get(['code', 'name']);
     }
 }

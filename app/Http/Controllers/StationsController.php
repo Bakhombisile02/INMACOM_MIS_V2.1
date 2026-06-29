@@ -6,15 +6,14 @@ use App\Http\Requests\StoreStationRequest;
 use App\Http\Requests\UpdateStationRequest;
 use App\Models\Station;
 use App\Models\StationRevision;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
+use App\Services\StationRevisionManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StationsController extends Controller
 {
@@ -212,13 +211,12 @@ class StationsController extends Controller
         // ALWAYS route through the approvals queue for an auditable trail.
         // Admin/manager submitters may self-approve later; that is logged via
         // `is_self_override = true` on approval.
-        StationRevision::create([
-            'station_id' => null,
-            'submitted_by_id' => $request->user()->id,
-            'status' => StationRevision::STATUS_PENDING,
-            'change_type' => StationRevision::CHANGE_TYPE_CREATE,
-            'proposed_changes' => $request->validated(),
-        ]);
+        StationRevisionManager::propose(
+            $request->user(),
+            null,
+            StationRevision::CHANGE_TYPE_CREATE,
+            $request->validated()
+        );
 
         return redirect()
             ->route('stations.index')
@@ -261,9 +259,9 @@ class StationsController extends Controller
 
         // Check each code is unique in the DB
         $existingCodes = Station::whereIn('code', $codes)->pluck('code')->all();
-        if (!empty($existingCodes)) {
+        if (! empty($existingCodes)) {
             return back()->withErrors([
-                'message' => 'Some codes already exist in the database: ' . implode(', ', $existingCodes),
+                'message' => 'Some codes already exist in the database: '.implode(', ', $existingCodes),
             ]);
         }
 
@@ -315,13 +313,12 @@ class StationsController extends Controller
             return back()->with('status', 'No changes to submit.');
         }
 
-        StationRevision::create([
-            'station_id' => $station->id,
-            'submitted_by_id' => $user->id,
-            'status' => StationRevision::STATUS_PENDING,
-            'change_type' => StationRevision::CHANGE_TYPE_UPDATE,
-            'proposed_changes' => $diff,
-        ]);
+        StationRevisionManager::propose(
+            $user,
+            $station->id,
+            StationRevision::CHANGE_TYPE_UPDATE,
+            $diff
+        );
 
         return back()->with('status', 'Station change submitted for review.');
     }
@@ -335,9 +332,9 @@ class StationsController extends Controller
         return redirect()->route('stations.index');
     }
 
-    public function exportCsv(Station $station): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function exportCsv(Station $station): StreamedResponse
     {
-        $filename = 'station-' . $station->code . '-' . now()->format('Y-m-d') . '.csv';
+        $filename = 'station-'.$station->code.'-'.now()->format('Y-m-d').'.csv';
 
         return response()->stream(function () use ($station) {
             $handle = fopen('php://output', 'w');

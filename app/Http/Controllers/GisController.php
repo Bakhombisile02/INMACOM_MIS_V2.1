@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Station;
 use App\Models\User;
+use App\Queries\StationMeasurementQuery;
 use App\Services\AuditService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -13,185 +14,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class GisController extends Controller
 {
     public function flowLevels(Request $request): Response
     {
-        $user = auth()->user();
-        $canManage = ($user?->canApprove() ?? false);
-
-        $stations = Station::query()
-            ->whereHas('capabilities', function ($query) {
-                $query->where('measurement_type', 'flow');
-            })
-            ->where('is_active', true)
-            ->get();
-
-        // Get latest approved flow measurement per station
-        $latest = DB::table('measurements as m1')
-            ->select('m1.station_id', 'm1.value', 'm1.unit', 'm1.date', 'ct.min_value as limit_value')
-            ->leftJoin('compliance_thresholds as ct', function ($join) {
-                $join->on('ct.station_id', '=', 'm1.station_id')
-                    ->where('ct.data_type', '=', 'flow');
-            })
-            ->where('m1.status', 'approved')
-            ->where('m1.measurement_type', 'flow')
-            ->whereRaw("m1.date = (SELECT MAX(m2.date) FROM measurements as m2 WHERE m2.station_id = m1.station_id AND m2.measurement_type = m1.measurement_type AND m2.status = 'approved')")
-            ->get()
-            ->keyBy('station_id');
-
-        $mappedStations = $stations->map(function (Station $station) use ($latest) {
-            $reading = $latest->get($station->id);
-
-            return [
-                'id' => $station->id,
-                'code' => $station->code,
-                'name' => $station->name,
-                'latitude' => $station->latitude,
-                'longitude' => $station->longitude,
-                'country' => $station->country,
-                'river_basin' => $station->river_basin,
-                'is_real_time' => $station->is_real_time,
-                'owner_org' => $station->owner_org,
-                'show_url' => route('stations.show', $station),
-                'status' => $station->is_active ? 'active' : 'inactive',
-                'is_active' => $station->is_active,
-                'category' => $station->category,
-                'water_source' => $station->water_source,
-                'water_body_type' => $station->water_body_type,
-                'summary' => $station->summary,
-                'telemetry_system' => $station->telemetry_system,
-                'gauge_code' => $station->gauge_code,
-                'value' => $reading ? (float) $reading->value : null,
-                'unit' => $reading ? $reading->unit : 'm³/s',
-                'date' => $reading ? $reading->date : null,
-                'limit' => $reading ? ($reading->limit_value ? (float) $reading->limit_value : null) : null,
-            ];
-        });
-
-        // Verification Queue of pending flow measurements
-        $pendingQueue = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->where('m.measurement_type', 'flow')
-            ->where('m.status', 'pending')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'u.display_name as submitted_by', 'm.submitted_at',
-            ])
-            ->orderBy('m.date', 'desc')
-            ->get();
-
-        // Recent historical logs (both approved and rejected) for CRUD management
-        $historicalLogs = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->leftJoin('users as r', 'r.id', '=', 'm.reviewed_by_id')
-            ->where('m.measurement_type', 'flow')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'm.review_notes',
-                'u.display_name as submitted_by', 'm.submitted_at',
-                'r.display_name as reviewed_by', 'm.reviewed_at',
-            ])
-            ->orderBy('m.date', 'desc')
-            ->limit(100)
-            ->get();
-
-        return Inertia::render('Gis/FlowLevels', [
-            'stations' => $mappedStations,
-            'pendingQueue' => $pendingQueue,
-            'historicalLogs' => $historicalLogs,
-            'canManage' => $canManage,
-            'userRole' => $user?->role,
-        ]);
+        return Inertia::render('Gis/FlowLevels', $this->getGisData('flow', 'flow', 'flow'));
     }
 
     public function damLevels(Request $request): Response
     {
-        $user = auth()->user();
-        $canManage = ($user?->canApprove() ?? false);
-
-        $stations = Station::query()
-            ->whereHas('capabilities', function ($query) {
-                $query->where('measurement_type', 'dam_level');
-            })
-            ->where('is_active', true)
-            ->get();
-
-        $latest = DB::table('measurements as m1')
-            ->select('m1.station_id', 'm1.value', 'm1.unit', 'm1.date')
-            ->where('m1.status', 'approved')
-            ->where('m1.measurement_type', 'dam_level')
-            ->whereRaw("m1.date = (SELECT MAX(m2.date) FROM measurements as m2 WHERE m2.station_id = m1.station_id AND m2.measurement_type = m1.measurement_type AND m2.status = 'approved')")
-            ->get()
-            ->keyBy('station_id');
-
-        $mappedStations = $stations->map(function (Station $station) use ($latest) {
-            $reading = $latest->get($station->id);
-
-            return [
-                'id' => $station->id,
-                'code' => $station->code,
-                'name' => $station->name,
-                'latitude' => $station->latitude,
-                'longitude' => $station->longitude,
-                'country' => $station->country,
-                'river_basin' => $station->river_basin,
-                'is_real_time' => $station->is_real_time,
-                'owner_org' => $station->owner_org,
-                'show_url' => route('stations.show', $station),
-                'status' => $station->is_active ? 'active' : 'inactive',
-                'is_active' => $station->is_active,
-                'category' => $station->category,
-                'water_source' => $station->water_source,
-                'water_body_type' => $station->water_body_type,
-                'summary' => $station->summary,
-                'telemetry_system' => $station->telemetry_system,
-                'gauge_code' => $station->gauge_code,
-                'value' => $reading ? (float) $reading->value : null,
-                'unit' => $reading ? $reading->unit : '%',
-                'date' => $reading ? $reading->date : null,
-            ];
-        });
-
-        // Verification Queue of pending dam measurements
-        $pendingQueue = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->where('m.measurement_type', 'dam_level')
-            ->where('m.status', 'pending')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'u.display_name as submitted_by', 'm.submitted_at',
-            ])
-            ->orderBy('m.date', 'desc')
-            ->get();
-
-        // Recent historical logs (both approved and rejected) for CRUD management
-        $historicalLogs = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->leftJoin('users as r', 'r.id', '=', 'm.reviewed_by_id')
-            ->where('m.measurement_type', 'dam_level')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'm.review_notes',
-                'u.display_name as submitted_by', 'm.submitted_at',
-                'r.display_name as reviewed_by', 'm.reviewed_at',
-            ])
-            ->orderBy('m.date', 'desc')
-            ->limit(100)
-            ->get();
-
-        return Inertia::render('Gis/DamLevels', [
-            'stations' => $mappedStations,
-            'pendingQueue' => $pendingQueue,
-            'historicalLogs' => $historicalLogs,
-            'canManage' => $canManage,
-            'userRole' => $user?->role,
-        ]);
+        return Inertia::render('Gis/DamLevels', $this->getGisData('dam_level', 'dam_level'));
     }
 
     public function waterQuality(Request $request): Response
@@ -206,18 +40,12 @@ class GisController extends Controller
             ->where('is_active', true)
             ->get();
 
-        // Get all latest approved water quality readings per station & parameter
-        $latest = DB::table('measurements as m1')
-            ->select('m1.station_id', 'm1.value', 'm1.unit', 'm1.date', 'wq.code as parameter_code', 'ct.min_value', 'ct.max_value')
-            ->join('water_quality_parameters as wq', 'wq.id', '=', 'm1.parameter_id')
-            ->leftJoin('compliance_thresholds as ct', function ($join) {
-                $join->on('ct.station_id', '=', 'm1.station_id')
-                    ->on('ct.parameter_id', '=', 'm1.parameter_id')
-                    ->where('ct.data_type', '=', 'water_quality');
-            })
-            ->where('m1.status', 'approved')
-            ->where('m1.measurement_type', 'water_quality')
-            ->whereRaw("m1.date = (SELECT MAX(m2.date) FROM measurements as m2 WHERE m2.station_id = m1.station_id AND m2.measurement_type = m1.measurement_type AND m2.parameter_id = m1.parameter_id AND m2.status = 'approved')")
+        $latest = StationMeasurementQuery::query()
+            ->forTypes('water_quality')
+            ->withStatuses('approved')
+            ->latestPerStationAndParameter()
+            ->withComplianceThresholds('water_quality')
+            ->withWaterQualityParameters()
             ->get();
 
         // Group readings by station ID
@@ -262,35 +90,21 @@ class GisController extends Controller
             ->orderBy('display_order')
             ->get(['id', 'code', 'name', 'default_unit']);
 
-        // Verification Queue of pending water quality measurements
-        $pendingQueue = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('water_quality_parameters as wqp', 'wqp.id', '=', 'm.parameter_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->where('m.measurement_type', 'water_quality')
-            ->where('m.status', 'pending')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'wqp.code as parameter_code', 'wqp.name as parameter_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'u.display_name as submitted_by', 'm.submitted_at',
-            ])
+        $pendingQueue = StationMeasurementQuery::query()
+            ->forTypes('water_quality')
+            ->withStatuses('pending')
+            ->withStationDetails()
+            ->withWaterQualityParameters()
+            ->withSubmitter()
             ->orderBy('m.date', 'desc')
             ->get();
 
-        // Recent historical logs (both approved and rejected) for CRUD management
-        $historicalLogs = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('water_quality_parameters as wqp', 'wqp.id', '=', 'm.parameter_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->leftJoin('users as r', 'r.id', '=', 'm.reviewed_by_id')
-            ->where('m.measurement_type', 'water_quality')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'wqp.code as parameter_code', 'wqp.name as parameter_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'm.review_notes',
-                'u.display_name as submitted_by', 'm.submitted_at',
-                'r.display_name as reviewed_by', 'm.reviewed_at',
-            ])
+        $historicalLogs = StationMeasurementQuery::query()
+            ->forTypes('water_quality')
+            ->withStationDetails()
+            ->withWaterQualityParameters()
+            ->withSubmitter()
+            ->withReviewer()
             ->orderBy('m.date', 'desc')
             ->limit(100)
             ->get();
@@ -307,114 +121,42 @@ class GisController extends Controller
 
     public function rainfall(Request $request): Response
     {
-        $user = auth()->user();
-        $canManage = ($user?->canApprove() ?? false);
-
-        $stations = Station::query()
-            ->whereHas('capabilities', function ($query) {
-                $query->where('measurement_type', 'rainfall');
-            })
-            ->where('is_active', true)
-            ->get();
-
-        $latest = DB::table('measurements as m1')
-            ->select('m1.station_id', 'm1.value', 'm1.unit', 'm1.date')
-            ->where('m1.status', 'approved')
-            ->where('m1.measurement_type', 'rainfall')
-            ->whereRaw("m1.date = (SELECT MAX(m2.date) FROM measurements as m2 WHERE m2.station_id = m1.station_id AND m2.measurement_type = m1.measurement_type AND m2.status = 'approved')")
-            ->get()
-            ->keyBy('station_id');
-
-        $mappedStations = $stations->map(function (Station $station) use ($latest) {
-            $reading = $latest->get($station->id);
-
-            return [
-                'id' => $station->id,
-                'code' => $station->code,
-                'name' => $station->name,
-                'latitude' => $station->latitude,
-                'longitude' => $station->longitude,
-                'country' => $station->country,
-                'river_basin' => $station->river_basin,
-                'is_real_time' => $station->is_real_time,
-                'owner_org' => $station->owner_org,
-                'show_url' => route('stations.show', $station),
-                'status' => $station->is_active ? 'active' : 'inactive',
-                'is_active' => $station->is_active,
-                'category' => $station->category,
-                'water_source' => $station->water_source,
-                'water_body_type' => $station->water_body_type,
-                'summary' => $station->summary,
-                'telemetry_system' => $station->telemetry_system,
-                'gauge_code' => $station->gauge_code,
-                'value' => $reading ? (float) $reading->value : null,
-                'unit' => $reading ? $reading->unit : 'mm',
-                'date' => $reading ? $reading->date : null,
-            ];
-        });
-
-        // Verification Queue of pending rainfall measurements
-        $pendingQueue = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->where('m.measurement_type', 'rainfall')
-            ->where('m.status', 'pending')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'u.display_name as submitted_by', 'm.submitted_at',
-            ])
-            ->orderBy('m.date', 'desc')
-            ->get();
-
-        // Recent historical logs (both approved and rejected) for CRUD management
-        $historicalLogs = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->leftJoin('users as r', 'r.id', '=', 'm.reviewed_by_id')
-            ->where('m.measurement_type', 'rainfall')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'm.review_notes',
-                'u.display_name as submitted_by', 'm.submitted_at',
-                'r.display_name as reviewed_by', 'm.reviewed_at',
-            ])
-            ->orderBy('m.date', 'desc')
-            ->limit(100)
-            ->get();
-
-        return Inertia::render('Gis/Rainfall', [
-            'stations' => $mappedStations,
-            'pendingQueue' => $pendingQueue,
-            'historicalLogs' => $historicalLogs,
-            'canManage' => $canManage,
-            'userRole' => $user?->role,
-        ]);
+        return Inertia::render('Gis/Rainfall', $this->getGisData('rainfall', 'rainfall'));
     }
 
     public function groundwater(Request $request): Response
+    {
+        return Inertia::render('Gis/Groundwater', $this->getGisData('groundwater_level', 'groundwater'));
+    }
+
+    /**
+     * Retrieve common GIS page datasets for single-value measurement categories.
+     * Reduces cognitive load and duplication (APoSD alignment).
+     */
+    private function getGisData(string $measurementType, string $capabilityType, ?string $thresholdType = null): array
     {
         $user = auth()->user();
         $canManage = ($user?->canApprove() ?? false);
 
         $stations = Station::query()
-            ->whereHas('capabilities', function ($query) {
-                $query->where('measurement_type', 'groundwater_level');
+            ->whereHas('capabilities', function ($query) use ($capabilityType) {
+                $query->where('measurement_type', $capabilityType);
             })
             ->where('is_active', true)
             ->get();
 
-        $latest = DB::table('measurements as m1')
-            ->select('m1.station_id', 'm1.value', 'm1.unit', 'm1.date')
-            ->where('m1.status', 'approved')
-            ->where('m1.measurement_type', 'groundwater_level')
-            ->whereRaw("m1.date = (SELECT MAX(m2.date) FROM measurements as m2 WHERE m2.station_id = m1.station_id AND m2.measurement_type = m1.measurement_type AND m2.status = 'approved')")
+        $latest = StationMeasurementQuery::query()
+            ->forTypes($measurementType)
+            ->withStatuses('approved')
+            ->latestPerStation()
+            ->withComplianceThresholds($thresholdType)
             ->get()
             ->keyBy('station_id');
 
-        $mappedStations = $stations->map(function (Station $station) use ($latest) {
+        $mappedStations = $stations->map(function (Station $station) use ($latest, $measurementType, $thresholdType) {
             $reading = $latest->get($station->id);
 
-            return [
+            $data = [
                 'id' => $station->id,
                 'code' => $station->code,
                 'name' => $station->name,
@@ -434,47 +176,55 @@ class GisController extends Controller
                 'telemetry_system' => $station->telemetry_system,
                 'gauge_code' => $station->gauge_code,
                 'value' => $reading ? (float) $reading->value : null,
-                'unit' => $reading ? $reading->unit : 'm',
+                'unit' => $reading ? $reading->unit : $this->getDefaultUnit($measurementType),
                 'date' => $reading ? $reading->date : null,
             ];
+
+            if ($thresholdType) {
+                $data['limit'] = ($reading && $reading->limit_value !== null) ? (float) $reading->limit_value : null;
+            }
+
+            return $data;
         });
 
-        // Verification Queue of pending groundwater measurements
-        $pendingQueue = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->where('m.measurement_type', 'groundwater_level')
-            ->where('m.status', 'pending')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'u.display_name as submitted_by', 'm.submitted_at',
-            ])
+        $pendingQueue = StationMeasurementQuery::query()
+            ->forTypes($measurementType)
+            ->withStatuses('pending')
+            ->withStationDetails()
+            ->withSubmitter()
             ->orderBy('m.date', 'desc')
             ->get();
 
-        // Recent historical logs (both approved and rejected) for CRUD management
-        $historicalLogs = DB::table('measurements as m')
-            ->join('stations as s', 's.id', '=', 'm.station_id')
-            ->join('users as u', 'u.id', '=', 'm.submitted_by_id')
-            ->leftJoin('users as r', 'r.id', '=', 'm.reviewed_by_id')
-            ->where('m.measurement_type', 'groundwater_level')
-            ->select([
-                'm.id', 'm.station_id', 's.code as station_code', 's.name as station_name',
-                'm.value', 'm.unit', 'm.date', 'm.status', 'm.review_notes',
-                'u.display_name as submitted_by', 'm.submitted_at',
-                'r.display_name as reviewed_by', 'm.reviewed_at',
-            ])
+        $historicalLogs = StationMeasurementQuery::query()
+            ->forTypes($measurementType)
+            ->withStationDetails()
+            ->withSubmitter()
+            ->withReviewer()
             ->orderBy('m.date', 'desc')
             ->limit(100)
             ->get();
 
-        return Inertia::render('Gis/Groundwater', [
+        return [
             'stations' => $mappedStations,
             'pendingQueue' => $pendingQueue,
             'historicalLogs' => $historicalLogs,
             'canManage' => $canManage,
             'userRole' => $user?->role,
-        ]);
+        ];
+    }
+
+    /**
+     * Map measurement types to their default units
+     */
+    private function getDefaultUnit(string $measurementType): string
+    {
+        return match ($measurementType) {
+            'flow' => 'm³/s',
+            'dam_level' => '%',
+            'rainfall' => 'mm',
+            'groundwater_level' => 'm',
+            default => '',
+        };
     }
 
     public function storeMeasurement(Request $request): RedirectResponse
@@ -662,29 +412,48 @@ class GisController extends Controller
         $station = Station::find($id);
         abort_unless($station, 404);
 
-        // Accept optional date-range and type filters
-        $from = $request->query('from')
-            ? Carbon::parse($request->query('from'))->startOfDay()
-            : now()->subYear();
-        $to = $request->query('to')
-            ? Carbon::parse($request->query('to'))->endOfDay()
-            : now();
+        // Accept optional date-range and type filters; default to last year if none provided.
+        try {
+            $hasExplicitRange = $request->query('from') || $request->query('to');
+            $to = $request->query('to')
+                ? Carbon::parse($request->query('to'))->endOfDay()
+                : ($hasExplicitRange ? null : now());
+            $from = $request->query('from')
+                ? Carbon::parse($request->query('from'))->startOfDay()
+                : ($hasExplicitRange ? ($to ? $to->copy()->subYears(5) : null) : now()->subYear());
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Invalid date format for from/to parameters'], 400);
+        }
         $typeFilter = $request->query('type'); // optional measurement_type filter
 
-        $query = DB::table('measurements as m')
-            ->leftJoin('water_quality_parameters as wqp', 'wqp.id', '=', 'm.parameter_id')
-            ->where('m.station_id', $id)
-            ->where('m.status', 'approved')
-            ->whereBetween('m.date', [$from->toDateString(), $to->toDateString()])
-            ->select(['m.id', 'm.measurement_type', 'm.value', 'm.unit', 'm.date', 'wqp.code as parameter_code'])
+        $readingsQuery = StationMeasurementQuery::query()
+            ->forStations($id)
+            ->withStatuses('approved')
+            ->withWaterQualityParameters()
+            ->forDateRange($from, $to)
             ->orderBy('m.date', 'asc');
 
         if ($typeFilter) {
-            $query->where('m.measurement_type', $typeFilter);
+            $readingsQuery->forTypes($typeFilter);
         }
 
-        // Fetch last 365 days of approved measurements for this station
-        $readings = $query->get();
+        $readings = $readingsQuery->get();
+
+        $historyLogsQueryBuilder = StationMeasurementQuery::query()
+            ->forStations($id)
+            ->withStationDetails()
+            ->withWaterQualityParameters()
+            ->withSubmitter()
+            ->withReviewer()
+            ->forDateRange($from, $to)
+            ->orderBy('m.date', 'desc')
+            ->orderBy('m.submitted_at', 'desc');
+
+        if ($typeFilter) {
+            $historyLogsQueryBuilder->forTypes($typeFilter);
+        }
+
+        $historyLogs = $historyLogsQueryBuilder->get();
 
         // Calculate flow duration percentiles if any flow records exist
         $flowVals = $readings->where('measurement_type', 'flow')->pluck('value')->toArray();
@@ -744,6 +513,7 @@ class GisController extends Controller
             'station_code' => $station->code,
             'station_name' => $station->name,
             'readings' => $readings,
+            'history_logs' => $historyLogs,
             'fdc' => $fdc,
             'wq_matrix' => $wqExceedances,
         ]);
@@ -812,7 +582,7 @@ class GisController extends Controller
             ->whereIn('station_id', $stationMap->values())
             ->get()
             ->groupBy('station_id')
-            ->map(fn($items) => $items->pluck('measurement_type')->all());
+            ->map(fn ($items) => $items->pluck('measurement_type')->all());
 
         // For water quality: parameter_code → parameter_id map
         $paramMap = collect();
@@ -839,14 +609,14 @@ class GisController extends Controller
             $caps = $stationCapabilities->get($stationId, []);
             if (! in_array($requiredCapability, $caps)) {
                 return back()->withErrors([
-                    'message' => "Station '{$stationCode}' does not support '{$measurementType}' measurements."
+                    'message' => "Station '{$stationCode}' does not support '{$measurementType}' measurements.",
                 ]);
             }
 
             // Verify mandatory value is present and not empty
             if (! isset($row['value']) || $row['value'] === '' || $row['value'] === null) {
                 return back()->withErrors([
-                    'message' => "Value is required for all records. Gaps or empty cells are not allowed (found empty value for station '{$stationCode}' on date '{$row['date']}')."
+                    'message' => "Value is required for all records. Gaps or empty cells are not allowed (found empty value for station '{$stationCode}' on date '{$row['date']}').",
                 ]);
             }
 
@@ -881,32 +651,33 @@ class GisController extends Controller
         }
 
         $count = count($inserts);
+
         return redirect()->back()->with('status', "{$count} {$measurementType} measurement(s) imported successfully.");
     }
 
     // ─── Bulk CSV Exports ─────────────────────────────────────────────────────
 
-    public function exportFlowCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function exportFlowCsv(): StreamedResponse
     {
         return $this->streamMeasurementsCsv('flow', 'flow-levels');
     }
 
-    public function exportDamCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function exportDamCsv(): StreamedResponse
     {
         return $this->streamMeasurementsCsv('dam_level', 'dam-levels');
     }
 
-    public function exportWaterQualityCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function exportWaterQualityCsv(): StreamedResponse
     {
         return $this->streamMeasurementsCsv('water_quality', 'water-quality');
     }
 
-    public function exportRainfallCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function exportRainfallCsv(): StreamedResponse
     {
         return $this->streamMeasurementsCsv('rainfall', 'rainfall');
     }
 
-    public function exportGroundwaterCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function exportGroundwaterCsv(): StreamedResponse
     {
         return $this->streamMeasurementsCsv('groundwater_level', 'groundwater');
     }
@@ -914,8 +685,8 @@ class GisController extends Controller
     private function streamMeasurementsCsv(
         string $measurementType,
         string $filePrefix
-    ): \Symfony\Component\HttpFoundation\StreamedResponse {
-        $filename = "{$filePrefix}-export-" . now()->format('Y-m-d') . '.csv';
+    ): StreamedResponse {
+        $filename = "{$filePrefix}-export-".now()->format('Y-m-d').'.csv';
 
         return response()->stream(function () use ($measurementType) {
             $handle = fopen('php://output', 'w');
