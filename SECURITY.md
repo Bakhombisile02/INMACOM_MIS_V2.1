@@ -15,7 +15,7 @@
 Please report security vulnerabilities through one of the following private channels:
 
 1. **GitHub Private Advisory** — open a [Security Advisory](https://github.com/Bakhombisile02/INMACOM_MIS_V2.1/security/advisories/new) on this repository.
-2. **Email** — send details to `noreply@inmacom.co.za` with the subject line `[SECURITY] <brief description>`.
+2. **Email** — send details to `security@inmacom.co.za` with the subject line `[SECURITY] <brief description>`.
 
 ### Response SLA
 

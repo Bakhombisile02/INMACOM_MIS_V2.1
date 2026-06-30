@@ -51,7 +51,7 @@ gcloud sql databases create inmacom --instance=inmacom-v2-instance
 
 gcloud sql users create inmacom_user \
   --instance=inmacom-v2-instance \
-  --******
+  --******  # replace with your chosen password
 ```
 
 ---
