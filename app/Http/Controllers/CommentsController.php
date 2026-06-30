@@ -10,6 +10,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @description Polymorphic comment system: store, resolve, delete comments and handle @mention notifications.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class CommentsController extends Controller
 {
     /**

@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @description Renders the authenticated dashboard with summary counts, recent measurements, and hazard status.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class DashboardController extends Controller
 {
     public function index(): Response

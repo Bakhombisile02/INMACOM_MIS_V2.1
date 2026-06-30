@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @description Handles user profile and preference settings updates.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class SettingsController extends Controller
 {
     public function index(Request $request): Response

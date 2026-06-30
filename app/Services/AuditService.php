@@ -5,6 +5,11 @@ namespace App\Services;
 use App\Models\AuditLog;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @description Writes append-only audit log entries for all significant system actions.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class AuditService
 {
     // Action type constants (DDR Module 8 aligned)

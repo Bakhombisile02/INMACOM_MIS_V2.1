@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @description Creates or updates a User record from a verified Firebase token, and validates registration PIN ownership.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class RegistrationService
 {
     /** Human-readable labels for each role. Used by the frontend register Alert. */

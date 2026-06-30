@@ -7,6 +7,11 @@ use App\Services\StationRevisionManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @description Handles approval and rejection of station revision requests submitted by clerks.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class StationRevisionsController extends Controller
 {
     public function approve(Request $request, StationRevision $stationRevision): RedirectResponse

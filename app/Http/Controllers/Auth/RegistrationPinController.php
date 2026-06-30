@@ -8,6 +8,11 @@ use App\Services\RegistrationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @description Handles PIN verification and reservation steps in the PIN-gated user registration flow.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class RegistrationPinController extends Controller
 {
     /** Human-readable labels for each role. Used by the frontend register Alert. */

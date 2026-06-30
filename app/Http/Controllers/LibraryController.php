@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @description Renders the authenticated document library index page.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class LibraryController extends Controller
 {
     public function index(Request $request): Response

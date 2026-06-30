@@ -15,6 +15,11 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+ * @description Manages monitoring station CRUD, CSV export, and bulk import. Clerk updates are routed to a revision request instead of direct modification.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class StationsController extends Controller
 {
     public function index(): Response

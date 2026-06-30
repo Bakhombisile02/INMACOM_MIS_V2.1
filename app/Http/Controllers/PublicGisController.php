@@ -22,6 +22,11 @@ use Inertia\Response;
  *  - Hazards aggregated by management area — no exact incident coordinates.
  *  - Daily basin-aggregated historical series per module (last 90 days).
  */
+/**
+ * @description Serves public GIS map explorer and public historical station data — no authentication required.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class PublicGisController extends Controller
 {
     /**

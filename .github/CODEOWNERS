@@ -1,0 +1,36 @@
+# CODEOWNERS
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything not matched below
+*                                       @Bakhombisile02
+
+# Backend — core application
+/app/                                   @Bakhombisile02
+/database/                              @Bakhombisile02
+/routes/                                @Bakhombisile02
+/config/                                @Bakhombisile02
+/lang/                                  @Bakhombisile02
+
+# Frontend — React/TypeScript
+/resources/js/                          @Bakhombisile02
+
+# GIS & measurements
+/app/Http/Controllers/GisController.php @Bakhombisile02
+/resources/js/Pages/Gis/               @Bakhombisile02
+
+# Authentication
+/app/Http/Controllers/Auth/            @Bakhombisile02
+/routes/auth.php                        @Bakhombisile02
+
+# Infrastructure & deployment
+/Dockerfile                             @Bakhombisile02
+/docker-entrypoint.sh                   @Bakhombisile02
+
+# Documentation
+/docs/                                  @Bakhombisile02
+/README.md                              @Bakhombisile02
+/SECURITY.md                            @Bakhombisile02
+/CONTRIBUTING.md                        @Bakhombisile02
+
+# Documentation site
+/docs-site/                             @Bakhombisile02

@@ -7,6 +7,11 @@ use App\Models\CommentMention;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @description Parses @mention tokens from comment bodies, resolves them to user IDs, and creates mention notification records.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class CommentMentionService
 {
     /**

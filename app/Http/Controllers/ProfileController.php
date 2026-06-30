@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @description Renders the user profile page.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class ProfileController extends Controller
 {
     /**

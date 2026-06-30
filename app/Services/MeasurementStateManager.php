@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @description Manages measurement lifecycle state transitions (pending → approved / rejected) with reviewer tracking.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class MeasurementStateManager
 {
     /**

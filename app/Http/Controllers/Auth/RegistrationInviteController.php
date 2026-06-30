@@ -13,6 +13,11 @@ use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @description Manages one-time invite link generation, delivery, and consumption for admin-invited users.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class RegistrationInviteController extends Controller
 {
     private const ROLE_LABELS = [
