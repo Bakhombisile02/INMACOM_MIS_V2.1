@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @description Serves the public (unauthenticated) document listing page.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class PublicDocumentsController extends Controller
 {
     public function index(): Response

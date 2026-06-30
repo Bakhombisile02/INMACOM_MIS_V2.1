@@ -15,6 +15,11 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+ * @description Handles GIS data pages (flow, dam, water quality, rainfall, groundwater): renders Inertia views, processes measurement CRUD, 2-step approval, CSV import/export.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class GisController extends Controller
 {
     public function flowLevels(Request $request): Response

@@ -10,6 +10,11 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+ * @description Handles private library document uploads and authorised file downloads.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class DocumentUploadController extends Controller
 {
     /**

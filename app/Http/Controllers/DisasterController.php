@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @description Renders the disaster and hazard management dashboard, including incident list and hazard status per management area.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class DisasterController extends Controller
 {
     public function index(Request $request): Response

@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
+/**
+ * @description Renders the audit log view (admin/manager) and provides CSV export (admin only).
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class AuditController extends Controller
 {
     public function index(Request $request): mixed

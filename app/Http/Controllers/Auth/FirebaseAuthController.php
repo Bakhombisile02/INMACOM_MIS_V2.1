@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
 use Kreait\Firebase\Exception\Auth\RevokedIdToken;
 
+/**
+ * @description Verifies Firebase ID tokens server-side, establishes Laravel sessions, and manages login/logout/register pages.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class FirebaseAuthController extends Controller
 {
     public function loginPage()

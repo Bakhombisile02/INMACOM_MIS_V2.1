@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @description Applies approved station revisions to the station record, or creates a new station for create-type revisions.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class StationRevisionManager
 {
     /**

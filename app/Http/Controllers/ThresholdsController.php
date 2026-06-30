@@ -11,6 +11,11 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * @description Manages compliance thresholds, e-flow requirements, IIMA allocations, and hazard status configuration.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class ThresholdsController extends Controller
 {
     /**

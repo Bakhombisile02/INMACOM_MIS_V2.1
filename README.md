@@ -1,58 +1,277 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# INMACOM MIS V2.1
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <strong>Incomati Basin Management Information System</strong><br>
+  Water-resources management for Mozambique, South Africa &amp; Eswatini
 </p>
 
-## About Laravel
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+  <img src="https://img.shields.io/badge/PHP-8.3%2B-777BB4?logo=php" alt="PHP 8.3+">
+  <img src="https://img.shields.io/badge/Node-20%2B-339933?logo=node.js" alt="Node 20+">
+  <img src="https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel" alt="Laravel 13">
+  <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react" alt="React 18">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## What is INMACOM MIS?
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+INMACOM MIS is a web-based Management Information System for the **Incomati-Maputo Tripartite Permanent Technical Committee (ITPTC)**. It operationalises the **Incomati and Maputo Agreed Minutes (IIMA)** treaty obligations by providing Mozambique, South Africa, and Eswatini with a shared platform to monitor water resources, track IIMA compliance, manage hazard and disaster incidents, and exchange hydrological data across the Incomati basin.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Key Features
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Module | Description |
+|---|---|
+| **GIS Measurements** | Flow levels, dam levels, water quality, rainfall, and groundwater readings with interactive maps |
+| **2-Step Approval Workflow** | Clerks submit measurements; managers/admins approve or reject with notes |
+| **Bulk CSV Import** | Import historical and batch measurements from Excel/CSV templates |
+| **Disaster & Hazard Management** | Log incidents, track hazard status per management area, coordinate response actions |
+| **Document Library** | Upload, download, and manage treaty documents and reports |
+| **Station Management** | Register, edit, and review monitoring stations with revision workflow |
+| **Audit Log** | Immutable record of all significant system actions |
+| **Comments & Mentions** | Threaded comments on measurements, stations, and incidents with `@mention` notifications |
+| **IIMA Compliance** | Allocation tracking, e-flow requirements, and compliance threshold monitoring |
+| **Internationalisation** | Full EN/PT (English/Portuguese) UI via i18next |
+| **Role-Based Access Control** | Three roles: `admin`, `manager`, `clerk` |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## Architecture Overview
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| Layer | Technology |
+|---|---|
+| **Backend framework** | Laravel 13 (PHP 8.3) |
+| **Frontend framework** | React 18 + TypeScript |
+| **SSR bridge** | Inertia.js 2 |
+| **UI component library** | Mantine v8 |
+| **CSS utility layer** | Tailwind CSS v3 |
+| **Build tool** | Vite 8 |
+| **Database** | PostgreSQL 15+ |
+| **Authentication** | Firebase Auth (email/password + Google), server-side token verification via `kreait/laravel-firebase` |
+| **Maps** | Leaflet + react-leaflet |
+| **Container runtime** | Docker with FrankenPHP (multi-stage build) |
+| **Cloud target** | Google Cloud Run + Cloud SQL |
+
+See [`docs/architecture.md`](docs/architecture.md) for a full architectural narrative.
+
+---
+
+## Prerequisites
+
+- **PHP** 8.3+ with extensions: `pdo_pgsql`, `zip`, `bcmath`, `intl`, `gd`
+- **Composer** 2.x
+- **Node.js** 20+ and npm
+- **PostgreSQL** 15+
+- **Firebase project** with Email/Password and Google sign-in enabled
+- **Docker** *(optional, for containerised deployment)*
+
+---
+
+## Quick Start
+
+### 1. Clone and set up environment
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/Bakhombisile02/INMACOM_MIS_V2.1.git
+cd INMACOM_MIS_V2.1
+cp .env.example .env
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Edit `.env` — at minimum configure the database and Firebase variables (see [Environment Variables](#environment-variables) below).
+
+### 2. Add Firebase service account
+
+Download your Firebase Admin SDK service account JSON from the Firebase console and place it at:
+
+```
+storage/app/firebase-service-account.json
+```
+
+The path is configured via `FIREBASE_CREDENTIALS` in `.env`.
+
+### 3. Run first-time setup
+
+```bash
+composer setup
+```
+
+This installs PHP and Node dependencies, generates an app key, runs migrations, and builds frontend assets.
+
+### 4. Start the development server
+
+```bash
+composer dev
+```
+
+This concurrently starts the Laravel server, queue worker, log tail, and Vite dev server. The app is available at `http://localhost:8000`.
+
+### 5. Promote the first admin user
+
+After registering via the UI, promote your account to `admin`:
+
+```bash
+php artisan user:role your@email.com admin
+```
+
+---
+
+## Environment Variables
+
+| Variable | Required | Description | Example |
+|---|---|---|---|
+| `APP_NAME` | ✅ | Application display name | `INMACOM MIS` |
+| `APP_KEY` | ✅ | Laravel encryption key (auto-generated by `key:generate`) | `base64:...` |
+| `APP_ENV` | ✅ | Environment (`local`, `production`) | `production` |
+| `APP_URL` | ✅ | Full public URL | `https://mis.inmacom.co.za` |
+| `DB_CONNECTION` | ✅ | Database driver | `pgsql` |
+| `DB_HOST` | ✅ | Database host | `127.0.0.1` |
+| `DB_PORT` | ✅ | Database port | `5432` |
+| `DB_DATABASE` | ✅ | Database name | `inmacom` |
+| `DB_USERNAME` | ✅ | Database user | `postgres` |
+| `DB_PASSWORD` | ✅ | Database password | *(secret)* |
+| `FIREBASE_CREDENTIALS` | ✅ | Path to Firebase Admin SDK JSON | `storage/app/firebase-service-account.json` |
+| `VITE_FIREBASE_API_KEY` | ✅ | Firebase client API key | `AIzaSy...` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | ✅ | Firebase auth domain | `project.firebaseapp.com` |
+| `VITE_FIREBASE_PROJECT_ID` | ✅ | Firebase project ID | `inmacom-v2` |
+| `VITE_FIREBASE_STORAGE_BUCKET` | ✅ | Firebase storage bucket | `inmacom-v2.appspot.com` |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | ✅ | Firebase messaging sender ID | `123456789` |
+| `VITE_FIREBASE_APP_ID` | ✅ | Firebase app ID | `1:123:web:abc` |
+| `VITE_FIREBASE_MEASUREMENT_ID` | ⬜ | Firebase Analytics ID | `G-XXXXXXXX` |
+| `SESSION_DRIVER` | ✅ | Session storage (`database`) | `database` |
+| `SESSION_ENCRYPT` | ⬜ | Encrypt sessions at rest (set `true` in production) | `true` |
+| `QUEUE_CONNECTION` | ✅ | Queue driver | `database` |
+| `HASH_DRIVER` | ✅ | Password hashing algorithm | `argon2id` |
+| `MAIL_MAILER` | ⬜ | Mail driver (`log`, `smtp`) | `smtp` |
+| `MAIL_FROM_ADDRESS` | ⬜ | From address for system emails | `noreply@inmacom.co.za` |
+
+---
+
+## Roles & Permissions
+
+| Action | `admin` | `manager` | `clerk` |
+|---|:---:|:---:|:---:|
+| View all GIS data pages | ✅ | ✅ | ✅ |
+| Submit measurements | ✅ | ✅ | ✅ |
+| Approve / reject measurements | ✅ | ✅ | ❌ |
+| Bulk import measurements (CSV) | ✅ | ✅ | ❌ |
+| Create / edit stations | ✅ | ✅ | ❌ |
+| Submit station revision requests | ✅ | ✅ | ✅ |
+| Approve / reject station revisions | ✅ | ✅ | ❌ |
+| Delete stations | ✅ | ❌ | ❌ |
+| Manage thresholds & allocations | ✅ | ✅ | ❌ |
+| Upload documents to library | ✅ | ✅ | ❌ |
+| View documents | ✅ | ✅ | ✅ |
+| View audit log | ✅ | ✅ | ❌ |
+| Export audit log | ✅ | ❌ | ❌ |
+| Manage users (edit role, delete) | ✅ | ❌ | ❌ |
+| Create invitation PINs | ✅ | ❌ | ❌ |
+| View disaster management | ✅ | ✅ | ✅ |
+
+See [`docs/roles-and-permissions.md`](docs/roles-and-permissions.md) for the full route-by-route table.
+
+---
+
+## Running Tests
+
+```bash
+composer test
+```
+
+Tests live in `tests/Feature/` and `tests/Unit/`. The suite clears the config cache before running.
+
+---
+
+## Docker
+
+### Build
+
+```bash
+docker build -t inmacom-mis:latest .
+```
+
+The `Dockerfile` uses a two-stage build:
+1. **Stage 1 (`frontend-builder`)** — Node 20 Alpine builds the Vite/React assets.
+2. **Stage 2** — FrankenPHP (PHP 8.3) serves the Laravel application.
+
+### Run locally
+
+```bash
+docker run -p 8080:8080 \
+  --env-file .env \
+  -v $(pwd)/storage/app/firebase-service-account.json:/app/storage/app/firebase-service-account.json \
+  inmacom-mis:latest
+```
+
+The app is available at `http://localhost:8080`.
+
+See [`docs/deployment.md`](docs/deployment.md) for full Cloud Run deployment instructions.
+
+---
+
+## Directory Structure
+
+```
+INMACOM_MIS_V2.1/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/       # Route controllers (GisController, StationsController, …)
+│   │       └── Auth/          # Firebase auth & PIN registration controllers
+│   ├── Models/                # Eloquent domain models (UUID primary keys)
+│   ├── Services/              # Business logic services (MeasurementStateManager, …)
+│   └── Queries/               # Reusable query builders
+├── database/
+│   ├── migrations/            # Chronological schema migrations
+│   └── seeders/               # Reference data seeders (IIMA, treaty datasets)
+├── resources/
+│   └── js/
+│       ├── Pages/             # Inertia page components (one per route)
+│       │   ├── Gis/           # Flow, Dam, WaterQuality, Rainfall, Groundwater pages
+│       │   ├── Stations/      # Station list and detail pages
+│       │   ├── Disaster/      # Disaster management pages
+│       │   └── …
+│       ├── Components/        # Reusable React components
+│       ├── Layouts/           # App shell layouts
+│       └── locales/
+│           ├── en/            # English translation keys
+│           └── pt/            # Portuguese translation keys
+├── routes/
+│   ├── web.php                # Main application routes
+│   └── auth.php               # Authentication & registration routes
+├── scripts/                   # SQL import and data-fix scripts
+├── docs/                      # Extended documentation
+│   ├── architecture.md
+│   ├── deployment.md
+│   ├── roles-and-permissions.md
+│   ├── api-routes.md
+│   ├── gis-workflow.md
+│   └── database-schema.md
+├── docs-site/                 # Next.js documentation website
+├── Dockerfile                 # Multi-stage production container
+├── docker-entrypoint.sh       # Container startup script
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── LICENSE
+└── SECURITY.md
+```
+
+---
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Security
 
-## Security Vulnerabilities
+If you discover a security vulnerability, please follow the responsible disclosure process described in [SECURITY.md](SECURITY.md). **Do not open a public issue.**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+INMACOM MIS is licensed under the [MIT License](LICENSE).  
+Copyright © 2026 Incomati-Maputo Tripartite Permanent Technical Committee (ITPTC) / Datamatics.

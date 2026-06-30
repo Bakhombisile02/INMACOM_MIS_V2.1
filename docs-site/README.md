@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# INMACOM MIS — Documentation Site
 
-## Getting Started
+This directory contains the **INMACOM MIS documentation website**, built with [Next.js](https://nextjs.org/).
 
-First, run the development server:
+It provides a browsable, rendered version of the documentation for the Incomati Basin Management Information System.
+
+---
+
+## Running Locally
 
 ```bash
+cd docs-site
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Source Pages
 
-## Learn More
+Documentation source files live in `docs-site/app/`. They are written in MDX and correspond to the markdown files in the root [`docs/`](../docs/) directory.
 
-To learn more about Next.js, take a look at the following resources:
+For the raw markdown documentation (architecture, deployment, roles, API routes, GIS workflow, database schema), see the [`docs/`](../docs/) folder at the repository root.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Building for Production
 
-## Deploy on Vercel
+```bash
+npm run build
+npm run start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Related
+
+- [Repository README](../README.md)
+- [Architecture](../docs/architecture.md)
+- [Deployment Guide](../docs/deployment.md)
+- [Roles & Permissions](../docs/roles-and-permissions.md)

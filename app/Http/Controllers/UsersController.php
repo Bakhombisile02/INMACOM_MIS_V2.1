@@ -12,6 +12,11 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Kreait\Firebase\Contract\Auth as FirebaseAuth;
 
+/**
+ * @description Admin-only user management: list, update role, and delete users.
+ * @author ITPTC / Datamatics
+ * @since 2.1.0
+ */
 class UsersController extends Controller
 {
     public function index(Request $request): Response
